@@ -12,8 +12,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DATABASE=mydb
-      - MYSQL_ROOT_PASSWORD=root1234!!
+      - MYSQL_DATABASE=board
+      - MYSQL_ROOT_PASSWORD=123
       - TZ=Asia/Seoul
     volumes:
-      - /Users/jugwang/my-data:/my-container-dir
+      - /Users/chan/my-data:/my-container-dir
