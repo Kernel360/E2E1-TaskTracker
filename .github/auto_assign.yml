@@ -1,0 +1,11 @@
+addReviewers: true
+
+
+addAssignees: author
+
+
+reviewers:
+  - name1
+  - name2
+
+numberOfReviewers: 2
