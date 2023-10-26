@@ -1,11 +1,19 @@
-name: Auto Assign Action
+name: Add Reviewers
 on:
-  - pull_request_target
-
+  pull_request:
+    types: [opened, synchronize]
 jobs:
-  add-reviews:
+  add-reviewers:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.4
+      - name: Get repository information
+        uses: actions/checkout@v2
+      - name: Get all team members
+        uses: github/actions/get-users@v2
         with:
-          configuration-path: ".github/auto_assign.yml"
+          filter: members
+      - name: Add team members as reviewers
+        run: |
+          for user in ${{ steps.get-all-team-members.outputs.users }}; do
+            gh pr review --add $user ${{ github.event.pull_request.head.ref }}
+          done
