@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  * DTO for {@link org.fastcampus.proejct.board.domain.Board}
  */
 public record BoardDto(
+        Long id,
         String title,
         String content,
         String createdBy,
@@ -17,10 +18,12 @@ public record BoardDto(
 ) {
 
     public static BoardDto of(
+            Long id,
             String title,
             String content
     ) {
         return BoardDto.of(
+                id,
                 title,
                 content,
                 null,
@@ -31,6 +34,7 @@ public record BoardDto(
     }
 
     public static BoardDto of(
+            Long id,
             String title,
             String content,
             String createdBy,
@@ -38,11 +42,12 @@ public record BoardDto(
             String modifiedBy,
             LocalDateTime modifiedAt
     ) {
-        return new BoardDto(title, content, createdBy, createdAt, modifiedBy, modifiedAt);
+        return new BoardDto(id, title, content, createdBy, createdAt, modifiedBy, modifiedAt);
     }
 
     public static BoardDto from(Board entity) {
         return BoardDto.of(
+                entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedBy(),
@@ -54,7 +59,7 @@ public record BoardDto(
 
     public static Board toEntity(BoardDto dto) {
         return Board.of(
-                null,
+                dto.id(),
                 dto.title(),
                 dto.content()
         );

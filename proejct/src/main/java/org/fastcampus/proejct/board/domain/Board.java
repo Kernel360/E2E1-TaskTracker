@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 public class Board extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Setter
     @Column(nullable = false)
