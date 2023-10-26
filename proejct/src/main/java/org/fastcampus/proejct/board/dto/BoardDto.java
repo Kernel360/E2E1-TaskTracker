@@ -1,6 +1,8 @@
 package org.fastcampus.proejct.board.dto;
 
 import org.fastcampus.proejct.board.domain.Board;
+import org.fastcampus.proejct.user.domain.UserInfo;
+import org.fastcampus.proejct.user.dto.UserInfoDto;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +13,7 @@ public record BoardDto(
         Long id,
         String title,
         String content,
+        UserInfoDto userInfo,
         String createdBy,
         LocalDateTime createdAt,
         String modifiedBy,
@@ -20,12 +23,14 @@ public record BoardDto(
     public static BoardDto of(
             Long id,
             String title,
-            String content
+            String content,
+            UserInfoDto userInfo
     ) {
         return BoardDto.of(
                 id,
                 title,
                 content,
+                userInfo,
                 null,
                 null,
                 null,
@@ -37,12 +42,13 @@ public record BoardDto(
             Long id,
             String title,
             String content,
+            UserInfoDto userInfo,
             String createdBy,
             LocalDateTime createdAt,
             String modifiedBy,
             LocalDateTime modifiedAt
     ) {
-        return new BoardDto(id, title, content, createdBy, createdAt, modifiedBy, modifiedAt);
+        return new BoardDto(id, title, content, userInfo, createdBy, createdAt, modifiedBy, modifiedAt);
     }
 
     public static BoardDto from(Board entity) {
@@ -50,6 +56,7 @@ public record BoardDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
+                UserInfoDto.from(entity.getUserInfo()),
                 entity.getCreatedBy(),
                 entity.getCreatedAt(),
                 entity.getModifiedBy(),
@@ -61,7 +68,8 @@ public record BoardDto(
         return Board.of(
                 dto.id(),
                 dto.title(),
-                dto.content()
+                dto.content(),
+                UserInfoDto.toEntity(dto.userInfo())
         );
     }
 }
