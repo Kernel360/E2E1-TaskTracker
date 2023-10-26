@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.fastcampus.proejct.global.domain.BaseEntity;
+import org.fastcampus.proejct.user.domain.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Objects;
@@ -20,13 +21,16 @@ import java.util.Objects;
 @Entity
 public class Board extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Setter
     @Column(nullable = false)
     private String title;
     @Setter
     private String content;
+
+    @ManyToOne
+    private UserInfo userInfo;
 
     protected Board() {
     }
@@ -43,13 +47,14 @@ public class Board extends BaseEntity {
         return Objects.hash(id);
     }
 
-    public static Board of(Long id, String title, String content) {
-        return new Board(id, title, content);
+    public static Board of(Long id, String title, String content, UserInfo userInfo) {
+        return new Board(id, title, content, userInfo);
     }
 
-    private Board(Long id, String title, String content) {
+    private Board(Long id, String title, String content, UserInfo userInfo) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.userInfo = userInfo;
     }
 }
