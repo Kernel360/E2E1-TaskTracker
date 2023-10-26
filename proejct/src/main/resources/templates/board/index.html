@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>게시판</h1>
+    </header>
+    <main>
+        <h2>게시판 목록</h2>
+        <a href="/board/write" class="btn btn-primary">글쓰기</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+<!--            <#list boards as board>-->
+            <tr>
+                <td>${board.id}</td>
+                <td><a href="/board/${board.id}">${board.title}</a></td>
+                <td>${board.writer}</td>
+                <td>${board.regdate}</td>
+            </tr>
+<!--            </#list>-->
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        &copy; 2023
+    </footer>
+</div>
+</body>
+</html>
