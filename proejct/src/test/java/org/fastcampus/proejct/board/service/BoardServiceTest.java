@@ -3,10 +3,11 @@ package org.fastcampus.proejct.board.service;
 import org.fastcampus.proejct.board.domain.Board;
 import org.fastcampus.proejct.board.dto.BoardDto;
 import org.fastcampus.proejct.board.repository.BoardRepository;
+import org.fastcampus.proejct.board.repository.UserInfoRepository;
+import org.fastcampus.proejct.user.domain.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,50 +20,48 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 /**
- * Given
- * - 테스트를 위해 주어진 상태
- * - 테스트 대상에게 주어진 조건
- * - 테스트가 동작하기 위해 주어진 환경
- * When
- * - 테스트 대상에게 가해진 어떠한 상태
- * - 테스트 대상에게 주어진 어떠한 조건
- * - 테스트 대상의 상태를 변경시키기 위한 환경
- * Then
- * - 앞선 과정의 결과
+ * given() 블록은 테스트에 필요한 가짜 객체와 조건을 설정합니다.
+ * when() 블록은 테스트 대상 메서드를 호출합니다.
+ * then() 블록은 테스트 대상 메서드의 결과를 검증합니다.
  */
 @DisplayName("게시판 관련 비즈니스 로직 테스트")
 @ExtendWith(MockitoExtension.class)
-class
-BoardServiceTest {
+class BoardServiceTest {
     @InjectMocks
     private BoardService service;
     @Mock
-    private BoardRepository repository;
+    private BoardRepository boardRepository;
+    @Mock
+    private UserInfoRepository userInfoRepository;
 
     @DisplayName("게시글 상세 화면 호출")
     @Test
     void testGetBoard() {
         //given
         Long id = 1L;
-        Board expected = createdBoard();
-        given(repository.findById(id)).willReturn(Optional.of(expected));
+        Board board = board();
+        given(boardRepository.findById(id)).willReturn(Optional.of(board));
         //when
-        Optional<BoardDto> actual = service.getBoard(id);
+
+        BoardDto actual = service.getBoard(id);
         //then
-        assertEquals(BoardDto.from(expected), actual.get());
-        then(repository).should().findById(id);
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue("title", "title")
+                .hasFieldOrPropertyWithValue("content", "content");
+        then(boardRepository).should().findById(id);
     }
 
     @DisplayName("게시글 상세 화면 생성")
     @Test
     void testCreatedBoard() {
         //given
-        Board expected = createdBoard();
-        given(repository.save(expected)).willReturn(null);
+        Board expected = board();
+        UserInfo userInfo = user();
+        given(boardRepository.save(expected)).willReturn(null);
         //when
-        service.saveBoard(BoardDto.from(expected));
+        service.writeBoard(BoardDto.from(expected));
         //then
-        then(repository).should().save(any(Board.class));
+        then(boardRepository).should().save(any(Board.class));
     }
 
     @DisplayName("게시글 상세 화면 수정 ")
@@ -70,28 +69,37 @@ BoardServiceTest {
     void testUpdatedBoard() {
         //given
         Long id = 1L;
-        Board expected = createdBoard();
-        given(repository.save(expected)).willReturn(null);
+        Board board = board();
+        given(boardRepository.findById(id)).willReturn(Optional.of(board));
         //when
-        Board actual = repository.findById(id).orElseThrow();
-        actual.setContent("내용 변경됨");
-        service.updateBoard();
+        board.setContent("내용 변경됨");
+        service.updateBoard(id, BoardDto.from(board));
+        boardRepository.flush();
         //then
-
-        then(repository).should().save(any(Board.class));
+        Board actual = boardRepository.findById(id).orElseThrow();
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue("title", "title")
+                .hasFieldOrPropertyWithValue("content", "내용 변경됨");
+        then(boardRepository).should().findById(id);
     }
 
     @DisplayName("게시글 상세 화면 삭제")
     @Test
     void testDeletedBoard() {
         //given
-
+        Long id = 1L;
+        boardRepository.save(board());
         //when
-
+        service.deleteBoard(id);
         //then
+        assertEquals(0, boardRepository.count());
     }
 
-    private Board createdBoard() {
-        return Board.of(1L, "title", "content");
+    private Board board() {
+        return Board.of(1L, "title", "content", user());
+    }
+
+    private UserInfo user() {
+        return UserInfo.of("NNname");
     }
 }
