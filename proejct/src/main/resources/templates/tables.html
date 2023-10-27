@@ -394,8 +394,8 @@
                                 </thead>
                                 <tbody>
                                 <script>
-                                    var boardList = [];
                                     window.onload = function () {
+                                        var boardList = getBoardList();
                                         $(document).ready(function () {
                                             // 게시글 목록을 가져옵니다.
                                             var xhr = new XMLHttpRequest();
@@ -407,16 +407,15 @@
                                                 if (xhr.status == 200) {
                                                     // 응답 데이터를 JSON으로 파싱합니다.
                                                     boardList = JSON.parse(xhr.responseText);
-
                                                     // 게시글 목록을 출력합니다.
-                                                    for (var i = 0; i < 5; i++) {
+                                                    for (var i = 0; i < boardList.length; i++) {
                                                         var board = boardList[i];
                                                         // 게시글을 출력합니다.
                                                         var tr = $("<tr>");
                                                         tr.append($("<td>" + (i + 1) + "</td>"));
-                                                        tr.append($("<td>" + "제목" + "</td>"));
-                                                        tr.append($("<td>" + "작성자" + "</td>"));
-                                                        tr.append($("<td>" + "설명" + "</td>"));
+                                                        tr.append($("<td>" + board.title + "</td>"));
+                                                        tr.append($("<td>" + board.host + "</td>"));
+                                                        tr.append($("<td>" + board.content + "</td>"));
                                                         tr.append($("<td>" + "시작일" + "</td>"));
                                                         tr.append($("<td>" + "종료일" + "</td>"));
                                                         // 게시글을 tbody 태그에 추가합니다.
