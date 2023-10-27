@@ -64,12 +64,26 @@ public record BoardDto(
         );
     }
 
-    public static Board toEntity(BoardDto dto) {
+    @Override
+    public String toString() {
+        return "BoardDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", userInfo=" + userInfo +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedBy='" + modifiedBy + '\'' +
+                ", modifiedAt=" + modifiedAt +
+                '}';
+    }
+
+    public Board toEntity(UserInfo userInfo) {
         return Board.of(
-                dto.id(),
-                dto.title(),
-                dto.content(),
-                UserInfoDto.toEntity(dto.userInfo())
+                id,
+                title,
+                content,
+                userInfo
         );
     }
 }

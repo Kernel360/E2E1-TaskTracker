@@ -34,7 +34,7 @@ public class UserInfo extends BaseEntity {
     private Boolean adminCheck;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userInfo")
     private List<Board> createdBoards = new ArrayList<>();
 
     private UserInfo(Long id, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {
@@ -48,6 +48,17 @@ public class UserInfo extends BaseEntity {
 
     public static UserInfo of(Long id, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {
         return new UserInfo(id, name, isBan, exitDate, adminCheck, createdBoards);
+    }
+
+    public static UserInfo of(String name) {
+        return UserInfo.of(
+                null,
+                name,
+                false,
+                null,
+                false,
+                List.of()
+        );
     }
 
     protected UserInfo() {
