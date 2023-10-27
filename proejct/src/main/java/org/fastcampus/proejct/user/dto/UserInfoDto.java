@@ -7,9 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-/**
- * DTO for {@link UserInfo}
- */
 public record UserInfoDto(
         Long id,
         String name,
@@ -65,16 +62,14 @@ public record UserInfoDto(
         );
     }
 
-    public static UserInfo toEntity(
-            UserInfoDto dto
-    ) {
+    public UserInfo toEntity() {
         return UserInfo.of(
-                dto.id(),
-                dto.name(),
-                dto.isBan(),
-                dto.exitDate(),
-                dto.adminCheck(),
-                dto.createdBoards()
+                id,
+                name,
+                isBan,
+                exitDate,
+                adminCheck,
+                createdBoards
         );
     }
 }

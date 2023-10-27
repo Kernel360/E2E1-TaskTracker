@@ -33,10 +33,10 @@ import static org.mockito.BDDMockito.then;
 class BoardRepositoryTest {
     private final BoardRepository repository;
 
-    @BeforeEach
-    public void createBoard() {
-        repository.save(Board.of(1L, "제목", "본문"));
-    }
+//    @BeforeEach
+//    public void createBoard() {
+//        repository.save(Board.of(1L, "제목", "본문"));
+//    }
 
     @Autowired
     public BoardRepositoryTest(BoardRepository repository) {

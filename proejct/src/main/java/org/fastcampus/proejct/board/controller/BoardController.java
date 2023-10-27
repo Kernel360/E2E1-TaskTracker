@@ -1,0 +1,61 @@
+package org.fastcampus.proejct.board.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.fastcampus.proejct.board.dto.BoardDto;
+import org.fastcampus.proejct.board.service.BoardService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@RequiredArgsConstructor
+@Controller
+public class BoardController {
+
+    private final BoardService boardService;
+
+    @GetMapping("/board")
+    public String getBoardsView() {
+        return "tables";
+    }
+
+    @GetMapping("/board/write")
+    public String getBoardWriteView() {
+        return "board/write";
+    }
+
+    @PostMapping("/board/write/api")
+    public String postBoardWrite(
+            BoardDto board
+    ) {
+        boardService.writeBoard(board);
+        return "redirect:/";
+    }
+
+    @GetMapping("/board/{id}")
+    public String getBoardDetail(@PathVariable Long id, Model model) {
+        BoardDto board = boardService.getBoard(id);
+        model.addAttribute("board", board);
+        return "board/detail";
+    }
+
+    @GetMapping("/board/{id}/update")
+    public String getBoardUpdate(@PathVariable Long id, Model model) {
+        BoardDto board = boardService.getBoard(id);
+        model.addAttribute("board", board);
+        return "board/write";
+    }
+
+    @PostMapping("/board/{id}/update")
+    public String postBoardUpdate(@PathVariable Long id, BoardDto board) {
+        boardService.updateBoard(id, board);
+        return "redirect:/board";
+    }
+
+    @GetMapping("/board/{id}/delete")
+    public String getBoardDelete(@PathVariable Long id) {
+        boardService.deleteBoard(id);
+        return "redirect:/board";
+    }
+}
