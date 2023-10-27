@@ -2,6 +2,7 @@ package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.fastcampus.proejct.board.dto.BoardDto;
+import org.fastcampus.proejct.board.dto.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +16,12 @@ public class BoardRestController {
     private final BoardService service;
 
     @GetMapping("/board/list")
-    public List<BoardDto> getBoards(Model model) {
+    public List<ResponseBoardDto> getBoards(Model model) {
         // 게시글 목록을 조회합니다.
-        List<BoardDto> boards = service.getBoards();
+        List<ResponseBoardDto> boards = service.getBoards().stream()
+                .map(ResponseBoardDto::from)
+                .toList();
         model.addAttribute("boards", boards);
-        model.addAttribute("user", "TaskTracker-Chan");
         return boards;
     }
-
 }
