@@ -411,7 +411,7 @@
                                                     for (var i = 0; i < boardList.length; i++) {
                                                         var board = boardList[i];
                                                         // 게시글을 출력합니다.
-                                                        var tr = $("<tr>");
+                                                        var tr = $("<tr onclick=location.href='/board/" + board.id + "'>");
                                                         tr.append($("<td>" + (i + 1) + "</td>"));
                                                         tr.append($("<td>" + board.title + "</td>"));
                                                         tr.append($("<td>" + board.host + "</td>"));
@@ -454,16 +454,6 @@
                                     <th></th>
                                 </tr>
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Number</th>
-                                    <th>Title</th>
-                                    <th>Host</th>
-                                    <th>Description</th>
-                                    <th>Start date</th>
-                                    <th>End date</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
