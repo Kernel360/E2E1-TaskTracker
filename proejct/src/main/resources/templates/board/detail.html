@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 상세</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>게시물 상세</h1>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <h2>제목: ${board.title}</h2>
+                <p>작성자: ${board.writer}</p>
+                <p>작성일: ${board.regdate}</p>
+            </div>
+            <div class="card-body">
+                <p>${board.content}</p>
+            </div>
+        </div>
+        <a href="/board" class="btn btn-secondary">목록으로</a>
+        <a href="/board/${board.id}/update" class="btn btn-primary">수정</a>
+        <a href="/board/${board.id}/delete" class="btn btn-danger">삭제</a>
+    </main>
+    <footer>
+        &copy; 2023
+    </footer>
+</div>
+</body>
+</html>
