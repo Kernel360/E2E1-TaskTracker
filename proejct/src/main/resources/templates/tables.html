@@ -394,8 +394,8 @@
                                 </thead>
                                 <tbody>
                                 <script>
-                                    var boardList = [];
                                     window.onload = function () {
+                                        var boardList = getBoardList();
                                         $(document).ready(function () {
                                             // 게시글 목록을 가져옵니다.
                                             var xhr = new XMLHttpRequest();
@@ -407,9 +407,8 @@
                                                 if (xhr.status == 200) {
                                                     // 응답 데이터를 JSON으로 파싱합니다.
                                                     boardList = JSON.parse(xhr.responseText);
-
                                                     // 게시글 목록을 출력합니다.
-                                                    for (var i = 0; i < 5; i++) {
+                                                    for (var i = 0; i < boardList.length; i++) {
                                                         var board = boardList[i];
                                                         // 게시글을 출력합니다.
                                                         var tr = $("<tr>");
