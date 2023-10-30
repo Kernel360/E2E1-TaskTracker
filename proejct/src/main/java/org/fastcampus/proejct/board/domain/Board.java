@@ -8,6 +8,7 @@ import org.fastcampus.proejct.global.domain.BaseEntity;
 import org.fastcampus.proejct.user.domain.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.List;
 import java.util.Objects;
 
 @ToString
@@ -29,8 +30,14 @@ public class Board extends BaseEntity {
     @Setter
     private String content;
 
-    @ManyToOne
+    @Setter
+    @JoinColumn(name = "userInfoId")
+    @ManyToOne(optional = false)
     private UserInfo userInfo;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @Setter
+    private List<Task> tasks;
 
     protected Board() {
     }
