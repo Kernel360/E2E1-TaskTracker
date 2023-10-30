@@ -3,7 +3,7 @@ package org.fastcampus.proejct.board.service;
 import org.fastcampus.proejct.board.domain.Board;
 import org.fastcampus.proejct.board.dto.BoardDto;
 import org.fastcampus.proejct.board.repository.BoardRepository;
-import org.fastcampus.proejct.board.repository.UserInfoRepository;
+import org.fastcampus.proejct.user.repository.UserInfoRepository;
 import org.fastcampus.proejct.user.domain.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
