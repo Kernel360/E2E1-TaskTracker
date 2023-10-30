@@ -6,7 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.board.domain.Board;
 import org.fastcampus.proejct.board.dto.BoardDto;
 import org.fastcampus.proejct.board.repository.BoardRepository;
-import org.fastcampus.proejct.board.repository.UserInfoRepository;
+import org.fastcampus.proejct.board.repository.TaskRepository;
+import org.fastcampus.proejct.user.repository.UserInfoRepository;
 import org.fastcampus.proejct.user.domain.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserInfoRepository userInfoRepository;
+    private final TaskRepository taskRepository;
     private final ObjectMapper mapper;
 
     @Transactional(readOnly = true)
@@ -43,12 +45,17 @@ public class BoardService {
     public void updateBoard(Long id, BoardDto dto) {
 //        Board board = boardRepository.getReferenceById(id);
         UserInfo userInfo = userInfoRepository.getReferenceById(dto.userInfo().id());
-
         boardRepository.save(dto.toEntity(userInfo));
     }
 
     public void deleteBoard(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    public List<BoardDto> search(String keyword) {
+        return boardRepository.findByKeyword(keyword).stream()
+                .map(BoardDto::from)
+                .toList();
     }
 
 }
