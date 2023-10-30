@@ -7,7 +7,8 @@ logging:
     org.task-tracker.project: debug
     org.springframework.web.servlet: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
-
+springdoc:
+  show-actuator: true
 spring:
   application.name: project
   datasource:
@@ -17,7 +18,7 @@ spring:
   jpa:
     open-in-view: false
     defer-datasource-initialization: true
-    #hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
     show-sql: true
     properties:
       hibernate.format_sql: true
