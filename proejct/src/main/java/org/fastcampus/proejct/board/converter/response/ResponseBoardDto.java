@@ -1,4 +1,6 @@
-package org.fastcampus.proejct.board.dto;
+package org.fastcampus.proejct.board.converter.response;
+
+import org.fastcampus.proejct.board.converter.dto.BoardDto;
 
 public record ResponseBoardDto(
         Long id,

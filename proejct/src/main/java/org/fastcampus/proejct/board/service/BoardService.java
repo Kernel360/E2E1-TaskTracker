@@ -3,12 +3,12 @@ package org.fastcampus.proejct.board.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.board.domain.Board;
-import org.fastcampus.proejct.board.dto.BoardDto;
-import org.fastcampus.proejct.board.repository.BoardRepository;
-import org.fastcampus.proejct.board.repository.TaskRepository;
-import org.fastcampus.proejct.user.repository.UserInfoRepository;
-import org.fastcampus.proejct.user.domain.UserInfo;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.db.repository.BoardRepository;
+import org.fastcampus.proejct.board.db.repository.TaskRepository;
+import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +39,7 @@ public class BoardService {
     public void writeBoard(BoardDto dto) {
         UserInfo userInfo = userInfoRepository.findById(dto.userInfo().id()).orElseThrow();
         Board board = dto.toEntity(userInfo);
+        board.setTasks(List.of());
         boardRepository.save(board);
     }
 
