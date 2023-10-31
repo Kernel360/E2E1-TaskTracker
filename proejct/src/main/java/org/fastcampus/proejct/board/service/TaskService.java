@@ -2,14 +2,12 @@ package org.fastcampus.proejct.board.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.board.domain.Board;
-import org.fastcampus.proejct.board.domain.Task;
-import org.fastcampus.proejct.board.dto.BoardDto;
-import org.fastcampus.proejct.board.dto.TaskDto;
-import org.fastcampus.proejct.board.repository.BoardRepository;
-import org.fastcampus.proejct.board.repository.TaskRepository;
-import org.fastcampus.proejct.user.domain.UserInfo;
-import org.fastcampus.proejct.user.repository.UserInfoRepository;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.board.db.model.Task;
+import org.fastcampus.proejct.board.converter.dto.TaskDto;
+import org.fastcampus.proejct.board.db.repository.BoardRepository;
+import org.fastcampus.proejct.board.db.repository.TaskRepository;
+import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

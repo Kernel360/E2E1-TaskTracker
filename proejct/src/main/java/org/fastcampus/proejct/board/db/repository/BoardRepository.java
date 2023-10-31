@@ -1,6 +1,6 @@
-package org.fastcampus.proejct.board.repository;
+package org.fastcampus.proejct.board.db.repository;
 
-import org.fastcampus.proejct.board.domain.Board;
+import org.fastcampus.proejct.board.db.model.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

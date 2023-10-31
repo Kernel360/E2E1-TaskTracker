@@ -1,8 +1,7 @@
 package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampus.proejct.board.dto.BoardDto;
-import org.fastcampus.proejct.board.dto.ResponseBoardDto;
+import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

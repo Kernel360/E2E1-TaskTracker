@@ -1,10 +1,10 @@
 package org.fastcampus.proejct.board.service;
 
-import org.fastcampus.proejct.board.domain.Board;
-import org.fastcampus.proejct.board.dto.BoardDto;
-import org.fastcampus.proejct.board.repository.BoardRepository;
-import org.fastcampus.proejct.user.repository.UserInfoRepository;
-import org.fastcampus.proejct.user.domain.UserInfo;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.db.repository.BoardRepository;
+import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

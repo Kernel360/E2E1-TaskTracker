@@ -1,13 +1,12 @@
-package org.fastcampus.proejct.user.domain;
+package org.fastcampus.proejct.user.db.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.board.domain.Board;
+import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.global.domain.BaseEntity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +45,14 @@ public class UserInfo extends BaseEntity {
         this.createdBoards = createdBoards;
     }
 
-    public static UserInfo of(Long id, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {
+    public static UserInfo of(
+            Long id,
+            String name,
+            Boolean isBan,
+            Date exitDate,
+            Boolean adminCheck,
+            List<Board> createdBoards
+    ) {
         return new UserInfo(id, name, isBan, exitDate, adminCheck, createdBoards);
     }
 

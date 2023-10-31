@@ -1,14 +1,12 @@
-package org.fastcampus.proejct.board.dto;
+package org.fastcampus.proejct.board.converter.dto;
 
-import org.fastcampus.proejct.board.domain.Board;
-import org.fastcampus.proejct.board.domain.Task;
-import org.fastcampus.proejct.user.domain.UserInfo;
-import org.fastcampus.proejct.user.dto.UserInfoDto;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.board.db.model.Task;
 
 import java.time.LocalDateTime;
 
 /**
- * DTO for {@link org.fastcampus.proejct.board.domain.Task}
+ * DTO for {@link Task}
  */
 public record TaskDto(
         Long id,
@@ -17,7 +15,7 @@ public record TaskDto(
         boolean isFinished,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        BoardDto board,
+//        BoardDto board,
 //        UserInfoDto userInfo,
         LocalDateTime createdAt,
         String createdBy,
@@ -31,7 +29,7 @@ public record TaskDto(
             boolean isFinished,
             LocalDateTime startDate,
             LocalDateTime endDate,
-            BoardDto board,
+//            BoardDto board,
 //            UserInfoDto userInfo,
             LocalDateTime createdAt,
             String createdBy,
@@ -45,7 +43,7 @@ public record TaskDto(
                 isFinished,
                 startDate,
                 endDate,
-                board,
+//                board,
 //                userInfo,
                 createdAt,
                 createdBy,
@@ -62,7 +60,7 @@ public record TaskDto(
                 entity.isFinished(),
                 entity.getStartDate(),
                 entity.getEndDate(),
-                BoardDto.from(entity.getBoard()),
+//                BoardDto.from(entity.getBoard()),
 //                UserInfoDto.from(entity.getUserInfo()),
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
@@ -78,8 +76,8 @@ public record TaskDto(
                 worker,
                 isFinished,
                 startDate,
-                endDate,
-                board
+                endDate
+//                board
 //                userInfo
         );
     }

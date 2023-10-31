@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.board.dto;
+package org.fastcampus.proejct.board.converter;
 
 public enum SortType {
     SORT_DEFAULT("default"),

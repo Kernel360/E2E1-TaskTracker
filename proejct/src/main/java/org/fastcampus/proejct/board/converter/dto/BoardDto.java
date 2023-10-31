@@ -1,15 +1,14 @@
-package org.fastcampus.proejct.board.dto;
+package org.fastcampus.proejct.board.converter.dto;
 
-import org.fastcampus.proejct.board.domain.Board;
-import org.fastcampus.proejct.board.domain.Task;
-import org.fastcampus.proejct.user.domain.UserInfo;
-import org.fastcampus.proejct.user.dto.UserInfoDto;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.user.db.model.UserInfo;
+import org.fastcampus.proejct.user.converter.dto.UserInfoDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * DTO for {@link org.fastcampus.proejct.board.domain.Board}
+ * DTO for {@link Board}
  */
 public record BoardDto(
         Long id,
@@ -79,17 +78,17 @@ public record BoardDto(
         );
     }
 
-    @Override
-    public String toString() {
-        return "BoardDto{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", userInfo=" + userInfo +
-                ", createdBy='" + createdBy + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedBy='" + modifiedBy + '\'' +
-                ", modifiedAt=" + modifiedAt +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "BoardDto{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", content='" + content + '\'' +
+//                ", userInfo=" + userInfo +
+//                ", createdBy='" + createdBy + '\'' +
+//                ", createdAt=" + createdAt +
+//                ", modifiedBy='" + modifiedBy + '\'' +
+//                ", modifiedAt=" + modifiedAt +
+//                '}';
+//    }
 }

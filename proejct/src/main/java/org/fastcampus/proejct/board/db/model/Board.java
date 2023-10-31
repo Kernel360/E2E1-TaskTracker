@@ -1,13 +1,14 @@
-package org.fastcampus.proejct.board.domain;
+package org.fastcampus.proejct.board.db.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.fastcampus.proejct.global.domain.BaseEntity;
-import org.fastcampus.proejct.user.domain.UserInfo;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,13 +32,13 @@ public class Board extends BaseEntity {
     private String content;
 
     @Setter
-    @JoinColumn(name = "userInfoId")
     @ManyToOne(optional = false)
     private UserInfo userInfo;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Setter
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     protected Board() {
     }
