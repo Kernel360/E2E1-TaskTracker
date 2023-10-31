@@ -1,16 +1,18 @@
 package org.fastcampus.proejct.global.service;
 
-import org.fastcampus.proejct.global.domain.NotificationEntity;
+import org.fastcampus.proejct.global.dto.NotificationDto;
 import org.fastcampus.proejct.global.repository.NotificationRepository;
+import org.fastcampus.proejct.global.dto.TemplateCollection;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,45 +26,48 @@ class NotificationServiceTest {
     @Mock
     private NotificationRepository notiRepository;
 
-    void testGetAllNotice(){
+    @Mock
+    private TemplateCollection temps;
 
-        /* given, 등록 더미 데이터 */
-        Long id = 1L;
+    private static Stream<Arguments> param(){
+        //Long id = 1L;
         String notiType = "addBuddy";
+        long id = 1L;
         long senderId = 1L;
         long receiverId = 1L;
-        String content = senderId + "님이 친구 추가를 요청 하셨습니다.";
-        LocalDateTime createdAt = LocalDateTime.now();
+        String content = senderId + TemplateCollection.contentTemplate.FRIEND_ADD.getMessage();
+
+        NotificationDto dto = new NotificationDto();
+        dto.setId(id);
+        dto.setNotiType(notiType);
+        dto.setSenderId(senderId);
+        dto.setReceiverId(receiverId);
+        dto.setText(content);
+
+        return Stream.of(
+                Arguments.of(dto)
+        );
+    }
+
+
+    void testGetAllNotice(){
 
     }
 
     @DisplayName("알림 등록 테스트")
-    @Test
-    void testAddNotice(){
-        /* given */
-        NotificationEntity notice = new NotificationEntity();
+    @ParameterizedTest
+    @MethodSource("param")
+    void testAddNotice(NotificationDto notiDto){
 
-        Long id = 1L;
-        String notiType = "addBuddy";
-        long senderId = 1L;
-        long receiverId = 1L;
-        String content = senderId + "님이 친구 추가를 요청 하셨습니다.";
-        LocalDateTime createdAt = LocalDateTime.now();
+        /* 시스템 도입시 notiType과 content template 정의해서 별개 파일로 관리 되도록 작업 진행 */
 
-        notice.builder()
-                .notiType(notiType)
-                .senderId(senderId)
-                .receiverId(receiverId)
-                .text(content)
-                .build();
-
+        /* given -- 32line에서 설정 완료 */
 
         /* when */
-        boolean result = notiService.setNotice(notice);
-        System.err.println(result);
+        boolean result = notiService.addNotice(notiDto);
+
         /* then */
         assertTrue(result);
-
 
     }
 
