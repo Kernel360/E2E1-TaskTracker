@@ -1,10 +1,7 @@
 package org.fastcampus.proejct.board.repository;
 
-import org.aspectj.lang.annotation.Before;
-import org.fastcampus.proejct.board.domain.Board;
-import org.hibernate.annotations.SelectBeforeUpdate;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 @Import(BoardRepositoryTest.TestJpaConfig.class)
 @DataJpaTest

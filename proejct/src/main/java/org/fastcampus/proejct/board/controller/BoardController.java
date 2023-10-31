@@ -1,19 +1,23 @@
 package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.fastcampus.proejct.board.dto.BoardDto;
+import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
+import org.fastcampus.proejct.board.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
 
     private final BoardService boardService;
+    private final TaskService taskService;
 
     @GetMapping("/board")
     public String getBoardsView() {
