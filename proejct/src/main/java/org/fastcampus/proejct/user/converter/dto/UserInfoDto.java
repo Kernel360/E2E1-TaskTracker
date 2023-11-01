@@ -9,6 +9,8 @@ import java.util.List;
 
 public record UserInfoDto(
         Long id,
+        String email,
+        String password,
         String name,
         Boolean isBan,
         Date exitDate,
@@ -19,8 +21,33 @@ public record UserInfoDto(
         LocalDateTime modifiedAt,
         String modifiedBy
 ) {
+
     public static UserInfoDto of(
             Long id,
+            String email,
+            String password,
+            String name
+    ) {
+        return UserInfoDto.of(
+                id,
+                email,
+                password,
+                name,
+                false,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static UserInfoDto of(
+            Long id,
+            String email,
+            String password,
             String name,
             Boolean isBan,
             Date exitDate,
@@ -33,6 +60,8 @@ public record UserInfoDto(
     ) {
         return new UserInfoDto(
                 id,
+                email,
+                password,
                 name,
                 isBan,
                 exitDate,
@@ -50,6 +79,8 @@ public record UserInfoDto(
     ) {
         return new UserInfoDto(
                 userInfo.getId(),
+                userInfo.getEmail(),
+                userInfo.getPassword(),
                 userInfo.getName(),
                 userInfo.getIsBan(),
                 userInfo.getExitDate(),
@@ -65,6 +96,8 @@ public record UserInfoDto(
     public UserInfo toEntity() {
         return UserInfo.of(
                 id,
+                email,
+                password,
                 name,
                 isBan,
                 exitDate,
