@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.domain;
+package org.fastcampus.proejct.home.db.model;
 
 
 import jakarta.persistence.Column;
@@ -26,7 +26,7 @@ public abstract class BaseEntity {
     protected LocalDateTime createdAt;
 
     @CreatedBy
-    @Column(nullable = false, length = 100, updatable = false)
+    @Column(nullable = true, length = 100, updatable = false)
     protected String createdBy;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

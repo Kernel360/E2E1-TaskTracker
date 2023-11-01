@@ -53,6 +53,10 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-api:2.2.0'
 
+	//jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
