@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.fastcampus.proejct.global.domain.BaseEntity;
+import org.fastcampus.proejct.home.db.model.BaseEntity;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
