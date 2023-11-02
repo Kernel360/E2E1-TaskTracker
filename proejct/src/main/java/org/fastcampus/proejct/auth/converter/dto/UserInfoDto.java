@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.user.converter.dto;
+package org.fastcampus.proejct.auth.converter.dto;
 
 import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.user.db.model.UserInfo;

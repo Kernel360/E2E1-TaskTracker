@@ -1,6 +1,6 @@
-package org.fastcampus.proejct.user.converter.response;
+package org.fastcampus.proejct.auth.converter.response;
 
-import org.fastcampus.proejct.user.converter.dto.KakaoAccountDto;
+import org.fastcampus.proejct.auth.converter.dto.KakaoAccountDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
