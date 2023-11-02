@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.fastcampus.proejct.home.db.model.BaseEntity;
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
  * -----------------------------------------------------------
  *   0              Jiyong Jung        최초 생성
  */
-public class NotificationEntity extends BaseEntity{
+public class NotificationEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
