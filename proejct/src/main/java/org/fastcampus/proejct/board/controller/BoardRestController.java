@@ -20,7 +20,9 @@ public class BoardRestController {
         List<ResponseBoardDto> boards = service.getBoards().stream()
                 .map(ResponseBoardDto::from)
                 .toList();
-        model.addAttribute("boards", boards);
-        return boards;
+//        List<BoardDto> boards = service.getBoards();
+//        model.addAttribute("boards", boards);
+//        return boards;
+        return null;
     }
 }
