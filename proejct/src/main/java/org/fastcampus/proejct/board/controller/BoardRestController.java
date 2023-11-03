@@ -17,8 +17,11 @@ public class BoardRestController {
     @GetMapping("/board/list")
     public List<ResponseBoardDto> getBoards(Model model) {
         // 게시글 목록을 조회합니다.
-       List<BoardDto> boards = service.getBoards();
-       model.addAttribute("boards", boards);
-       return boards;
+        List<ResponseBoardDto> boards = service.getBoards().stream()
+                .map(ResponseBoardDto::from)
+                .toList();
+        model.addAttribute("boards", boards);
+        return boards;
+
     }
 }
