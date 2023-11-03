@@ -3,8 +3,8 @@ package org.fastcampus.proejct.global.converter;
 import lombok.Getter;
 
 public enum RedirectType {
-    REDIRECT_USER("redirect:/admin"),
-    REDIRECT_ADMIN("redirect:/board"),
+    REDIRECT_USER("redirect:/board"),
+    REDIRECT_ADMIN("redirect:/admin"),
     REDIRECT_ERROR("redirect:/error");
 
     @Getter
