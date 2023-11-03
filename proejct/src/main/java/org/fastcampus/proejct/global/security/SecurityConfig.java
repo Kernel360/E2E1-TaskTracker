@@ -1,7 +1,7 @@
 package org.fastcampus.proejct.global.security;
 
-import org.fastcampus.proejct.user.converter.response.KakaoResponse;
-import org.fastcampus.proejct.user.converter.dto.UserPrincipal;
+import org.fastcampus.proejct.auth.converter.response.KakaoResponse;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +35,10 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(antMatcher("/error")).permitAll()
+                        .requestMatchers(antMatcher("/favicon.ico")).permitAll()
                         .requestMatchers(antMatcher("/api/**")).permitAll()
-                        .requestMatchers(antMatcher("/user/**")).hasRole("USER")
+                        .requestMatchers(antMatcher("/board/**")).hasRole("USER")
                         .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/")).permitAll()
                         .anyRequest().authenticated()
