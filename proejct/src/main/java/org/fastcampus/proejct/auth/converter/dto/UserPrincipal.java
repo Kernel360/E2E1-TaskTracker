@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.user.converter.dto;
+package org.fastcampus.proejct.auth.converter.dto;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

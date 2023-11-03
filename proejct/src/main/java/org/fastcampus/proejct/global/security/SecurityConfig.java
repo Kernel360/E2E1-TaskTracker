@@ -1,14 +1,15 @@
 package org.fastcampus.proejct.global.security;
 
-import org.fastcampus.proejct.user.converter.response.KakaoResponse;
-import org.fastcampus.proejct.user.converter.dto.UserPrincipal;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
+import org.fastcampus.proejct.auth.converter.response.KakaoResponse;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.UUID;
 
@@ -35,16 +37,17 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(antMatcher("/error")).permitAll()
                         .requestMatchers(antMatcher("/api/**")).permitAll()
-                        .requestMatchers(antMatcher("/user/**")).hasRole("USER")
+                        .requestMatchers(antMatcher("/**")).permitAll() // TODO: 11/3/23 개발환경 용이하게 하기 위한 코드
+                        .requestMatchers(antMatcher("/board/**")).hasRole("USER")
                         .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())
                 .logout(it -> it.logoutSuccessUrl("/"))
                 .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
-                .csrf(it -> it.ignoringRequestMatchers(antMatcher("/api/**")))
+                .csrf().disable()
                 .build();
     }
 

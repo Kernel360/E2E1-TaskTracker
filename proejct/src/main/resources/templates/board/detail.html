@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>게시물 상세</title>
@@ -13,17 +13,17 @@
     <main>
         <div class="card">
             <div class="card-header">
-                <h2>제목: ${board.title}</h2>
-                <p>작성자: ${board.writer}</p>
-                <p>작성일: ${board.regdate}</p>
+                <h2 th:text="${board.title}">제목</h2>
+                <p th:text="${board.userInfo().name()}">작성자</p>
+                <p th:date="${board.createdAt()}">작성일</p>
             </div>
             <div class="card-body">
-                <p>${board.content}</p>
+                <p th:text="${board.content}">콘텐츠</p>
             </div>
         </div>
         <a href="/board" class="btn btn-secondary">목록으로</a>
-        <a href="/board/${board.id}/update" class="btn btn-primary">수정</a>
-        <a href="/board/${board.id}/delete" class="btn btn-danger">삭제</a>
+        <a th:href="@{/board/{id}/update(id=${board.id})}" th:method="post" class="btn btn-primary">수정</a>
+        <a th:href="@{/board/{id}/delete(id=${board.id})}" th:method="delete" class="btn btn-danger">삭제</a>
     </main>
     <footer>
         &copy; 2023

@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.user.converter.dto;
+package org.fastcampus.proejct.auth.converter.dto;
 
 
 import java.util.Map;

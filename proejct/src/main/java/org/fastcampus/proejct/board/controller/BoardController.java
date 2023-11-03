@@ -7,9 +7,7 @@ import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,7 +55,7 @@ public class BoardController {
         return "redirect:/board";
     }
 
-    @GetMapping("/board/{id}/delete")
+    @DeleteMapping("/board/{id}/delete")
     public String getBoardDelete(@PathVariable Long id) {
         boardService.deleteBoard(id);
         return "redirect:/board";
