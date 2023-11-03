@@ -2,7 +2,7 @@ package org.fastcampus.proejct.board.converter.dto;
 
 import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.user.db.model.UserInfo;
-import org.fastcampus.proejct.user.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

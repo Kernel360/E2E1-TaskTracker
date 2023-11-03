@@ -1,6 +1,6 @@
 package org.fastcampus.proejct.global.jpa;
 
-import org.fastcampus.proejct.user.converter.dto.UserPrincipal;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

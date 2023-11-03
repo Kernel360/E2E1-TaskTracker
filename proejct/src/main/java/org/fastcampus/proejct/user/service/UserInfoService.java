@@ -2,7 +2,7 @@ package org.fastcampus.proejct.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.user.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
