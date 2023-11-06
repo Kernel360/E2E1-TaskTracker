@@ -25,15 +25,25 @@ public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Setter
     @Column(nullable = false)
     private String title;
+
     @Setter
     private String content;
 
     @Setter
+    private boolean isFinished;
+
+    @Setter
     @ManyToOne(optional = false)
     private UserInfo userInfo;
+
+    @ToString.Exclude
+    @OneToMany
+    @Setter
+    private List<UserInfo> members = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
@@ -55,14 +65,15 @@ public class Board extends BaseEntity {
         return Objects.hash(id);
     }
 
-    public static Board of(Long id, String title, String content, UserInfo userInfo) {
-        return new Board(id, title, content, userInfo);
+    public static Board of(Long id, String title, String content, boolean isFinished, UserInfo userInfo) {
+        return new Board(id, title, content, isFinished, userInfo);
     }
 
-    private Board(Long id, String title, String content, UserInfo userInfo) {
+    private Board(Long id, String title, String content, boolean isFinished, UserInfo userInfo) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.isFinished = isFinished;
         this.userInfo = userInfo;
     }
 }

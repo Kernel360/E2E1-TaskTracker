@@ -14,8 +14,10 @@ public record BoardDto(
         Long id,
         String title,
         String content,
+        boolean isFinished,
         UserInfoDto userInfo,
         List<TaskDto> tasks,
+        List<UserInfoDto> members,
         String createdBy,
         LocalDateTime createdAt,
         String modifiedBy,
@@ -25,15 +27,19 @@ public record BoardDto(
             Long id,
             String title,
             String content,
+            boolean isFinished,
             UserInfoDto userInfo,
-            List<TaskDto> tasks
+            List<TaskDto> tasks,
+            List<UserInfoDto> members
     ) {
         return BoardDto.of(
                 id,
                 title,
                 content,
+                isFinished,
                 userInfo,
                 tasks,
+                members,
                 null,
                 null,
                 null,
@@ -45,14 +51,16 @@ public record BoardDto(
             Long id,
             String title,
             String content,
+            boolean isFinished,
             UserInfoDto userInfo,
             List<TaskDto> tasks,
+            List<UserInfoDto> members,
             String createdBy,
             LocalDateTime createdAt,
             String modifiedBy,
             LocalDateTime modifiedAt
     ) {
-        return new BoardDto(id, title, content, userInfo, tasks,createdBy, createdAt, modifiedBy, modifiedAt);
+        return new BoardDto(id, title, content, isFinished, userInfo, tasks, members, createdBy, createdAt, modifiedBy, modifiedAt);
     }
 
     public static BoardDto from(Board entity) {
@@ -60,8 +68,11 @@ public record BoardDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
+                entity.isFinished(),
                 UserInfoDto.from(entity.getUserInfo()),
                 entity.getTasks().stream().map(TaskDto::from).toList(),
+                entity.getMembers().stream().map(UserInfoDto::from).toList(),
+//                entity.getMembers().stream().map(BoardMemberDto::from).toList(),
                 entity.getCreatedBy(),
                 entity.getCreatedAt(),
                 entity.getModifiedBy(),
@@ -74,21 +85,8 @@ public record BoardDto(
                 id,
                 title,
                 content,
+                isFinished,
                 userInfo
         );
     }
-
-//    @Override
-//    public String toString() {
-//        return "BoardDto{" +
-//                "id=" + id +
-//                ", title='" + title + '\'' +
-//                ", content='" + content + '\'' +
-//                ", userInfo=" + userInfo +
-//                ", createdBy='" + createdBy + '\'' +
-//                ", createdAt=" + createdAt +
-//                ", modifiedBy='" + modifiedBy + '\'' +
-//                ", modifiedAt=" + modifiedAt +
-//                '}';
-//    }
 }
