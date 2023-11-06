@@ -1,8 +1,8 @@
-package org.fastcampus.proejct.global.service;
+package org.fastcampus.proejct.notification.service;
 
-import org.fastcampus.proejct.global.domain.NotificationEntity;
-import org.fastcampus.proejct.global.dto.NotificationDto;
-import org.fastcampus.proejct.global.repository.NotificationRepository;
+import org.fastcampus.proejct.notification.db.model.NotificationEntity;
+import org.fastcampus.proejct.notification.converter.NotificationDto;
+import org.fastcampus.proejct.notification.db.repository.NotificationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

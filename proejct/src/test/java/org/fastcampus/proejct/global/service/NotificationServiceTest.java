@@ -1,8 +1,9 @@
 package org.fastcampus.proejct.global.service;
 
-import org.fastcampus.proejct.global.dto.NotificationDto;
-import org.fastcampus.proejct.global.repository.NotificationRepository;
-import org.fastcampus.proejct.global.dto.TemplateCollection;
+import org.fastcampus.proejct.notification.converter.NotificationDto;
+import org.fastcampus.proejct.notification.db.repository.NotificationRepository;
+import org.fastcampus.proejct.notification.converter.TemplateCollection;
+import org.fastcampus.proejct.notification.service.NotificationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

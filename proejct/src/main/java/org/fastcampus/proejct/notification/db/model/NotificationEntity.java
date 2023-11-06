@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.domain;
+package org.fastcampus.proejct.notification.db.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;

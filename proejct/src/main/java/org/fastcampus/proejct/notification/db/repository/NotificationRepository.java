@@ -1,6 +1,6 @@
-package org.fastcampus.proejct.global.repository;
+package org.fastcampus.proejct.notification.db.repository;
 
-import org.fastcampus.proejct.global.domain.NotificationEntity;
+import org.fastcampus.proejct.notification.db.model.NotificationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {

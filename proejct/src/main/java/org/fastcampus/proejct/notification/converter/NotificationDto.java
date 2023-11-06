@@ -1,11 +1,12 @@
-package org.fastcampus.proejct.global.dto;
+package org.fastcampus.proejct.notification.converter;
 
 import lombok.*;
+import org.fastcampus.proejct.notification.db.model.NotificationEntity;
 
 import java.io.Serializable;
 
 /**
- * DTO for {@link org.fastcampus.proejct.global.domain.NotificationEntity}
+ * DTO for {@link NotificationEntity}
  */
 @Data
 public class NotificationDto implements Serializable {
