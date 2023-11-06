@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.friend.db.model.Friend;
 import org.fastcampus.proejct.home.db.model.BaseEntity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -42,6 +43,9 @@ public class UserInfo extends BaseEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "userInfo")
     private List<Board> createdBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follow")
+    private List<Friend> friends = new ArrayList<>();
 
     private UserInfo(Long id, String email, String password, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {
         this.id = id;
