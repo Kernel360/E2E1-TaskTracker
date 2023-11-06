@@ -15,7 +15,6 @@ public record UserInfoDto(
         Boolean isBan,
         Date exitDate,
         Boolean adminCheck,
-        List<Board> createdBoards,
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
@@ -39,7 +38,6 @@ public record UserInfoDto(
                 null,
                 null,
                 null,
-                null,
                 null
         );
     }
@@ -52,7 +50,6 @@ public record UserInfoDto(
             Boolean isBan,
             Date exitDate,
             Boolean adminCheck,
-            List<Board> createdBoards,
             LocalDateTime createdAt,
             String createdBy,
             LocalDateTime modifiedAt,
@@ -66,7 +63,6 @@ public record UserInfoDto(
                 isBan,
                 exitDate,
                 adminCheck,
-                createdBoards,
                 createdAt,
                 createdBy,
                 modifiedAt,
@@ -85,7 +81,6 @@ public record UserInfoDto(
                 userInfo.getIsBan(),
                 userInfo.getExitDate(),
                 userInfo.getAdminCheck(),
-                userInfo.getCreatedBoards(),
                 userInfo.getCreatedAt(),
                 userInfo.getCreatedBy(),
                 userInfo.getModifiedAt(),
@@ -101,8 +96,7 @@ public record UserInfoDto(
                 name,
                 isBan,
                 exitDate,
-                adminCheck,
-                createdBoards
+                adminCheck
         );
     }
 }
