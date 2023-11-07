@@ -219,20 +219,13 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <!-- 타임리프로 for each -->
+                            <a class="dropdown-item" href="#" style="padding:.15rem 1.0rem">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
+                                Profile <button type="button" class="btn btn-danger" name="delFriend(id)" style="width: 5px; height: 30px; font-size: small; text-align: left; margin-inline: 10%; padding-right: 15%; margin-left: 30px;">X</button>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/login" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="/login" data-toggle="modal" data-target="#logoutModal"  style="padding:.15rem 1.0rem">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </a>
