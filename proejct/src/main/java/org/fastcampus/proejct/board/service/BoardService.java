@@ -3,6 +3,7 @@ package org.fastcampus.proejct.board.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
@@ -11,6 +12,8 @@ import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,8 +27,23 @@ public class BoardService {
     private final TaskRepository taskRepository;
     private final ObjectMapper mapper;
 
+    // TODO: 11/6/23 Sorted 값 별 List<Board> 조회
     @Transactional(readOnly = true)
-    public List<BoardDto> getBoards() {
+    public List<BoardDto> getBoards(SortType sorted) {
+//        return switch (sorted) {
+//            case SORT_DEFAULT -> {
+//
+//            }
+//            case SORT_ALL -> {
+//
+//            }
+//            case SORT_SELF -> {
+//
+//            }
+//            case SORT_FINISHED -> {
+//
+//            }
+//        }
         return boardRepository.findAll().stream()
                 .map(BoardDto::from)
                 .toList();
@@ -58,5 +76,4 @@ public class BoardService {
                 .map(BoardDto::from)
                 .toList();
     }
-
 }

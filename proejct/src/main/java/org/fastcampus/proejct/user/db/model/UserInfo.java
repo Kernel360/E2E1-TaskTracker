@@ -44,10 +44,11 @@ public class UserInfo extends BaseEntity {
     @OneToMany(mappedBy = "userInfo")
     private List<Board> createdBoards = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
+    private UserInfo(Long id, String email, String password, String name, Boolean isBan, Date exitDate, Boolean adminCheck) {
 
-    private UserInfo(Long id, String email, String password, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -55,7 +56,6 @@ public class UserInfo extends BaseEntity {
         this.isBan = isBan;
         this.exitDate = exitDate;
         this.adminCheck = adminCheck;
-        this.createdBoards = createdBoards;
     }
 
     public static UserInfo of(
@@ -65,13 +65,12 @@ public class UserInfo extends BaseEntity {
             String name,
             Boolean isBan,
             Date exitDate,
-            Boolean adminCheck,
-            List<Board> createdBoards
+            Boolean adminCheck
     ) {
-        return new UserInfo(id, email, password, name, isBan, exitDate, adminCheck, createdBoards);
+        return new UserInfo(id, email, password, name, isBan, exitDate, adminCheck);
     }
 
-    public static UserInfo of(String email, String password,String name) {
+    public static UserInfo of(String email, String password, String name) {
         return UserInfo.of(
                 null,
                 email,
@@ -79,8 +78,7 @@ public class UserInfo extends BaseEntity {
                 name,
                 false,
                 null,
-                false,
-                List.of()
+                false
         );
     }
 
@@ -92,8 +90,7 @@ public class UserInfo extends BaseEntity {
                 name,
                 false,
                 null,
-                false,
-                List.of()
+                false
         );
     }
 
