@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.jpa;
+package org.fastcampus.proejct.global.config;
 
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.springframework.context.annotation.Bean;

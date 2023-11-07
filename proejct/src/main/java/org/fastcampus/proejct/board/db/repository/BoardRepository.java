@@ -14,7 +14,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 //    @Query("SELECT DISTINCT b FROM Board b LEFT JOIN b.members m\n" +
 //            "WHERE (b.userInfo.id = :userId OR m.userInfo.id = :userId) AND b.isFinished = false")
 //    List<Board> searchBoardByDefault(Long userId); //SORT_DEFAULT
-
+//
 //    @Query("SELECT DISTINCT b FROM Board b LEFT JOIN b.members m\n" +
 //            "WHERE (b.userInfo.id = :userId OR m.userInfo.id = :userId) AND b.isFinished = true")
 //    List<Board> searchBoardByFinished(Long userId); //SORT_FINISHED

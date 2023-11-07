@@ -2,19 +2,14 @@ package org.fastcampus.proejct.board.controller;
 
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
-import org.fastcampus.proejct.global.security.FormDataEncoder;
-import org.fastcampus.proejct.global.security.SecurityConfig;
+import org.fastcampus.proejct.global.config.FormDataEncoder;
 import org.fastcampus.proejct.global.security.TestSecurityConfig;
-import org.fastcampus.proejct.user.service.UserInfoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
