@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.dto;
+package org.fastcampus.proejct.notification.converter;
 
 public class TemplateCollection {
 

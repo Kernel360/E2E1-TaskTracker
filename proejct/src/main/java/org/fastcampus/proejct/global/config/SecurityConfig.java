@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.security;
+package org.fastcampus.proejct.global.config;
 
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.auth.converter.response.KakaoResponse;
