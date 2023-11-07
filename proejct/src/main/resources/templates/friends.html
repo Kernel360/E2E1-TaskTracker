@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>친구 목록</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>게시판</h1>
+    </header>
+    <main>
+        <h2>친구 목록</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>본인아이디</th>
+                <th>팔로우아이디</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--            <#list boards as board>-->
+            <tr>
+                <td th:text="${friends.get(0).user().name()}">${friend.user}</td>
+                <td th:text="${friends.get(0).follower().name()}">${friend.user}</td>
+            </tr>
+            <!--            </#list>-->
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        &copy; 2023
+    </footer>
+</div>
+</body>
+</html>

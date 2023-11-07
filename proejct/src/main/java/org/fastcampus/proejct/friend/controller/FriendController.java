@@ -2,13 +2,17 @@ package org.fastcampus.proejct.friend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.friend.converter.FriendDto;
 import org.fastcampus.proejct.friend.service.FriendService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -16,13 +20,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 public class FriendController {
+    private final FriendService friendService;
 
-    private FriendService friendService;
-
-    @GetMapping("/friend/{id}")
-    public String getFriendsView(@PathVariable Long id, Model model) {
-        List<FriendDto> friends = friendService.getFriends(id);
+    @GetMapping("/friend/{user}")
+    public String getFriendsView(@PathVariable Long user) {
+        ModelMap model = new ModelMap();
+        List<FriendDto> friends = friendService.getFriends(user);
         model.addAttribute("friends", friends);
+
+//        List<FriendDto> friends = friendService.getFriends(user)
+//                .stream()
+//                .map(FriendDto::from)
+//                .toList();
+//
         return "friends";
     }
 
@@ -31,11 +41,12 @@ public class FriendController {
         return "friend/add";
     }
 
-    @PostMapping("/friend/{id}/add/")
+    @PostMapping("/friend/{user}/add/{follower}")
     public String postfriendAdd(
-            FriendDto friend
+            @PathVariable Long user,
+            @PathVariable Long follower
     ) {
-        friendService.addFriend(friend);
+        friendService.addFriend(user, follower);
         return "redirect:/friend";
     }
 

@@ -44,7 +44,7 @@ public class UserInfo extends BaseEntity {
     @OneToMany(mappedBy = "userInfo")
     private List<Board> createdBoards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follow")
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
     private UserInfo(Long id, String email, String password, String name, Boolean isBan, Date exitDate, Boolean adminCheck, List<Board> createdBoards) {

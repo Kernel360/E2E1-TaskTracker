@@ -19,28 +19,30 @@ import java.util.List;
 public class FriendService {
 
     private final FriendRepository friendRepository;
-    private final UserInfoRepository userInfoRepository;
 
     @Transactional(readOnly = true)
-    public List<FriendDto> getFriends(Long id) {
-        return friendRepository.findById(id).stream()
+    public List<FriendDto> getFriends(Long user) {
+        log.info("friends : {}",friendRepository.findAllByUserId(6L));
+        return friendRepository.findAllByUserId(user).stream()
                 .map(FriendDto::from)
                 .toList();
     }
 
-    public void addFriend(FriendDto dto) {
+    public void addFriend(Long user, Long follower) {
 //        UserInfo follower = userInfoRepository.findById(dto.follower().id()).orElseThrow();
 //        Friend friend = dto.toEntity(follower);
 //        friend.setFollow(List.of());
-
-        ModelMapper mapper = new ModelMapper();
-        Friend friend = mapper.map(dto, Friend.class);
-        friendRepository.save(friend);
+        friendRepository.addFriend(user, follower);
     }
 
 //    public void deleteFriend(Long id, FriendDto dto) {
 //        Long follow = dto.follow().id();
 //        friendRepository.deleteByFollowId(id, follow);
+//    }
+
+//    public void deleteFriend(Long userId, Long followerId) {
+//        friendRepository.deleteFriend(userId, followerId);
+//
 //    }
 
 }
