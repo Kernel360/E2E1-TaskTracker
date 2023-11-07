@@ -40,7 +40,7 @@ class NotificationServiceTest {
 
         NotificationDto dto = new NotificationDto();
         dto.setId(id);
-        dto.setNotiType(notiType);
+        dto.setType(notiType);
         dto.setSenderId(senderId);
         dto.setReceiverId(receiverId);
         dto.setText(content);
