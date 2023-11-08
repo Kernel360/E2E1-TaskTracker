@@ -20,11 +20,11 @@ public class BoardRestController {
 
     @GetMapping("/board/list")
     public List<ResponseBoardDto> getBoards(
-            @RequestParam String sorted,
+//            @RequestParam String sorted,
             Model model
     ) {
         // 게시글 목록을 조회합니다.
-        List<ResponseBoardDto> boards = boardService.getBoards(SortType.valueOf(sorted)).stream()
+        List<ResponseBoardDto> boards = boardService.getBoards().stream()
                 .map(ResponseBoardDto::from)
                 .toList();
         model.addAttribute("boards", boards);

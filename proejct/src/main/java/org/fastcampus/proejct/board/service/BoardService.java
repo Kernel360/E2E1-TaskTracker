@@ -29,7 +29,7 @@ public class BoardService {
 
     // TODO: 11/6/23 Sorted 값 별 List<Board> 조회
     @Transactional(readOnly = true)
-    public List<BoardDto> getBoards(SortType sorted) {
+    public List<BoardDto> getBoards() {
 //        return switch (sorted) {
 //            case SORT_DEFAULT -> {
 //
