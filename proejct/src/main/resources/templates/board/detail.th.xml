@@ -1,0 +1,3 @@
+<attr sel="#delete-board-form" th:action="'/board/' + *{id} + '/delete'" th:method="post">
+    <attr sel="#update-board" th:href="'/board/' + *{id} + '/form'"/>
+</attr>
