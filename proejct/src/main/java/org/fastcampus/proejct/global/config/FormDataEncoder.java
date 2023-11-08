@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.global.security;
+package org.fastcampus.proejct.global.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
