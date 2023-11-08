@@ -1,10 +1,84 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="ko">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>게시물 작성</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <header>-->
+<!--        <h1>게시물 작성</h1>-->
+<!--    </header>-->
+<!--    <main>-->
+<!--        <form action="/board/write/api" method="post">-->
+<!--            <div class="form-group">-->
+<!--                <label for="title">제목</label>-->
+<!--                <input type="text" class="form-control" id="title" name="title">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="content">내용</label>-->
+<!--                <textarea class="form-control" id="content" name="content" rows="10"></textarea>-->
+<!--            </div>-->
+<!--            <button type="submit" class="btn btn-primary">작성</button>-->
+<!--        </form>-->
+<!--    </main>-->
+<!--    <footer>-->
+<!--        &copy; 2023-->
+<!--    </footer>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>게시물 작성</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .button-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-right: 5px;
+        }
+
+        .selected-members {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .selected-member {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .remove-member {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #add-member {
+            background-color: purple;
+            color: white;
+            border: none;
+            margin-right: 80px; /* 여기서 간격 조정 */
+        }
+    </style>
 </head>
+
 <body>
 <div class="container">
     <header>
@@ -20,12 +94,83 @@
                 <label for="content">내용</label>
                 <textarea class="form-control" id="content" name="content" rows="10"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">작성</button>
+            <div id="tasks"></div>
+            <div class="button-container">
+                <button type="button" class="btn btn-sm btn-success" id="add-task">할일 추가</button>
+            </div>
+            <div class="form-group">
+                <label for="member">멤버</label>
+                <select class="form-control" id="member" name="member">
+                    <option value="member1">멤버 1</option>
+                    <option value="member2">멤버 2</option>
+                    <option value="member3">멤버 3</option>
+                    <!-- 추가할 멤버는 여기에 계속 추가할 수 있습니다 -->
+                </select>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>
+            </div>
+            <div class="selected-members"></div>
+            <div style="margin-top: 10px;"> <!-- 간격 추가 -->
+                <button type="submit" class="btn btn-primary">작성</button>
+            </div>
         </form>
     </main>
     <footer>
         &copy; 2023
     </footer>
 </div>
+
+<script>
+    document.getElementById('add-task').addEventListener('click', function () {
+        const tasksContainer = document.getElementById('tasks');
+        const newTask = document.createElement('div');
+        newTask.classList.add('form-group');
+        newTask.innerHTML = `
+            <div class="task-item">
+                <label for="task">할일</label>
+                <input type="text" class="form-control" name="task">
+                <button type="button" class="btn btn-sm btn-danger remove-task">삭제</button>
+            </div>
+        `;
+        tasksContainer.appendChild(newTask);
+
+        const removeButtons = document.querySelectorAll('.remove-task');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                button.parentNode.remove();
+            });
+        });
+    });
+
+    document.getElementById('add-member').addEventListener('click', function () {
+        const memberSelect = document.getElementById('member');
+        const selectedMember = memberSelect.options[memberSelect.selectedIndex].text;
+
+        // 중복 체크
+        const selectedMembers = document.querySelectorAll('.selected-member');
+        let memberExists = false;
+        selectedMembers.forEach(member => {
+            if (member.innerText === selectedMember) {
+                memberExists = true;
+            }
+        });
+
+        if (!memberExists) {
+            const selectedMembersContainer = document.querySelector('.selected-members');
+            const selectedMemberDiv = document.createElement('div');
+            selectedMemberDiv.classList.add('selected-member');
+            selectedMemberDiv.innerText = selectedMember;
+
+            const removeButton = document.createElement('span');
+            removeButton.innerHTML = 'x';
+            removeButton.classList.add('remove-member');
+            removeButton.addEventListener('click', function () {
+                selectedMemberDiv.remove();
+            });
+
+            selectedMemberDiv.appendChild(removeButton);
+            selectedMembersContainer.appendChild(selectedMemberDiv);
+        }
+    });
+</script>
 </body>
 </html>
