@@ -22,8 +22,8 @@
             </div>
         </div>
         <a href="/board" class="btn btn-secondary">목록으로</a>
-        <a th:href="@{/board/{id}/update(id=${board.id})}" th:method="post" class="btn btn-primary">수정</a>
-        <a th:href="@{/board/{id}/delete(id=${board.id})}" th:method="delete" class="btn btn-danger">삭제</a>
+        <a th:href="@{/board/{id}/update(id=${board.id})}" th:method="get" class="btn btn-primary">수정</a>
+        <a th:href="@{/board/{id}/delete(id=${board.id})}" th:method="get" class="btn btn-danger">삭제</a>
     </main>
     <footer>
         &copy; 2023
