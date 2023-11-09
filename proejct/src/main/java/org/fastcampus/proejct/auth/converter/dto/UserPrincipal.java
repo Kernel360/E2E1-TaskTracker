@@ -87,6 +87,13 @@ public record UserPrincipal(
     }
 
     /**
+     * 사용자 검증은 id를 가지고 해야합니다. (board.id = userInfo.id)
+     * **/
+    public Long getUserId() {
+        return id;
+    }
+
+    /**
      * User 클래스 상속을 받지 않아 실질적으로 필요가 없다.
      * 게정 만료 여부,
      * 계정 lock 여부,

@@ -35,8 +35,7 @@ public class BoardController {
         notificationService.connectNotification(userPrincipal.id());
 
         model.addAttribute("boards", boards);
-        model.addAttribute("userId", userPrincipal.id());
-        model.addAttribute("username", userPrincipal.getUsername());
+        model.addAttribute("userId", userPrincipal.getUserId());
         model.addAttribute("notifications", notifications);
         return "tables";
     }
@@ -56,28 +55,19 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String getBoardDetail(@PathVariable Long id, Model model) {
+    public String getBoardDetail(@PathVariable Long id, Model model,@AuthenticationPrincipal UserPrincipal userPrincipal) {
         BoardDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        model.addAttribute("userId", userPrincipal.getUserId());
         return "board/detail";
     }
 
     @GetMapping("/board/{id}/update")
-    public String getBoardUpdate(@PathVariable Long id, Model model) {
+    public String getBoardUpdate(@PathVariable Long id, Model model, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         BoardDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        model.addAttribute("userId", userPrincipal.getUserId());
         return "board/write";
     }
 
-    @PostMapping("/board/{id}/update")
-    public String postBoardUpdate(@PathVariable Long id, BoardDto board) {
-        boardService.updateBoard(id, board);
-        return "redirect:/board";
-    }
-
-    @GetMapping("/board/{id}/delete")
-    public String deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
-        return "redirect:/board";
-    }
 }
