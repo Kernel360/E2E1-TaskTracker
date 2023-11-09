@@ -106,38 +106,33 @@
     $('#add-member').on('click', function() {
         const addMember = $('#member-search').val();
         const selectedMembers = $('.selected-member');
+        var memberJoiner = false;
 
-        let memberExists = false;
-
-
-
+        // 기존 맴버유무 검사
         selectedMembers.each(function () {
-            console.log("기존 :: "+$(this).text());
-            console.log("신규 :: "+addMember);
-            if ($.contains($(this).text(), addMember)) {
-                memberExists = true;
+            if (addMember == $(this).text().replace(/.$/, '')) {
+                alert("이미 포함 된 맴버입니다.");
+                memberJoiner = true;
+                return false; // each() 루프를 종료하기 위해 false를 반환
             }
         });
 
+        if (memberJoiner) { return false; }
 
+        memberJoiner = 'newMember';
 
         const memberList = ['멤버1', '멤버2', '멤버3', '멤버4', '멤버5'];
-
-        if (!memberExists && memberList.includes(addMember)) {
+        if ((memberJoiner == 'newMember') && memberList.includes(addMember)) {
             const selectedMembersContainer = $('.selected-members');
             const selectedMemberDiv = $('<div class="selected-member"></div>').text(addMember);
-
             const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function() {
                 selectedMemberDiv.remove();
             });
-
             selectedMemberDiv.append(removeButton);
-
-            if (!memberExists) {
-                selectedMembersContainer.append(selectedMemberDiv);
-            }
+            selectedMembersContainer.append(selectedMemberDiv);
         } else {
-            alert('리스트에 없는 멤버입니다.');
+            alert('기존에 없는 맴버입니다.');
+            return;
         }
     });
 </script>
