@@ -2,10 +2,12 @@ package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,11 @@ public class BoardController {
     private final TaskService taskService;
 
     @GetMapping("/board")
-    public String getBoardsView(Model model) {
-        List<ResponseBoardDto> boards = boardService.getBoards().stream()
-                .map(ResponseBoardDto::from)
-                .toList();
+    public String getBoardsView(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
+        List<BoardDto> boards = boardService.getBoards(userPrincipal.id());
         model.addAttribute("boards", boards);
         return "tables";
     }

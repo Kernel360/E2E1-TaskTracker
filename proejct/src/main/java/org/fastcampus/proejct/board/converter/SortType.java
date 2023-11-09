@@ -1,5 +1,8 @@
 package org.fastcampus.proejct.board.converter;
 
+import lombok.Getter;
+
+@Getter
 public enum SortType {
     SORT_DEFAULT("default"), // 내가 참여중인 boards (작성자,멤버 참여, isFinished = false)
     SORT_SELF("self"), // 내가 작성한 것만 조회
@@ -10,9 +13,5 @@ public enum SortType {
 
     SortType(String type) {
         this.sorted = type;
-    }
-
-    public String getSorted() {
-        return sorted;
     }
 }

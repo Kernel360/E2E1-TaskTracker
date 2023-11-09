@@ -389,7 +389,7 @@
                                     <th>Host</th>
                                     <th>Description</th>
                                     <th>Start date</th>
-                                    <th>End date</th>
+                                    <!--<th>End date</th>-->
                                 </tr>
                                 <!--                                </thead>-->
                                 <!--                                <tbody>-->
@@ -402,8 +402,9 @@
                                 <tr th:each="board : ${boards}" th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
                                     <td th:text="${board.id}">id</td>
                                     <td th:text="${board.title}">title</td>
-                                    <td th:text="${board.host}">host</td>
+                                    <td th:text="${board.userInfo.name}">host</td>
                                     <td th:text="${board.content}">content</td>
+                                    <td th:text="${board.createdAt}">등록일</td>
                                 </tr>
                             </table>
                         </div>
