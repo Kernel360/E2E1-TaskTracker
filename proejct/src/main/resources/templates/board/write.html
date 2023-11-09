@@ -70,11 +70,11 @@
                 <label for="member">멤버</label>
                 <input type="text" class="form-control" id="member-search" list="member-list">
                 <datalist id="member-list">
-                    <option value="멤버 1">
-                    <option value="멤버 2">
-                    <option value="멤버 3">
-                    <option value="멤버 4">
-                    <option value="멤버 5">
+                    <option value="멤버1">
+                    <option value="멤버2">
+                    <option value="멤버3">
+                    <option value="멤버4">
+                    <option value="멤버5">
                 </datalist>
                 <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>
             </div>
@@ -91,68 +91,120 @@
     </footer>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.getElementById('add-task').addEventListener('click', function() {
-        const tasksContainer = document.getElementById('tasks');
-        const newTask = document.createElement('div');
-        newTask.classList.add('form-group');
-        newTask.innerHTML = `
-            <div class="task-item">
-                <label for="task">할일</label>
-                <input type="text" class="form-control" name="task">
-                <button type="button" class="btn btn-sm btn-danger remove-task">삭제</button>
-            </div>
-        `;
-        tasksContainer.appendChild(newTask);
+    $('#add-task').on('click', function() {
+        const tasksContainer = $('#tasks');
+        const newTask = $('<div class="form-group"><div class="task-item"><label for="task">할일</label><input type="text" class="form-control" name="task"><button type="button" class="btn btn-sm btn-danger remove-task">삭제</button></div></div>');
+        tasksContainer.append(newTask);
 
-        const removeButtons = document.querySelectorAll('.remove-task');
-        removeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                button.parentNode.remove();
-            });
+        $('.remove-task').on('click', function() {
+            $(this).parent().remove();
         });
     });
 
+    $('#add-member').on('click', function() {
+        const addMember = $('#member-search').val();
+        const selectedMembers = $('.selected-member');
 
-    document.getElementById('add-member').addEventListener('click', function() {
-        const memberSearchInput = document.getElementById('member-search');
-        const selectedMember = memberSearchInput.value;
-
-        // 중복 체크
-        const selectedMembers = document.querySelectorAll('.selected-member');
         let memberExists = false;
-        selectedMembers.forEach(member => {
-            if (member.innerText === selectedMember) {
+
+
+
+        selectedMembers.each(function () {
+            console.log("기존 :: "+$(this).text());
+            console.log("신규 :: "+addMember);
+            if ($.contains($(this).text(), addMember)) {
                 memberExists = true;
             }
         });
 
-        const memberList = ['멤버 1', '멤버 2', '멤버 3', '멤버 4', '멤버 5']; // 리스트에 없는 멤버를 입력하면 추가되지 않도록 하기 위해 리스트를 추가합니다.
 
-        if (!memberExists && memberList.includes(selectedMember)) {
-            const selectedMembersContainer = document.querySelector('.selected-members');
-            const selectedMemberDiv = document.createElement('div');
-            selectedMemberDiv.classList.add('selected-member');
-            selectedMemberDiv.innerText = selectedMember;
 
-            const removeButton = document.createElement('span');
-            removeButton.innerHTML = 'x';
-            removeButton.classList.add('remove-member');
-            removeButton.addEventListener('click', function() {
+        const memberList = ['멤버1', '멤버2', '멤버3', '멤버4', '멤버5'];
+
+        if (!memberExists && memberList.includes(addMember)) {
+            const selectedMembersContainer = $('.selected-members');
+            const selectedMemberDiv = $('<div class="selected-member"></div>').text(addMember);
+
+            const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function() {
                 selectedMemberDiv.remove();
             });
 
-            selectedMemberDiv.appendChild(removeButton);
+            selectedMemberDiv.append(removeButton);
 
-            // 중복 체크 후 중복이 아닌 경우 추가
             if (!memberExists) {
-                selectedMembersContainer.appendChild(selectedMemberDiv);
+                selectedMembersContainer.append(selectedMemberDiv);
             }
         } else {
             alert('리스트에 없는 멤버입니다.');
         }
     });
 </script>
+
+
+<!--<script>-->
+<!--    document.getElementById('add-task').addEventListener('click', function() {-->
+<!--        const tasksContainer = document.getElementById('tasks');-->
+<!--        const newTask = document.createElement('div');-->
+<!--        newTask.classList.add('form-group');-->
+<!--        newTask.innerHTML = `-->
+<!--            <div class="task-item">-->
+<!--                <label for="task">할일</label>-->
+<!--                <input type="text" class="form-control" name="task">-->
+<!--                <button type="button" class="btn btn-sm btn-danger remove-task">삭제</button>-->
+<!--            </div>-->
+<!--        `;-->
+<!--        tasksContainer.appendChild(newTask);-->
+
+<!--        const removeButtons = document.querySelectorAll('.remove-task');-->
+<!--        removeButtons.forEach(button => {-->
+<!--            button.addEventListener('click', function() {-->
+<!--                button.parentNode.remove();-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+
+
+<!--    document.getElementById('add-member').addEventListener('click', function() {-->
+<!--        const memberSearchInput = document.getElementById('member-search');-->
+<!--        const selectedMember = memberSearchInput.value;-->
+
+<!--        // 중복 체크-->
+<!--        const selectedMembers = document.querySelectorAll('.selected-member');-->
+<!--        let memberExists = false;-->
+<!--        selectedMembers.forEach(member => {-->
+<!--            if (member.innerText === selectedMember) {-->
+<!--                memberExists = true;-->
+<!--            }-->
+<!--        });-->
+
+<!--        const memberList = ['멤버 1', '멤버 2', '멤버 3', '멤버 4', '멤버 5']; // 리스트에 없는 멤버를 입력하면 추가되지 않도록 하기 위해 리스트를 추가합니다.-->
+
+<!--        if (!memberExists && memberList.includes(selectedMember)) {-->
+<!--            const selectedMembersContainer = document.querySelector('.selected-members');-->
+<!--            const selectedMemberDiv = document.createElement('div');-->
+<!--            selectedMemberDiv.classList.add('selected-member');-->
+<!--            selectedMemberDiv.innerText = selectedMember;-->
+
+<!--            const removeButton = document.createElement('span');-->
+<!--            removeButton.innerHTML = 'x';-->
+<!--            removeButton.classList.add('remove-member');-->
+<!--            removeButton.addEventListener('click', function() {-->
+<!--                selectedMemberDiv.remove();-->
+<!--            });-->
+
+<!--            selectedMemberDiv.appendChild(removeButton);-->
+
+<!--            // 중복 체크 후 중복이 아닌 경우 추가-->
+<!--            if (!memberExists) {-->
+<!--                selectedMembersContainer.appendChild(selectedMemberDiv);-->
+<!--            }-->
+<!--        } else {-->
+<!--            alert('리스트에 없는 멤버입니다.');-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 </body>
 
 </html>
