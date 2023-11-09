@@ -2,10 +2,15 @@ package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.board.converter.SortType;
+import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
+import org.fastcampus.proejct.global.converter.BaseResponse;
 import org.fastcampus.proejct.user.service.UserInfoService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +24,16 @@ public class BoardRestController {
     private final BoardService boardService;
 
     @GetMapping("/board/list")
-    public List<ResponseBoardDto> getBoards(
-//            @RequestParam String sorted,
+    public BaseResponse<List<BoardDto>> getBoards(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam String sorted,
             Model model
     ) {
         // 게시글 목록을 조회합니다.
-        List<ResponseBoardDto> boards = boardService.getBoards().stream()
-                .map(ResponseBoardDto::from)
-                .toList();
+        List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
+        BaseResponse<List<BoardDto>> response = new BaseResponse<>(200, "정상 호출", boards);
         model.addAttribute("boards", boards);
-        return boards;
+        return response;
     }
 
     @PutMapping("/board/{id}/finished")
