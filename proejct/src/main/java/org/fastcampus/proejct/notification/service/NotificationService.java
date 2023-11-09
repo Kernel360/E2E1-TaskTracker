@@ -2,14 +2,13 @@ package org.fastcampus.proejct.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
 import org.fastcampus.proejct.notification.db.model.Notification;
-import org.fastcampus.proejct.notification.converter.NotificationDto;
+import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.db.repository.EmitterRepository;
 import org.fastcampus.proejct.notification.db.repository.NotificationRepository;
-import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -51,26 +50,25 @@ public class NotificationService {
         sseEmitter.onTimeout(() -> emitterRepository.delete(userId));
 
         // 503 Service Unavailable 오류가 발생하지 않도록 첫 데이터를 보낸다.
-        sseEmitter.send(SseEmitter.event().id(userId.toString()).name("init").data("Connection completed"));
+        sseEmitter.send(SseEmitter.event().id(userId.toString()).name("alarm").data("Connection completed"));
         return sseEmitter;
     }
 
-    public NotificationDto send(Long receiver, String text) {
+    public NotificationDto send(UserInfoDto sender, Long receiverId, String text) {
         // 유저 ID로 SseEmitter를 찾아 이벤트를 발생 시킨다.
-        Long sender = 100L;
-        emitterRepository.get(receiver).ifPresentOrElse(sseEmitter -> {
+        emitterRepository.get(receiverId).ifPresentOrElse(sseEmitter -> {
             try {
-                sseEmitter.send(SseEmitter.event().id(receiver.toString()).name("TEST").data(text));
+                sseEmitter.send(SseEmitter.event().id(receiverId.toString()).name("alarm").data(text));
             } catch (IOException e) {
                 // IOException이 발생하면 저장된 SseEmitter를 삭제하고 예외를 발생시킨다.
-                emitterRepository.delete(receiver);
+                emitterRepository.delete(receiverId);
                 e.printStackTrace();
             }
         }, () -> log.info("No emitter found"));
         Notification notification = new Notification().builder()
-                .receiverId(receiver)
-                .senderId(sender)
                 .type("TEST_TYPE")
+                .receiverId(receiverId)
+                .senderId(sender.id())
                 .text(text)
                 .build();
 
@@ -95,9 +93,9 @@ public class NotificationService {
         return ret;
     }
 
-    public List<NotificationDto> getAllNotice() {
+    public List<NotificationDto> getAllNotice(Long id) {
         // TODO: 11/9/23 유저와 관계 매핑해야함
-        return notificationRepository.findAll().stream().map(NotificationDto::from).toList();
+        return notificationRepository.findByReceiverIdAndVisibleFalse(id).stream().map(NotificationDto::from).toList();
     }
 
     public void getNotice() {
@@ -109,6 +107,8 @@ public class NotificationService {
         return true;
     }
 
-
+    public void deleteAllNotices(Long userId) {
+        notificationRepository.visibleNotification(userId);
+    }
 }
 

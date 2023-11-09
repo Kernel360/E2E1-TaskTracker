@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
+
+
     @Query("SELECT b FROM Board b WHERE b.title LIKE :keyword")
     List<Board> findByKeyword(@Param("keyword") String keyword);
 

@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
-import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
-import org.fastcampus.proejct.notification.converter.NotificationDto;
+import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -29,10 +29,13 @@ public class BoardController {
     public String getBoardsView(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model
-    ) {
+    ) throws IOException {
         List<BoardDto> boards = boardService.getBoards(userPrincipal.id());
-        List<NotificationDto> notifications = notificationService.getAllNotice();
+        List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
+        notificationService.connectNotification(userPrincipal.id());
+
         model.addAttribute("boards", boards);
+        model.addAttribute("userId", userPrincipal.id());
         model.addAttribute("username", userPrincipal.getUsername());
         model.addAttribute("notifications", notifications);
         return "tables";
