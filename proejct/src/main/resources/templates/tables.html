@@ -393,20 +393,24 @@
                                 </tr>
                                 <!--                                </thead>-->
                                 <!--                                <tbody>-->
-                                <script th:inline="javascript">
-                                    function redirectToBoard(id) {
-                                        window.location.href = '/board/' + id;
-                                    }
-                                </script>
+                                <th:block th:if="${#strings.isEmpty(boards)}">
+                                    <tr> <td colspan="5">조회 된 결과가 없습니다.</td> </tr>
+                                </th:block>
+                                <th:block th:if="${not #strings.isEmpty(boards)}">
+                                    <script th:inline="javascript">
+                                        function redirectToBoard(id) {
+                                            window.location.href = '/board/' + id;
+                                        }
+                                    </script>
+                                  <tr th:each="board : ${boards}" th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
+                                        <td th:text="${board.id}">id</td>
+                                        <td th:text="${board.title}">title</td>
+                                        <td th:text="${board.userInfo.name}">host</td>
+                                        <td th:text="${board.content}">content</td>
+                                        <td th:text="${#temporals.format(board.createdAt(), 'yyyy-MM-dd HH:mm')}">등록일</td>
+                                    </tr>
+                                </th:block>
 
-                                <tr th:each="board : ${boards}"
-                                    th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
-                                    <td th:text="${board.id}">id</td>
-                                    <td th:text="${board.title}">title</td>
-                                    <td th:text="${board.userInfo.name}">host</td>
-                                    <td th:text="${board.content}">content</td>
-                                    <td th:text="${#temporals.format(board.createdAt(), 'yyyy-MM-dd HH:mm')}">등록일</td>
-                                </tr>
                             </table>
                         </div>
                     </div>
