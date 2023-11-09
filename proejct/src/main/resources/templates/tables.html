@@ -250,7 +250,7 @@
                                     Spending Alert: We've noticed unusually high spending for your account.
                                 </div>
                             </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            <a class="dropdown-item text-center small text-gray-500" href="#">Delete All Alerts</a>
                         </div>
                     </li>
 
@@ -393,12 +393,6 @@
                                 </tr>
                                 <!--                                </thead>-->
                                 <!--                                <tbody>-->
-                                <script th:inline="javascript">
-                                    function redirectToBoard(id) {
-                                        window.location.href = '/board/' + id;
-                                    }
-                                </script>
-
                                 <tr th:each="board : ${boards}"
                                     th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
                                     <td th:text="${board.id}">id</td>
@@ -475,7 +469,30 @@
 
 <!-- Page level custom scripts -->
 <script src="js/demo/datatables-demo.js"></script>
-
+<script th:inline="javascript">
+    function redirectToBoard(id) {
+        window.location.href = '/board/' + id;
+    }
+</script>
+<script type="application/javascript" th:fragment="subscribe" th:inline="javascript">
+    let userId = [[${userId}]];
+    console.log(userId);
+    if (userId > 0) {
+        const eventSource = new EventSource("/notification/subscribe")
+        eventSource.addEventListener("alarm", function (event) {
+            let message = event.data;
+            console.log(message);
+            // Swal.fire({
+            //     // toast:true,
+            //     position: 'top-end',
+            //     icon: 'success',
+            //     title: message,
+            //     showConfirmButton: false,
+            //     timer: 1500
+            // });
+        })
+    }
+</script>
 </body>
 
 </html>
