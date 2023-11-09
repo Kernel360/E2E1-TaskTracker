@@ -2,12 +2,17 @@ package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,7 +23,12 @@ public class BoardController {
     private final TaskService taskService;
 
     @GetMapping("/board")
-    public String getBoardsView() {
+    public String getBoardsView(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
+        List<BoardDto> boards = boardService.getBoards(userPrincipal.id());
+        model.addAttribute("boards", boards);
         return "tables";
     }
 
@@ -55,8 +65,8 @@ public class BoardController {
         return "redirect:/board";
     }
 
-    @DeleteMapping("/board/{id}/delete")
-    public String getBoardDelete(@PathVariable Long id) {
+    @GetMapping("/board/{id}/delete")
+    public String deleteBoard(@PathVariable Long id) {
         boardService.deleteBoard(id);
         return "redirect:/board";
     }

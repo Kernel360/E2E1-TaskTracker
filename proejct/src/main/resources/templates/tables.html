@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -382,78 +382,30 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
+                                <!--                                <thead>-->
                                 <tr>
                                     <th>Number</th>
                                     <th>Title</th>
                                     <th>Host</th>
                                     <th>Description</th>
                                     <th>Start date</th>
-                                    <th>End date</th>
+                                    <!--<th>End date</th>-->
                                 </tr>
-                                </thead>
-                                <tbody>
-                                <script>
-                                    window.onload = function () {
-                                        var boardList = getBoardList();
-                                        $(document).ready(function () {
-                                            // 게시글 목록을 가져옵니다.
-                                            var xhr = new XMLHttpRequest();
-                                            xhr.open("GET", "/board/list");
-                                            xhr.send();
-
-                                            // 응답을 처리합니다.
-                                            xhr.onload = function () {
-                                                if (xhr.status == 200) {
-                                                    // 응답 데이터를 JSON으로 파싱합니다.
-                                                    boardList = JSON.parse(xhr.responseText);
-                                                    // 게시글 목록을 출력합니다.
-                                                    for (var i = 0; i < boardList.length; i++) {
-                                                        var board = boardList[i];
-                                                        // 게시글을 출력합니다.
-                                                        var tr = $("<tr onclick=location.href='/board/" + board.id + "'>");
-                                                        tr.append($("<td>" + (i + 1) + "</td>"));
-                                                        tr.append($("<td>" + board.title + "</td>"));
-                                                        tr.append($("<td>" + board.host + "</td>"));
-                                                        tr.append($("<td>" + board.content + "</td>"));
-                                                        tr.append($("<td>" + "시작일" + "</td>"));
-                                                        tr.append($("<td>" + "종료일" + "</td>"));
-                                                        // 게시글을 tbody 태그에 추가합니다.
-                                                        $("tbody").append(tr);
-                                                    }
-                                                } else {
-                                                    // 에러 처리
-
-                                                }
-                                            };
-
-                                            return null;
-                                        });
-
-                                        function getBoardList() {
-                                            // 게시글 목록을 가져오는 API를 호출합니다.
-                                            var xhr = new XMLHttpRequest();
-                                            xhr.open("GET", "/board/list");
-                                            xhr.send();
-
-                                            // 응답을 처리합니다.
-                                            xhr.onload = function () {
-                                                if (xhr.status == 200) {
-                                                    // 응답 데이터를 JSON으로 파싱합니다.
-                                                    return JSON.parse(xhr.responseText);
-                                                } else {
-                                                    // 에러 처리
-                                                }
-                                            };
-
-                                            return null;
-                                        }
+                                <!--                                </thead>-->
+                                <!--                                <tbody>-->
+                                <script th:inline="javascript">
+                                    function redirectToBoard(id) {
+                                        window.location.href = '/board/' + id;
                                     }
                                 </script>
-                                <tr>
-                                    <th></th>
+
+                                <tr th:each="board : ${boards}" th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
+                                    <td th:text="${board.id}">id</td>
+                                    <td th:text="${board.title}">title</td>
+                                    <td th:text="${board.userInfo.name}">host</td>
+                                    <td th:text="${board.content}">content</td>
+                                    <td th:text="${board.createdAt}">등록일</td>
                                 </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
