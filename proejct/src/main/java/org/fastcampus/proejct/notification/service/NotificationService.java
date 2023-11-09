@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author : Jiyong Jung
@@ -94,9 +95,9 @@ public class NotificationService {
         return ret;
     }
 
-
-    public void getAllNotice() {
-
+    public List<NotificationDto> getAllNotice() {
+        // TODO: 11/9/23 유저와 관계 매핑해야함
+        return notificationRepository.findAll().stream().map(NotificationDto::from).toList();
     }
 
     public void getNotice() {

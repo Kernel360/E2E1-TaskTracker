@@ -209,7 +209,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
+                            <span th:text="${notifications.size()}" class="badge badge-danger badge-counter"></span>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -217,17 +217,17 @@
                             <h6 class="dropdown-header">
                                 Alerts Center
                             </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div th:each="notify : ${notifications}" class="dropdown-item d-flex align-items-center">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-primary">
                                         <i class="fas fa-file-alt text-white"></i>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                    <div th:text="${notify.getSenderId()}" class="small text-gray-500">수신자</div>
+                                    <div th:text="${notify.getText()}" class="font-weight-bold">알림 내용</div>
                                 </div>
-                            </a>
+                            </div>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
@@ -330,7 +330,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">이종찬</span>
+                            <span th:text="${username}" class="mr-2 d-none d-lg-inline text-gray-600 small">이종찬</span>
                             <img class="img-profile rounded-circle"
                                  src="img/undraw_profile.svg">
                         </a>
@@ -399,12 +399,13 @@
                                     }
                                 </script>
 
-                                <tr th:each="board : ${boards}" th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
+                                <tr th:each="board : ${boards}"
+                                    th:onclick="'javascript:redirectToBoard(' + ${board.id} + ')'">
                                     <td th:text="${board.id}">id</td>
                                     <td th:text="${board.title}">title</td>
                                     <td th:text="${board.userInfo.name}">host</td>
                                     <td th:text="${board.content}">content</td>
-                                    <td th:text="${board.createdAt}">등록일</td>
+                                    <td th:text="${#temporals.format(board.createdAt(), 'yyyy-MM-dd HH:mm')}">등록일</td>
                                 </tr>
                             </table>
                         </div>

@@ -58,16 +58,13 @@ public class BoardService {
         return BoardDto.from(boardRepository.findById(id).orElseThrow());
     }
 
-    public void writeBoard(BoardDto dto) {
-        UserInfo userInfo = userInfoRepository.findById(dto.userInfo().id()).orElseThrow();
-        Board board = dto.toEntity(userInfo);
-        board.setTasks(List.of());
-        boardRepository.save(board);
+    public void writeBoard(Long id, BoardDto dto) {
+        UserInfo userInfo = userInfoRepository.getReferenceById(id);
+        boardRepository.save(dto.toEntity(userInfo));
     }
 
     public void updateBoard(Long id, BoardDto dto) {
-//        Board board = boardRepository.getReferenceById(id);
-        UserInfo userInfo = userInfoRepository.getReferenceById(dto.userInfo().id());
+        UserInfo userInfo = userInfoRepository.getReferenceById(id);
         boardRepository.save(dto.toEntity(userInfo));
     }
 

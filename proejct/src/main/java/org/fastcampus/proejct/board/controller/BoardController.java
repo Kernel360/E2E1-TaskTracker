@@ -7,6 +7,8 @@ import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.converter.response.ResponseBoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.notification.converter.NotificationDto;
+import org.fastcampus.proejct.notification.service.NotificationService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final TaskService taskService;
+    private final NotificationService notificationService;
 
     @GetMapping("/board")
     public String getBoardsView(
@@ -28,7 +31,10 @@ public class BoardController {
             Model model
     ) {
         List<BoardDto> boards = boardService.getBoards(userPrincipal.id());
+        List<NotificationDto> notifications = notificationService.getAllNotice();
         model.addAttribute("boards", boards);
+        model.addAttribute("username", userPrincipal.getUsername());
+        model.addAttribute("notifications", notifications);
         return "tables";
     }
 
@@ -39,9 +45,10 @@ public class BoardController {
 
     @PostMapping("/board/write/api")
     public String postBoardWrite(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             BoardDto board
     ) {
-        boardService.writeBoard(board);
+        boardService.writeBoard(userPrincipal.id(), board);
         return "redirect:/";
     }
 
