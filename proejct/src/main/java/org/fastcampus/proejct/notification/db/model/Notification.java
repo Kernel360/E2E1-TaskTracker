@@ -35,13 +35,23 @@ public class Notification extends BaseEntity {
     private long receiverId;
     @Setter
     private String text;
+    @Setter
+    private boolean visible;
 
     @Builder
-    public Notification(Long id, String type, long senderId, long receiverId, String text) {
+    public Notification(
+            Long id,
+            String type,
+            long senderId,
+            long receiverId,
+            String text,
+            boolean isVisible
+    ) {
         this.id = id;
         this.type = type;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.text = text;
+        this.visible = isVisible;
     }
 }

@@ -35,7 +35,7 @@ public class TaskService {
     public void updateTask(Long boardId, List<TaskDto> dtos) {
         Board board = boardRepository.getReferenceById(boardId);
 //        UserInfo userInfo = userInfoRepository.getReferenceById(board.getUserInfo().getId());
-        List<Task> tasks = dtos.stream().map(it -> it.toEntity(board)).toList();
+        List<Task> tasks = dtos.stream().map(TaskDto::toEntity).toList();
         board.setTasks(tasks);
         taskRepository.saveAll(tasks);
     }

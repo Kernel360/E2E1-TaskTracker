@@ -69,7 +69,7 @@ public record TaskDto(
         );
     }
 
-    public Task toEntity(Board board) {
+    public Task toEntity() {
         return Task.of(
                 id,
                 content,

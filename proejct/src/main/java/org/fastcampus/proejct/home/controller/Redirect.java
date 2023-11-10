@@ -24,11 +24,10 @@ public class Redirect {
     }
 
     private static String getRedirectUrl() {
-        String url = RedirectType.REDIRECT_ERROR.getUrl();
         List<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority).toList();
-        if (roles.contains(RoleType.ROLE_ADMIN.getType())) url = RedirectType.REDIRECT_ADMIN.getUrl();
-        if (roles.contains(RoleType.ROLE_USER.getType())) url = RedirectType.REDIRECT_USER.getUrl();
-        return url;
+        log.info("Redirect : {}", roles);
+        if (roles.contains(RoleType.ROLE_ADMIN.getType())) return RedirectType.REDIRECT_ADMIN.getUrl();
+        return RedirectType.REDIRECT_USER.getUrl();
     }
 }

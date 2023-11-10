@@ -1,22 +1,28 @@
 package org.fastcampus.proejct.auth.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.global.converter.BaseResponse;
 import org.fastcampus.proejct.user.service.UserInfoService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController
+@RequestMapping("/admin")
+@Controller
 public class AuthController {
     private final UserInfoService service;
 
-    @PostMapping("/signup")
-    public BaseResponse<UserInfoDto> signup() {
-        UserInfoDto dto = service.saveUser("email@email", "{noop}123", "조옹찬");
-        return new BaseResponse<>(200, "정상 호출", dto);
+    @GetMapping
+    public String getAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return "index";
     }
 }

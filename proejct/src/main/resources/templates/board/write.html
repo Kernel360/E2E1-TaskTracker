@@ -53,15 +53,15 @@
         <h1>게시물 작성</h1>
     </header>
     <main>
-        <form action="/board/write/api" method="post">
+        <form action="/board/write" method="post">
             <input type="hidden" id="isFinishedInput" name="isFinished">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" class="form-control" id="title" name="title">
+                <input th:value="${board?.title} ?: _" type="text" class="form-control" id="title" name="title"/>
             </div>
             <div class="form-group">
                 <label for="content">내용</label>
-                <textarea class="form-control" id="content" name="content" rows="10"></textarea>
+                <textarea th:text="${board?.content} ?: _" class="form-control" id="content" name="content" rows="10"></textarea>
             </div>
             <div id="tasks"></div>
             <div class="button-container">
@@ -94,17 +94,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $('#add-task').on('click', function() {
+    $('#add-task').on('click', function () {
         const tasksContainer = $('#tasks');
         const newTask = $('<div class="form-group"><div class="task-item"><label for="task">할일</label><input type="text" class="form-control" name="task"><button type="button" class="btn btn-sm btn-danger remove-task">삭제</button></div></div>');
         tasksContainer.append(newTask);
 
-        $('.remove-task').on('click', function() {
+        $('.remove-task').on('click', function () {
             $(this).parent().remove();
         });
     });
 
-    $('#add-member').on('click', function() {
+    $('#add-member').on('click', function () {
         const addMember = $('#member-search').val();
         const selectedMembers = $('.selected-member');
         var memberJoiner = false;
@@ -118,7 +118,9 @@
             }
         });
 
-        if (memberJoiner) { return false; }
+        if (memberJoiner) {
+            return false;
+        }
 
         memberJoiner = 'newMember';
 
@@ -126,7 +128,7 @@
         if ((memberJoiner == 'newMember') && memberList.includes(addMember)) {
             const selectedMembersContainer = $('.selected-members');
             const selectedMemberDiv = $('<div class="selected-member"></div>').text(addMember);
-            const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function() {
+            const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function () {
                 selectedMemberDiv.remove();
             });
             selectedMemberDiv.append(removeButton);
@@ -139,7 +141,7 @@
 
     // 작성 버튼 시 false 로
     const submitButton = document.getElementById('submit');
-    submitButton.addEventListener('click', function() {
+    submitButton.addEventListener('click', function () {
         // `isFinished` 값을 `false`로 설정
         const isFinishedValue = false;
 

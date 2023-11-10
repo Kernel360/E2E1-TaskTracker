@@ -1,9 +1,7 @@
-package org.fastcampus.proejct.notification.converter;
+package org.fastcampus.proejct.notification.converter.dto;
 
 import lombok.*;
 import org.fastcampus.proejct.notification.db.model.Notification;
-
-import java.io.Serializable;
 
 /**
  * DTO for {@link Notification}
@@ -15,13 +13,22 @@ public class NotificationDto {
     long senderId;
     long receiverId;
     String text;
+    boolean visible;
 
-    public NotificationDto(long id, String type, long senderId, long receiverId, String text) {
+    public NotificationDto(
+            Long id,
+            String type,
+            long senderId,
+            long receiverId,
+            String text,
+            boolean visible
+    ) {
         this.id = id;
         this.type = type;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.text = text;
+        this.visible = visible;
     }
 
     public NotificationDto() {
@@ -34,7 +41,8 @@ public class NotificationDto {
                 entity.getType(),
                 entity.getSenderId(),
                 entity.getReceiverId(),
-                entity.getText()
+                entity.getText(),
+                entity.isVisible()
         );
     }
 
