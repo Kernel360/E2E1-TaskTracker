@@ -48,6 +48,29 @@ public record BoardDto(
     }
 
     public static BoardDto of(
+            String title,
+            String content,
+            boolean isFinished,
+            UserInfoDto userInfo,
+            List<TaskDto> tasks,
+            List<UserInfoDto> members
+    ) {
+        return BoardDto.of(
+                null,
+                title,
+                content,
+                isFinished,
+                userInfo,
+                tasks,
+                members,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static BoardDto of(
             Long id,
             String title,
             String content,

@@ -11,6 +11,6 @@ public class MainController {
     @GetMapping("/")
     public String root() {
         return RedirectType.REDIRECT_USER.getUrl();
-//        return Redirect.getInstance(); todo 개발 환경이 끝나면 다시 사용
+//        return Redirect.getInstance();
     }
 }

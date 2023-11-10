@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-
     @Query("SELECT b FROM Board b WHERE b.title LIKE :keyword")
     List<Board> findByKeyword(@Param("keyword") String keyword);
 
@@ -27,5 +26,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT b FROM Board b WHERE b.userInfo.id = :userId")
     List<Board> searchBoardSelf(Long userId); // SORT_SELF
+
+    List<Board> findBoardByUserInfoId(Long userId);
 
 }

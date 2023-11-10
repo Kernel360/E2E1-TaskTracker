@@ -73,14 +73,15 @@
             </a>
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
-                    <a class="collapse-item" href="register.html">Register</a>
-                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                    <h6 class="collapse-header">나의 일정</h6>
+                    <a class="collapse-item" th:href="@{'/board?sorted=SORT_DEFAULT'}">내가 참여한 일정</a>
+                    <a class="collapse-item" th:href="@{'/board?sorted=SORT_SELF'}">내가 작성한 일정</a>
+                    <a class="collapse-item" th:href="@{'/board?sorted=SORT_FINISHED'}">내가 완료한 일정</a>
+                    <a class="collapse-item" th:href="@{'/board?sorted=SORT_ALL'}">나의 모든 일정</a>
                     <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="error.html">404 Page</a>
-                    <a class="collapse-item" href="blank.html">Blank Page</a>
+                    <h6 class="collapse-header">모든 일정</h6>
+                    <a class="collapse-item" href="error.html">실행중 일정</a>
+                    <a class="collapse-item" href="blank.html">완료된 일정</a>
                 </div>
             </div>
         </li>

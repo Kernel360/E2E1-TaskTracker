@@ -39,7 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(antMatcher("/error")).permitAll()
                         .requestMatchers(antMatcher("/api/**")).permitAll()
-                        .requestMatchers(antMatcher("/**")).permitAll() // TODO: 11/3/23 개발환경 용이하게 하기 위한 코드
+//                        .requestMatchers(antMatcher("/**")).permitAll()
                         .requestMatchers(antMatcher("/board/**")).hasRole("USER")
                         .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()

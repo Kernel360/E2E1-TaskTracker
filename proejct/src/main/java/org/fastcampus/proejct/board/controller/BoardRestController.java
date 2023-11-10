@@ -23,6 +23,18 @@ public class BoardRestController {
     private final UserInfoService userInfoService;
     private final BoardService boardService;
 
+    @GetMapping("/api/board/{id}")
+    public BaseResponse<BoardDto> updateBoardForm(
+            @PathVariable Long id,
+            Model model,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        BoardDto board = boardService.getBoard(id);
+        model.addAttribute("board", board);
+        model.addAttribute("userId", userPrincipal.getUserId());
+        return new BaseResponse<>(200, "정상", board);
+    }
+
     @GetMapping("/board/list")
     public BaseResponse<List<BoardDto>> getBoards(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
