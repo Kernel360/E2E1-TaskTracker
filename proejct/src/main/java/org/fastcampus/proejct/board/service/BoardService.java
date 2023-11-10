@@ -35,6 +35,7 @@ public class BoardService {
     // TODO: 11/6/23 Sorted 값 별 List<Board> 조회
     @Transactional(readOnly = true)
     public List<BoardDto> getBoards(Long userId, SortType sorted) {
+        log.info("board service sorted : {}", sorted);
         return switch (sorted) {
             case SORT_DEFAULT -> boardRepository.searchBoardByDefault(userId).stream()
                     .map(BoardDto::from)
@@ -42,20 +43,19 @@ public class BoardService {
             case SORT_ALL -> boardRepository.searchBoardByAll(userId).stream()
                     .map(BoardDto::from)
                     .toList();
-            case SORT_SELF -> boardRepository.findBoardByUserInfoId(userId).stream()
+            case SORT_SELF -> boardRepository.findByUserInfoId(userId).stream()
                     .map(BoardDto::from)
                     .toList();
             case SORT_FINISHED -> boardRepository.searchBoardByFinished(userId).stream()
                     .map(BoardDto::from)
                     .toList();
+            case BOARD_ALL_FINISHED -> boardRepository.findAllByFinishedTrue().stream()
+                    .map(BoardDto::from)
+                    .toList();
+            case BOARD_ALL -> boardRepository.findAllByFinishedFalse().stream()
+                    .map(BoardDto::from)
+                    .toList();
         };
-    }
-
-    @Transactional(readOnly = true)
-    public List<BoardDto> getBoards(Long userId) {
-        return boardRepository.searchBoardByDefault(userId).stream()
-                .map(BoardDto::from)
-                .toList();
     }
 
     @Transactional(readOnly = true)
