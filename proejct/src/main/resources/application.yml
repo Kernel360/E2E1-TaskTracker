@@ -1,12 +1,14 @@
-server.port: 8085
+server.port: 8080
 debug: false
 management.endpoints.web.exposure.include: "*"
 
 logging:
   level:
-    org.task-tracker.project: debug
-    org.springframework.web.servlet: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.task-tracker.project: info
+    org.springframework.web.servlet: info
+    org.hibernate.type.descriptor.sql.BasicBinder: info
+  file:
+    path: C:/TT_Logs
 springdoc:
   show-actuator: true
 spring:
@@ -16,9 +18,9 @@ spring:
       allowed-methods: "GET, POST, PUT, DELETE"
   application.name: project
   datasource:
-    url: ${LOCAL_DB_NAME}
-    username: ${LOCAL_USER_NAME}
-    password: ${LOCAL_USER_PASSWORD}
+    url: ${LOC_DB_NM}
+    username: ${LOC_DB_ID}
+    password: ${LOC_DB_PW}
   jpa:
     open-in-view: false
     defer-datasource-initialization: true
@@ -58,7 +60,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-
 ---
 
 spring:

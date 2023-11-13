@@ -10,6 +10,8 @@ import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,22 +29,40 @@ public class BoardController {
     private final TaskService taskService;
     private final NotificationService notificationService;
 
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+
     @GetMapping
     public String getBoardsView(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam String sorted,
             Model model
-    ) throws IOException {
-        List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
-        List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
-        notificationService.connectNotification(userPrincipal.id());
+    ){
 
-        model.addAttribute("boards", boards);
-        model.addAttribute("userId", userPrincipal.getUserId());
-        model.addAttribute("username", userPrincipal.getUsername());
-        model.addAttribute("notifications", notifications);
-        return "tables";
+        log.trace("trace message");
+        log.debug("debug message");
+        log.info("info message"); // default
+        log.warn("warn message");
+        log.error("error message");
+
+        try {
+            List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
+            List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
+            notificationService.connectNotification(userPrincipal.id());
+
+            model.addAttribute("boards", boards);
+            model.addAttribute("userId", userPrincipal.getUserId());
+            model.addAttribute("username", userPrincipal.getUsername());
+            model.addAttribute("notifications", notifications);
+
+            logger.info("getBoardsView - reading board list...");
+
+            return "tables";
+        }catch (IOException e){
+            logger.error("getBoardsView - fatal error IOException at getBoardsView",e);
+            return "tables";
+        }
     }
+
 
     @GetMapping("/{id}")
     public String getBoardDetail(
@@ -59,6 +79,9 @@ public class BoardController {
 
     @GetMapping("/write")
     public String writeBoardForm() {
+        /**
+         * 맴버를 추가하려면 로그인 사용자의 친구 목록 필요합니다.
+         * **/
         return "board/write";
     }
 
@@ -71,19 +94,22 @@ public class BoardController {
         return "redirect:/board";
     }
 
-    @GetMapping("/write/{id}")
+    @GetMapping("/update/{id}")
     public String updateBoardForm(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model
     ) {
+        /**
+         * 맴버를 추가하려면 로그인 사용자의 친구 목록 필요합니다.
+         * **/
         BoardDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
         model.addAttribute("userId", userPrincipal.getUserId());
-        return "board/write";
+        return "board/update";
     }
 
-    @PutMapping("/write/{id}")
+    @PutMapping("/update/{id}")
     public String updateBoard(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -92,10 +118,4 @@ public class BoardController {
         boardService.updateBoard(id, request.toDto(userPrincipal.toDto()));
         return "redirect:/board";
     }
-//
-//    @DeleteMapping("/{id}/delete")
-//    public String deleteBoard(@PathVariable Long id) {
-//        boardService.deleteBoard(id);
-//        return "redirect:/board";
-//    }
 }
