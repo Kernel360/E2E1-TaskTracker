@@ -4,8 +4,8 @@ management.endpoints.web.exposure.include: "*"
 
 logging:
   level:
-    org.task-tracker.project: debug
-    org.springframework.web.servlet: debug
+    org.task-tracker.project: info
+    org.springframework.web.servlet: info
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 springdoc:
   show-actuator: true
