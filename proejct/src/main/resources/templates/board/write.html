@@ -53,20 +53,21 @@
         <h1>게시물 작성</h1>
     </header>
     <main>
-        <form action="/board/write" method="post">
-            <input type="hidden" id="isFinishedInput" name="isFinished">
+        <form action="/board/write" method="post" id="frm">
+            <input type="hidden" id="isFinishedInput" name="isFinished" value="false">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input th:value="${board?.title} ?: _" type="text" class="form-control" id="title" name="title"/>
+                <input type="text" class="form-control" id="title" name="title" value=""/>
             </div>
             <div class="form-group">
                 <label for="content">내용</label>
-                <textarea th:text="${board?.content} ?: _" class="form-control" id="content" name="content" rows="10"></textarea>
+                <textarea class="form-control" id="content" name="content" rows="10"></textarea>
             </div>
             <div id="tasks"></div>
             <div class="button-container">
                 <button type="button" class="btn btn-sm btn-success" id="add-task">할일 추가</button>
             </div>
+            <!-- 맴버 목록 불러오는 model 하나 넣어주세요 -->
             <div class="form-group">
                 <label for="member">멤버</label>
                 <input type="text" class="form-control" id="member-search" list="member-list">
@@ -83,7 +84,7 @@
 
             <div style="margin-top: 10px;">
                 <!-- 간격 추가 -->
-                <button type="submit" class="btn btn-primary">작성</button>
+                <button type="button" class="btn btn-primary" id="submit">작성</button>
             </div>
         </form>
     </main>
@@ -118,10 +119,7 @@
             }
         });
 
-        if (memberJoiner) {
-            return false;
-        }
-
+        if (memberJoiner) { return false; }
         memberJoiner = 'newMember';
 
         const memberList = ['멤버1', '멤버2', '멤버3', '멤버4', '멤버5'];
@@ -150,71 +148,39 @@
         isFinishedInput.value = isFinishedValue;
     });
 
+    //submit
+    $('#submit').click(function () {
+
+        var tasks = $('input[name="task"]');
+        var taskList = {};
+        var taskKey = '';
+
+        tasks.each(function (index, element) {
+            taskKey = index;
+            taskList[taskKey] = element.value;
+        });
+
+        var formData = new FormData($('#frm')[0]);
+        var jsonData = {};
+        formData.forEach(function (value, key) { jsonData[key] = value; });
+
+        jsonData["tasks"] = taskList;
+
+        $.ajax({
+            url: '/board/write',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(jsonData),
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+    });
+
 </script>
-
-
-<!--<script>-->
-<!--    document.getElementById('add-task').addEventListener('click', function() {-->
-<!--        const tasksContainer = document.getElementById('tasks');-->
-<!--        const newTask = document.createElement('div');-->
-<!--        newTask.classList.add('form-group');-->
-<!--        newTask.innerHTML = `-->
-<!--            <div class="task-item">-->
-<!--                <label for="task">할일</label>-->
-<!--                <input type="text" class="form-control" name="task">-->
-<!--                <button type="button" class="btn btn-sm btn-danger remove-task">삭제</button>-->
-<!--            </div>-->
-<!--        `;-->
-<!--        tasksContainer.appendChild(newTask);-->
-
-<!--        const removeButtons = document.querySelectorAll('.remove-task');-->
-<!--        removeButtons.forEach(button => {-->
-<!--            button.addEventListener('click', function() {-->
-<!--                button.parentNode.remove();-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-
-
-<!--    document.getElementById('add-member').addEventListener('click', function() {-->
-<!--        const memberSearchInput = document.getElementById('member-search');-->
-<!--        const selectedMember = memberSearchInput.value;-->
-
-<!--        // 중복 체크-->
-<!--        const selectedMembers = document.querySelectorAll('.selected-member');-->
-<!--        let memberExists = false;-->
-<!--        selectedMembers.forEach(member => {-->
-<!--            if (member.innerText === selectedMember) {-->
-<!--                memberExists = true;-->
-<!--            }-->
-<!--        });-->
-
-<!--        const memberList = ['멤버 1', '멤버 2', '멤버 3', '멤버 4', '멤버 5']; // 리스트에 없는 멤버를 입력하면 추가되지 않도록 하기 위해 리스트를 추가합니다.-->
-
-<!--        if (!memberExists && memberList.includes(selectedMember)) {-->
-<!--            const selectedMembersContainer = document.querySelector('.selected-members');-->
-<!--            const selectedMemberDiv = document.createElement('div');-->
-<!--            selectedMemberDiv.classList.add('selected-member');-->
-<!--            selectedMemberDiv.innerText = selectedMember;-->
-
-<!--            const removeButton = document.createElement('span');-->
-<!--            removeButton.innerHTML = 'x';-->
-<!--            removeButton.classList.add('remove-member');-->
-<!--            removeButton.addEventListener('click', function() {-->
-<!--                selectedMemberDiv.remove();-->
-<!--            });-->
-
-<!--            selectedMemberDiv.appendChild(removeButton);-->
-
-<!--            // 중복 체크 후 중복이 아닌 경우 추가-->
-<!--            if (!memberExists) {-->
-<!--                selectedMembersContainer.appendChild(selectedMemberDiv);-->
-<!--            }-->
-<!--        } else {-->
-<!--            alert('리스트에 없는 멤버입니다.');-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 </body>
-
 </html>
