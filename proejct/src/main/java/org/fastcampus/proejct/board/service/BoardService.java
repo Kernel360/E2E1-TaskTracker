@@ -13,11 +13,13 @@ import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.board.db.repository.TaskRepository;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.fastcampus.proejct.user.db.model.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

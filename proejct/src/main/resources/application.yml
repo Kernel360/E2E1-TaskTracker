@@ -1,14 +1,12 @@
-server.port: 8080
+server.port: 8085
 debug: false
 management.endpoints.web.exposure.include: "*"
 
 logging:
   level:
-    org.task-tracker.project: info
-    org.springframework.web.servlet: info
-    org.hibernate.type.descriptor.sql.BasicBinder: info
-  file:
-    path: C:/TT_Logs
+    org.task-tracker.project: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
 springdoc:
   show-actuator: true
 spring:
@@ -18,13 +16,13 @@ spring:
       allowed-methods: "GET, POST, PUT, DELETE"
   application.name: project
   datasource:
-    url: ${LOC_DB_NM}
-    username: ${LOC_DB_ID}
-    password: ${LOC_DB_PW}
+    url: jdbc:mysql://54.180.69.94:3306/test_test
+    username: ${LOCAL_USER_NAME}
+    password: ${LOCAL_USER_PASSWORD}
   jpa:
     open-in-view: false
-    defer-datasource-initialization: true
-    hibernate.ddl-auto: update
+    defer-datasource-initialization: false
+    hibernate.ddl-auto: validate
     show-sql: true
     properties:
       hibernate.format_sql: true
@@ -35,7 +33,15 @@ spring:
     detection-strategy: annotated
   thymeleaf3:
     decoupled-logic: true
-
+  flyway:
+    enabled: true
+    url: ${LOCAL_DB_NAME}
+    user: ${LOCAL_USER_NAME}
+    password: ${LOCAL_USER_PASSWORD}
+#    schemas: flyway
+#    locations: classpath:/db/migration
+    baseline-version: 1
+    baseline-on-migrate: true
   devtools:
     livereload:
       enabled: true
@@ -60,6 +66,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
 ---
 
 spring:
