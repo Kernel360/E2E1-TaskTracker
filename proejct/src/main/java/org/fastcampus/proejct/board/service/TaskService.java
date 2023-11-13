@@ -8,6 +8,7 @@ import org.fastcampus.proejct.board.converter.dto.TaskDto;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.board.db.repository.TaskRepository;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
