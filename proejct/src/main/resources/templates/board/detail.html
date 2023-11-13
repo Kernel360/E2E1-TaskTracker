@@ -5,25 +5,65 @@
     <title>게시물 상세</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script>
+    $().ready(function () {
+        $("#update").on("click", function () {
+            $("#frm").attr("action", "/board/write/" + $("#board_id").val());
+            $("#frm").submit();
+        });
+
+        $("#delete").on("click", function () {
+
+            var delComfirm = confirm("게시글을 삭제 하시겠습니까?")
+            if (delComfirm) {
+                $.ajax({
+                    url: '/board/' + $("#board_id").val() + '/delete',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert("정상 삭제 되었습니다.");
+                        location.replace("/board");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("에러가 발생했습니다 관리자에게 문의하세요");
+                    }
+                });
+            }
+        });
+    });
+
+</script>
 <body>
 <div class="container">
     <header>
         <h1>게시물 상세</h1>
+        <br/>
     </header>
     <main>
-        <div class="card">
-            <div class="card-header">
-                <h2 th:text="${board.title}">제목</h2>
-                <p th:text="${board.userInfo().name()}">작성자</p>
-                <p th:date="${board.createdAt()}">작성일</p>
+        <form id="frm" name="frm">
+            <input type="hidden" th:value="${board.id}" id="board_id">
+            <div class="card">
+                <div class="card-header">
+                    <h2 th:text="${board.title}">제목</h2>
+                    <br/>
+                    <h3 th:text="${board.content}">본문</h3>
+                    <br/>
+                    <p th:text="${board.userInfo().name()}">작성자</p>
+                    <p th:date="${board.createdAt()}">작성일</p>
+                </div>
+                <div class="card-body" th:each="task : ${board.tasks}">
+                    <input type="checkbox" th:checked="${task.isFinished() eq true}">
+                    <th:block th:text="'할일 : '+ ${task.content() + '   ||   참여자 :'  + task.worker()}"/>
+                </div>
             </div>
-            <div class="card-body">
-                <p th:text="${board.content}">콘텐츠</p>
-            </div>
-        </div>
-        <a href="/board" class="btn btn-secondary">목록으로</a>
-        <a th:href="@{/board/{id}/update(id=${board.id})}" th:method="get" class="btn btn-primary">수정</a>
-        <a th:href="@{/board/{id}/delete(id=${board.id})}" th:method="get" class="btn btn-danger">삭제</a>
+            <a href="/board" class="btn btn-secondary">목록으로</a>
+            <button class="btn btn-primary" id="update" type="button" th:if="${board.userInfo().id() eq userId}">수정
+            </button>
+            <button class="btn btn-danger" id="delete" type="button" th:if="${board.userInfo().id() eq userId}">삭제
+            </button>
+        </form>
     </main>
     <footer>
         &copy; 2023

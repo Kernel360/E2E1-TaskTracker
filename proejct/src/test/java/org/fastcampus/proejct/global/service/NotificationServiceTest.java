@@ -1,8 +1,8 @@
 package org.fastcampus.proejct.global.service;
 
-import org.fastcampus.proejct.notification.converter.NotificationDto;
-import org.fastcampus.proejct.notification.db.repository.NotificationRepository;
 import org.fastcampus.proejct.notification.converter.TemplateCollection;
+import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
+import org.fastcampus.proejct.notification.db.repository.NotificationRepository;
 import org.fastcampus.proejct.notification.service.NotificationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("알람서비스 테스트")
 @ExtendWith(MockitoExtension.class)

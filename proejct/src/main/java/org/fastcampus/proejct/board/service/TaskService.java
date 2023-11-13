@@ -8,6 +8,7 @@ import org.fastcampus.proejct.board.converter.dto.TaskDto;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.board.db.repository.TaskRepository;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ public class TaskService {
     public void updateTask(Long boardId, List<TaskDto> dtos) {
         Board board = boardRepository.getReferenceById(boardId);
 //        UserInfo userInfo = userInfoRepository.getReferenceById(board.getUserInfo().getId());
-        List<Task> tasks = dtos.stream().map(it -> it.toEntity(board)).toList();
+        List<Task> tasks = dtos.stream().map(TaskDto::toEntity).toList();
         board.setTasks(tasks);
         taskRepository.saveAll(tasks);
     }

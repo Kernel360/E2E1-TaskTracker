@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ public record UserPrincipal(
         String email,
         String password,
         String username,
+        Boolean isAdmin,
         Collection<? extends GrantedAuthority> authorities,
         Map<String, Object> oAuthAttributes
 ) implements UserDetails, OAuth2User {
@@ -24,13 +26,15 @@ public record UserPrincipal(
             Long id,
             String email,
             String password,
-            String username
+            String username,
+            Boolean isAdmin
     ) {
         return UserPrincipal.of(
                 id,
                 email,
                 password,
                 username,
+                isAdmin,
                 Map.of()
         );
     }
@@ -40,14 +44,18 @@ public record UserPrincipal(
             String email,
             String password,
             String username,
+            Boolean adminCheck,
             Map<String, Object> oAuthAttributes
     ) {
-        Set<RoleType> roleTypes = Set.of(RoleType.USER);
+        Set<RoleType> roleTypes = new HashSet<>();
+        if (adminCheck) roleTypes.add(RoleType.ADMIN);
+        roleTypes.add(RoleType.USER);
         return new UserPrincipal(
                 id,
                 email,
                 password,
                 username,
+                adminCheck,
                 roleTypes.stream().map(RoleType::getName).map(SimpleGrantedAuthority::new).collect(Collectors.toUnmodifiableSet()),
                 oAuthAttributes
         );
@@ -58,7 +66,8 @@ public record UserPrincipal(
                 dto.id(),
                 dto.email(),
                 dto.password(),
-                dto.name()
+                dto.name(),
+                dto.adminCheck()
         );
     }
 
@@ -84,6 +93,13 @@ public record UserPrincipal(
     @Override
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * 사용자 검증은 id를 가지고 해야합니다. (board.id = userInfo.id)
+     **/
+    public Long getUserId() {
+        return id;
     }
 
     /**

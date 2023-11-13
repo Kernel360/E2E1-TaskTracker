@@ -35,18 +35,23 @@ public class SecurityConfig {
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
     ) throws Exception {
         return http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers(antMatcher("/error")).permitAll()
-                        .requestMatchers(antMatcher("/api/**")).permitAll()
-                        .requestMatchers(antMatcher("/**")).permitAll() // TODO: 11/3/23 개발환경 용이하게 하기 위한 코드
-                        .requestMatchers(antMatcher("/board/**")).hasRole("USER")
-                        .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
+//                .formLogin(login -> login
+//                        .loginPage("/login-form").permitAll()
+//                        .defaultSuccessUrl("/", true)
+//                        .failureForwardUrl("/login-form")
+//                )
                 .formLogin(withDefaults())
                 .logout(it -> it.logoutSuccessUrl("/"))
                 .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers(antMatcher("/error")).permitAll()
+                                .requestMatchers(antMatcher("/api/**")).permitAll()
+//                        .requestMatchers(antMatcher("/**")).permitAll()
+                                .requestMatchers(antMatcher("/board/**")).hasRole("USER")
+                                .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
                 .csrf().disable()
                 .build();
     }
