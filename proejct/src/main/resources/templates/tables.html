@@ -80,8 +80,8 @@
                     <a class="collapse-item" th:href="@{'/board?sorted=SORT_ALL'}">나의 모든 일정</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">모든 일정</h6>
-                    <a class="collapse-item" href="error.html">실행중 일정</a>
-                    <a class="collapse-item" href="blank.html">완료된 일정</a>
+                    <a class="collapse-item" th:href="@{'/board?sorted=BOARD_ALL'}">실행중 일정</a>
+                    <a class="collapse-item" th:href="@{'/board?sorted=BOARD_ALL_FINISHED'}">완료된 일정</a>
                 </div>
             </div>
         </li>

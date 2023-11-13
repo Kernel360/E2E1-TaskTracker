@@ -42,6 +42,7 @@ spring:
   thymeleaf:
     cache: false
   security:
+    loginPage: /login-form
     oauth2:
       client:
         registration:
