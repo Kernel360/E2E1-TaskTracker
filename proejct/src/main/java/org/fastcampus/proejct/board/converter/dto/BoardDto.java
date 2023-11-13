@@ -14,7 +14,7 @@ public record BoardDto(
         Long id,
         String title,
         String content,
-        boolean isFinished,
+        boolean finished,
         UserInfoDto userInfo,
         List<TaskDto> tasks,
         List<UserInfoDto> members,
@@ -108,7 +108,7 @@ public record BoardDto(
                 id,
                 title,
                 content,
-                isFinished,
+                finished,
                 userInfo
         );
     }

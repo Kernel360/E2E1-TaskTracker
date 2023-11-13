@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.auth.converter.request.RequestBoardDto;
+import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
@@ -29,9 +30,10 @@ public class BoardController {
     @GetMapping
     public String getBoardsView(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam String sorted,
             Model model
     ) throws IOException {
-        List<BoardDto> boards = boardService.getBoards(userPrincipal.id());
+        List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
         List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
         notificationService.connectNotification(userPrincipal.id());
 

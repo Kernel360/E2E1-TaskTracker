@@ -34,7 +34,7 @@ public class Board extends BaseEntity {
     private String content;
 
     @Setter
-    private boolean isFinished;
+    private boolean finished;
 
     @Setter
     @ManyToOne(optional = false)
@@ -69,11 +69,11 @@ public class Board extends BaseEntity {
         return new Board(id, title, content, isFinished, userInfo);
     }
 
-    private Board(Long id, String title, String content, boolean isFinished, UserInfo userInfo) {
+    private Board(Long id, String title, String content, boolean finished, UserInfo userInfo) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.isFinished = isFinished;
+        this.finished = finished;
         this.userInfo = userInfo;
     }
 }

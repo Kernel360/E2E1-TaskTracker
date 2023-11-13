@@ -16,13 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/admin")
 @Controller
 public class AuthController {
     private final UserInfoService service;
 
-    @GetMapping
+    @GetMapping("/admin")
     public String getAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return "index";
+    }
+
+    @GetMapping("/login-form")
+    public String loginForm() {
+        return "login";
     }
 }
