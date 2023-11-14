@@ -1,4 +1,4 @@
-package org.fastcampus.proejct.home.controller;
+package org.fastcampus.proejct.base.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.global.converter.RedirectType;
