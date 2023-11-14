@@ -29,7 +29,8 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: bootJar
-    
+      working-directory: ./proejct
+
       
     # Access Key와 Secret Access Key를 통해 권한을 확인한다.
     # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않는다.
@@ -42,7 +43,9 @@ jobs:
     # 압축한 프로젝트를 S3로 전송한다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./build/libs/proejct-0.0.1-SNAPSHOT.jar s3://$S3_BUCKET_NAME/proejct-0.0.1-SNAPSHOT.jar
-        # CodeDeploy에게 배포 명령을 내린다.
+      working-directory: ./proejct
+
+        # CodeDeploy에게 배포 명령을 내린다.   
     - name: Code Deploy
       run: 
         aws deploy create-deployment --application-name task-tracker-code-deploy
