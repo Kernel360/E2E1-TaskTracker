@@ -15,4 +15,4 @@ hooks:
   ApplicationStart:
     - location: scripts/deploy.sh  #최상위 디렉토리의 script 폴더 내의 shell script가 실행된다.
       timeout: 60
-      runas: ubuntu
+      runas: ec2-user
