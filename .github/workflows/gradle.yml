@@ -30,11 +30,7 @@ jobs:
       with:
         arguments: build
     
-    # build한 후 프로젝트를 압축한다.
-    - name: Make zip file
-      run: zip -r ./practice-task-tracker.zip .
-      shell: bash
-        
+      
     # Access Key와 Secret Access Key를 통해 권한을 확인한다.
     # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않는다.
     - name: Configure AWS credentials
@@ -45,11 +41,11 @@ jobs:
         aws-region: ap-northeast-2
     # 압축한 프로젝트를 S3로 전송한다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./practice-task-tracker.zip s3://$S3_BUCKET_NAME/practice-task-tracker.zip
+      run: aws s3 cp --region ap-northeast-2 ./proejct/build/libs/proejct-0.0.1-SNAPSHOT.jar s3://$S3_BUCKET_NAME/proejct-0.0.1-SNAPSHOT.jar
         # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
       run: 
         aws deploy create-deployment --application-name task-tracker-code-deploy
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name task-tracker-code-group
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=practice-task-tracker.zip
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=jar,key=proejct-0.0.1-SNAPSHOT.jar
