@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source:  /
-    destination: /home/ec2-user/build/  # 이 디렉토리 내에 배포가 진행된다
+    destination: /home/ec2-user/action/  # 이 디렉토리 내에 배포가 진행된다
     overwrite: yes
 
 permissions:
