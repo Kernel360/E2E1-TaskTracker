@@ -10,7 +10,12 @@ permissions:
     pattern: "**"
     owner: ec2-user
     group: ec2-user
-
+ 
+ - object: scripts/deploy.sh
+    owner: ec2-user
+    group: ec2-user
+    mode: +x
+    
 hooks:
   ApplicationStart:
     - location: scripts/deploy.sh  #최상위 디렉토리의 script 폴더 내의 shell script가 실행된다.
