@@ -44,11 +44,11 @@ jobs:
 
     # Move the JAR file to a dedicated directory
     - name: Prepare JAR file
-      run: mkdir -p jar && mv build/libs/*.jar
+      run: mkdir -p jar && mv build/libs/*.jar jar/
 
     # Upload JAR file to S3
     - name: Upload JAR to S3
-      run: aws s3 cp --region ap-northeast-2 ./jar/ s3://$S3_BUCKET_NAME/
+      run: aws s3 cp --region ap-northeast-2 ./jar/ s3://$S3_BUCKET_NAME/ --recursive
 
     # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
