@@ -2,11 +2,11 @@ version: 0.0
 os: linux
 files:
   - source:  /
-    destination: /home/ec2-user/action/  # 이 디렉토리 내에 배포가 진행된다
+    destination: /home/ec2-user/E2E1-TaskTracker/  # 이 디렉토리 내에 배포가 진행된다
     overwrite: yes
 
 permissions:
-  - object: /
+  - object: /home/ec2-user/E2E1-TaskTracker/
     pattern: "**"
     owner: ec2-user
     group: ec2-user
