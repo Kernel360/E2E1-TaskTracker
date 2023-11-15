@@ -44,7 +44,7 @@ jobs:
 
     # Move the JAR file to a dedicated directory
     - name: Prepare JAR file
-      run: mkdir -p jar && mv /build/libs/*.jar jar/
+      run: mkdir -p jar && mv build/libs/*.jar jar/
 
     # Upload JAR file to S3
     - name: Upload JAR to S3
