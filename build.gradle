@@ -115,7 +115,7 @@ build.dependsOn(copyAppSpec)
 
 task copyAppScript(type: Copy) {
     from 'scripts/deploy.sh' // AppSpec 파일이 위치한 경로
-    into 'build/scripts/deploy.sh' // 복사할 위치
+    into 'build/scripts' // 복사할 위치
 }
 
 build.dependsOn(copyAppScript)
