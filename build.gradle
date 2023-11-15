@@ -113,9 +113,14 @@ task copyAppSpec(type: Copy) {
 
 build.dependsOn(copyAppSpec)
 
-task copyAppScript(type: Copy) {
-    from 'scripts/deploy.sh' // AppSpec 파일이 위치한 경로
-    into 'build/scripts' // 복사할 위치
+task copyAppSpec(type: Copy) {
+    from 'appspec.yml' // AppSpec 파일이 위치한 경로
+    into 'build/' // 복사할 위치
 }
 
-build.dependsOn(copyAppScript)
+build.dependsOn(copyAppSpec)
+
+tasks.named('compileTestJava').dependsOn copyAppSpec
+tasks.named('jar').dependsOn copyAppSpec
+tasks.named('bootJar').dependsOn copyAppSpec
+tasks.named('resolveMainClassName').dependsOn copyAppSpec
