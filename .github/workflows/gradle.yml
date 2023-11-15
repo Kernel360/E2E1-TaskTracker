@@ -22,7 +22,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
       env:
-        GRADLE_USER_HOME: "${{ github.workspace }}/proejct/gradle"     
+        GRADLE_USER_HOME: "${{ github.workspace }}/proejct/gradle/*"     
     - name: Build with Spring Boot
       run: ./gradlew bootJar
 
