@@ -52,7 +52,8 @@ jobs:
 
     # Upload JAR file to S3
     - name: Upload JAR to S3
-      run: aws s3 cp --region ap-northeast-2 ./jar/ s3://$S3_BUCKET_NAME/ --recursive
+      #run: aws s3 cp --region ap-northeast-2 ./jar/ s3://$S3_BUCKET_NAME/ --recursive
+      run: aws s3 cp --region ap-northeast-2 ./build-artifacts/ s3://$S3_BUCKET_NAME/ --recursive
 
     # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
