@@ -17,8 +17,9 @@ hooks:
       timeout: 60
       runas: root
       commands:
-        - chown ec2-user:ec2-user /home/ec2-user/action/scripts/deploy.sh
-        - chmod +x /home/ec2-user/action/scripts/deploy.sh
+       - chown ec2-user:ec2-user /home/ec2-user/action/scripts/deploy.sh
+       - chmod +x /home/ec2-user/action/scripts/deploy.sh
+       - chmod +w /home/ec2-user/action
 
   ApplicationStart:
     - location: /home/ec2-user/action/scripts/deploy.sh
