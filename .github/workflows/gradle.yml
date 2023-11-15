@@ -53,7 +53,7 @@ jobs:
     # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
       run: |
-        aws deploy create-deployment --application-name task-tracker-code-deploy
-        --deployment-config-name CodeDeployDefault.AllAtOnce
-        --deployment-group-name task-tracker-code-group
+        aws deploy create-deployment --application-name task-tracker-code-deploy \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name task-tracker-code-group \
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=jar,key=jar/
