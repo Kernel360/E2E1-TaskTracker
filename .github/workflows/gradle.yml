@@ -56,4 +56,4 @@ jobs:
         aws deploy create-deployment --application-name task-tracker-code-deploy \
         --deployment-config-name CodeDeployDefault.AllAtOnce \
         --deployment-group-name task-tracker-code-group \
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=jar,key=jar/
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=jar/
