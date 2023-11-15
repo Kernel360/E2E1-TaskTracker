@@ -113,14 +113,19 @@ task copyAppSpec(type: Copy) {
 
 build.dependsOn(copyAppSpec)
 
-task copyAppSpec(type: Copy) {
-    from 'appspec.yml' // AppSpec 파일이 위치한 경로
-    into 'build/' // 복사할 위치
+task copyAppScript(type: Copy) {
+    from 'scripts/deploy.sh' // AppScript 파일이 위치한 경로
+    into 'build/scripts' // 복사할 위치
 }
 
-build.dependsOn(copyAppSpec)
+build.dependsOn(copyAppScript)
 
-tasks.named('compileTestJava').dependsOn copyAppSpec
-tasks.named('jar').dependsOn copyAppSpec
-tasks.named('bootJar').dependsOn copyAppSpec
-tasks.named('resolveMainClassName').dependsOn copyAppSpec
+tasks.matching {
+    it.name.startsWith('compileTestJava') ||
+    it.name.startsWith('jar') ||
+    it.name.startsWith('bootJar') ||
+    it.name.startsWith('resolveMainClassName')
+}.each { task ->
+    task.dependsOn copyAppSpec
+    task.dependsOn copyAppScript
+}
