@@ -31,7 +31,7 @@ jobs:
 
     # Build JAR file instead of zipping the entire project
     - name: Build JAR
-      run: gradle build
+      run: gradle assemble
 
     # Access Key와 Secret Access Key를 통해 권한을 확인한다.
     # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않는다.
