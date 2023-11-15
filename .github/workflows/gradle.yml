@@ -2,7 +2,6 @@ name: Java CI with Gradle
 
 env:
   S3_BUCKET_NAME: task-tracker-1114
-  PROJECT_FILE: /proejct
 
 on:
   push:
@@ -29,10 +28,10 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
-      
+
     # Build JAR file instead of zipping the entire project
-    - name: Build JAR      
-      run: ./gradlew bootJar
+    - name: Build JAR
+      run: ./gradlew bootJar -x test
 
     # Access Key와 Secret Access Key를 통해 권한을 확인한다.
     # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않는다.
@@ -45,7 +44,7 @@ jobs:
 
     # Move the JAR file to a dedicated directory
     - name: Prepare JAR file
-      run: mkdir -p jar && mv /proejct/build/libs/*.jar jar/
+      run: mkdir -p jar && mv /build/libs/*.jar jar/
 
     # Upload JAR file to S3
     - name: Upload JAR to S3
@@ -57,4 +56,4 @@ jobs:
         aws deploy create-deployment --application-name task-tracker-code-deploy
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name task-tracker-code-group
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=jar/
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=jar,key=jar/
