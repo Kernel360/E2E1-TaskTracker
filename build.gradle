@@ -118,4 +118,4 @@ task copyAppScript(type: Copy) {
     into 'build/scripts/deploy.sh' // 복사할 위치
 }
 
-
+build.dependsOn(copyAppScript)
