@@ -108,7 +108,14 @@ tasks.named('asciidoctor') {
 
 task copyAppSpec(type: Copy) {
     from 'appspec.yml' // AppSpec 파일이 위치한 경로
-    into 'build/libs/' // 복사할 위치 (build/libs/에 넣어질 것입니다.)
+    into 'build/' // 복사할 위치
 }
 
 build.dependsOn(copyAppSpec)
+
+task copyAppScript(type: Copy) {
+    from 'scripts/deploy.sh' // AppSpec 파일이 위치한 경로
+    into 'build/scripts/deploy.sh' // 복사할 위치
+}
+
+
