@@ -8,7 +8,7 @@ public enum RedirectType {
     REDIRECT_ERROR("redirect:/error");
 
     @Getter
-    private String url;
+    private final String url;
 
     RedirectType(String url) {
         this.url = url;
