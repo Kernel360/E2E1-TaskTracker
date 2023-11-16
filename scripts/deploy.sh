@@ -2,6 +2,10 @@
 BUILD_JAR=$(ls /home/ec2-user/action/libs/proejct-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 
+# 로그 디렉토리 생성 명령어 추가
+LOG_DIR="/home/ec2-user/action/log"
+mkdir -p $LOG_DIR
+
 echo "> 현재 시간: $(date)" >> /home/ec2-user/action/log/deploy_success.log
 
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/action/log/deploy_success.log
