@@ -105,3 +105,27 @@ tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
 }
+
+task copyAppSpec(type: Copy) {
+    from 'appspec.yml' // AppSpec 파일이 위치한 경로
+    into 'build/' // 복사할 위치
+}
+
+build.dependsOn(copyAppSpec)
+
+task copyAppScript(type: Copy) {
+    from 'scripts/deploy.sh' // AppScript 파일이 위치한 경로
+    into 'build/scripts' // 복사할 위치
+}
+
+build.dependsOn(copyAppScript)
+
+tasks.matching {
+    it.name.startsWith('compileTestJava') ||
+    it.name.startsWith('jar') ||
+    it.name.startsWith('bootJar') ||
+    it.name.startsWith('resolveMainClassName')
+}.each { task ->
+    task.dependsOn copyAppSpec
+    task.dependsOn copyAppScript
+}

@@ -12,7 +12,12 @@ permissions:
     group: ec2-user
 
 hooks:
+  #BeforeInstall:
+   # - location: scripts/deploy.sh
+   #   timeout: 60
+   #   runas: ec2-user
+
   ApplicationStart:
-    - location: scripts/deploy.sh  #최상위 디렉토리의 script 폴더 내의 shell script가 실행된다.
+    - location: /home/ec2-user/action/scripts/deploy.sh
       timeout: 60
       runas: ec2-user
