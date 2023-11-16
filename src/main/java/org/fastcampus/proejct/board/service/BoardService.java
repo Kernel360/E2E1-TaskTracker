@@ -65,9 +65,10 @@ public class BoardService {
         return BoardDto.from(boardRepository.findById(id).orElseThrow());
     }
 
-    public void writeBoard(Long id, BoardDto dto) {
+    public BoardDto writeBoard(Long id, BoardDto dto) {
         UserInfo userInfo = userInfoRepository.getReferenceById(id);
-        boardRepository.save(dto.toEntity(userInfo));
+        Board board = boardRepository.save(dto.toEntity(userInfo));
+        return BoardDto.from(board);
     }
 
     public void writeBoard(BoardDto dto) {
@@ -76,7 +77,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void updateBoard(Long id, BoardDto dto) {
+    public BoardDto updateBoard(Long id, BoardDto dto) {
         Board preBoard = boardRepository.getReferenceById(id);
 
         if (dto.title() != null) preBoard.setTitle(dto.title());
@@ -90,6 +91,7 @@ public class BoardService {
 
         boardRepository.flush();
         boardRepository.save(preBoard);
+        return BoardDto.from(preBoard);
     }
 
     public void deleteBoard(Long id) {
@@ -100,5 +102,11 @@ public class BoardService {
         return boardRepository.findByKeyword(keyword).stream()
                 .map(BoardDto::from)
                 .toList();
+    }
+
+    public void finishedBoard(Long id) {
+        Board board = boardRepository.getReferenceById(id);
+        board.setFinished(true);
+        boardRepository.saveAndFlush(board);
     }
 }
