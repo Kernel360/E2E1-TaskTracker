@@ -59,6 +59,10 @@ public class Board extends BaseEntity {
     protected Board() {
     }
 
+    public Board(Long id, String title, String content, UserInfo userInfo) {
+        super();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
