@@ -54,7 +54,7 @@
     </header>
     <main>
         <form action="/board/write" method="post" id="frm">
-            <input type="hidden" id="isFinishedInput" name="isFinished" value="false">
+            <input type="hidden" id="finishedInput" name="finished" value="false">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" name="title" value=""/>
@@ -140,12 +140,12 @@
     // 작성 버튼 시 false 로
     const submitButton = document.getElementById('submit');
     submitButton.addEventListener('click', function () {
-        // `isFinished` 값을 `false`로 설정
-        const isFinishedValue = false;
+        // `finished` 값을 `false`로 설정
+        const finishedValue = false;
 
-        // `isFinished` 값을 숨겨진 입력 필드의 값으로 설정
-        const isFinishedInput = document.getElementById('isFinishedInput');
-        isFinishedInput.value = isFinishedValue;
+        // `finished` 값을 숨겨진 입력 필드의 값으로 설정
+        const finishedInput = document.getElementById('finishedInput');
+        finishedInput.value = finishedValue;
     });
 
     //submit

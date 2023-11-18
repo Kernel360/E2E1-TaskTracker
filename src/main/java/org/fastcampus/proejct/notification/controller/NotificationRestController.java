@@ -3,7 +3,7 @@ package org.fastcampus.proejct.notification.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.base.converter.Api;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
