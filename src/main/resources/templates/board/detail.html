@@ -54,7 +54,7 @@
                     <p th:date="${board.createdAt()}">작성일</p>
                 </div>
                 <div class="card-body" th:each="task : ${board.tasks}">
-                    <input type="checkbox" th:checked="${task.isFinished() eq true}">
+                    <input type="checkbox" th:checked="${task.finished() eq true}">
                     <th:block th:text="'할일 : '+ ${task.content() + '   ||   참여자 :'  + task.worker()}"/>
                 </div>
             </div>

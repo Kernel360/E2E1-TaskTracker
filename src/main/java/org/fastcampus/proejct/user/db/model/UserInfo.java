@@ -7,10 +7,7 @@ import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.base.db.model.BaseEntity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @ToString
 @Slf4j
@@ -91,5 +88,17 @@ public class UserInfo extends BaseEntity {
 
     protected UserInfo() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserInfo userInfo)) return false;
+        return Objects.equals(id, userInfo.id) && Objects.equals(email, userInfo.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email);
     }
 }

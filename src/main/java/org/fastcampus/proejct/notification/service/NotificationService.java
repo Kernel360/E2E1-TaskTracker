@@ -2,7 +2,7 @@ package org.fastcampus.proejct.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.notification.db.model.Notification;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.db.repository.EmitterRepository;

@@ -51,7 +51,24 @@ public class Board extends BaseEntity {
     @Setter
     private List<Task> tasks = new ArrayList<>();
 
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setBoard(this);
+    }
+
+    public void addMember(UserInfo userInfo) {
+        members.add(userInfo);
+    }
+
+    public void removeMember(UserInfo userInfo) {
+        members.remove(userInfo);
+    }
+
     protected Board() {
+    }
+
+    public Board(Long id, String title, String content, UserInfo userInfo) {
+        super();
     }
 
     @Override
@@ -66,15 +83,23 @@ public class Board extends BaseEntity {
         return Objects.hash(id);
     }
 
-    public static Board of(Long id, String title, String content, boolean isFinished, UserInfo userInfo) {
-        return new Board(id, title, content, isFinished, userInfo);
+    public static Board of(Long id, String title, String content, boolean finished, UserInfo userInfo) {
+        return new Board(id, title, content, finished, userInfo);
     }
 
-    private Board(Long id, String title, String content, boolean finished, UserInfo userInfo) {
+    private Board(
+            Long id,
+            String title,
+            String content,
+            boolean finished,
+            UserInfo userInfo
+    ) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.finished = finished;
         this.userInfo = userInfo;
     }
+
+
 }

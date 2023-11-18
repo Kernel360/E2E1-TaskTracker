@@ -1,6 +1,6 @@
 //package org.fastcampus.proejct.global.security;
 //
-//import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+//import org.fastcampus.proejct.user.converter.UserInfoDto;
 //import org.fastcampus.proejct.global.config.SecurityConfig;
 //import org.fastcampus.proejct.user.service.UserInfoService;
 //import org.springframework.boot.test.mock.mockito.MockBean;
