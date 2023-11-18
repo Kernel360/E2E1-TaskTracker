@@ -1,11 +1,11 @@
 package org.fastcampus.proejct.board.controller;
 
-import ch.qos.logback.core.model.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.base.converter.Api;
 import org.fastcampus.proejct.board.converter.dto.TaskDto;
 import org.fastcampus.proejct.board.converter.request.RequestTask;
+import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/task")
 @RestController
-public class TaskController {
+public class TaskRestController {
     private final TaskService taskService;
-
-    //할일 수정
-    @PostMapping("/{boardId}/update")
-    public List<TaskDto> postTasksUpdate(
-            @PathVariable Long boardId
-    ) {
-        return taskService.getTasks(boardId);
-    }
+    private final BoardService boardService;
 
     //할일 목록 조회
-    @GetMapping("/{boardId}")
+    @GetMapping("/{boardId}/list")
     public Api<List<TaskDto>> getTasks(
             @PathVariable Long boardId
     ) {
@@ -39,22 +32,37 @@ public class TaskController {
                 .build();
     }
 
-    @PutMapping("/{boardId}/add")
-    public void putTask(
-            @PathVariable Long boardId,
-            @RequestBody List<RequestTask> request
+    //할일 조회
+    @GetMapping("/{boardId}")
+    public Api<TaskDto> getTask(
+            @PathVariable Long taskId
     ) {
-        var dtos = request.stream()
-                .map(RequestTask::toDto)
-                .toList();
-        taskService.updateTask(boardId, dtos);
+        var task = taskService.getTask(taskId);
+        return Api.<TaskDto>builder()
+                .code(200)
+                .message("정상 호출")
+                .data(task)
+                .build();
     }
 
-    @DeleteMapping("/{boardId}/delete")
-    public void deleteTask(
+    //할일 추가
+    @PostMapping("{userId}/{boardId}/add")
+    public void addTask(
+            @PathVariable Long userId,
             @PathVariable Long boardId,
-            @RequestBody List<TaskDto> dtos
+            @RequestBody RequestTask request
     ) {
-        taskService.deleteTask(boardId, dtos);
+        var board = boardService.getBoard(boardId);
+        log.info("request: {}", request);
+        var task = request.toDto(board);
+        taskService.updateTask(userId, board, task);
+    }
+
+    //할일 삭제
+    @DeleteMapping("/{taskId}/delete")
+    public void deleteTask(
+            @PathVariable Long taskId
+    ) {
+        taskService.deleteTask(taskId);
     }
 }
