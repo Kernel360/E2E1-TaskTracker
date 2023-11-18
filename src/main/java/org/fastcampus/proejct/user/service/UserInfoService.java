@@ -2,7 +2,7 @@ package org.fastcampus.proejct.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
@@ -25,6 +25,11 @@ public class UserInfoService {
     @Transactional(readOnly = true)
     public Optional<UserInfoDto> getUserInfo(String email) {
         return userInfoRepository.findUserInfoByEmail(email).map(UserInfoDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserInfoDto> getUserInfoId(Long id) {
+        return userInfoRepository.findById(id).map(UserInfoDto::from);
     }
 
     public UserInfoDto saveUser(String email, String password, String name) {

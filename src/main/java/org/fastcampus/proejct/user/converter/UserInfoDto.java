@@ -1,12 +1,9 @@
-package org.fastcampus.proejct.auth.converter.dto;
+package org.fastcampus.proejct.user.converter;
 
-import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public record UserInfoDto(
         Long id,

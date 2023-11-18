@@ -51,6 +51,11 @@ public class Board extends BaseEntity {
     @Setter
     private List<Task> tasks = new ArrayList<>();
 
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setBoard(this);
+    }
+
     protected Board() {
     }
 
@@ -70,11 +75,17 @@ public class Board extends BaseEntity {
         return Objects.hash(id);
     }
 
-    public static Board of(Long id, String title, String content, UserInfo userInfo) {
-        return new Board(id, title, content, userInfo);
+    public static Board of(Long id, String title, String content, boolean finished, UserInfo userInfo) {
+        return new Board(id, title, content, finished, userInfo);
     }
 
-    private Board(Long id, String title, String content, boolean finished, UserInfo userInfo) {
+    private Board(
+            Long id,
+            String title,
+            String content,
+            boolean finished,
+            UserInfo userInfo
+    ) {
         this.id = id;
         this.title = title;
         this.content = content;

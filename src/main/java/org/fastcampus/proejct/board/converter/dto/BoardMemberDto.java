@@ -1,6 +1,6 @@
 //package org.fastcampus.proejct.board.converter.dto;
 //
-//import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+//import org.fastcampus.proejct.user.converter.UserInfoDto;
 //import org.fastcampus.proejct.board.db.model.BoardMember;
 //
 //import java.time.LocalDateTime;

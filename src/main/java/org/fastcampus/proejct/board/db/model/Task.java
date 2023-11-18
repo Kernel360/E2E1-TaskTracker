@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.base.db.model.BaseEntity;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -25,16 +26,17 @@ public class Task extends BaseEntity {
     @Setter
     private String worker;
     @Setter
+    private boolean finished;
+    @Setter
     private LocalDateTime startDate;
     @Setter
     private LocalDateTime endDate;
     @Setter
     @ManyToOne(optional = false)
     private Board board;
-//
-//    @JoinColumn(name = "userInfoId")
-//    @ManyToOne(optional = false)
-//    private UserInfo userInfo;
+    @Setter
+    @ManyToOne(optional = false)
+    private UserInfo userInfo;
 
 //    todo private LocalDateTime remindDate;
 
@@ -46,37 +48,41 @@ public class Task extends BaseEntity {
             Long id,
             String content,
             String worker,
+            boolean finished,
             LocalDateTime startDate,
-            LocalDateTime endDate
-//            Board board
-//            UserInfo userInfo
+            LocalDateTime endDate,
+            Board board,
+            UserInfo userInfo
     ) {
         this.id = id;
         this.content = content;
         this.worker = worker;
+        this.finished = finished;
         this.startDate = startDate;
         this.endDate = endDate;
-//        this.board = board;
-//        this.userInfo = userInfo;
+        this.board = board;
+        this.userInfo = userInfo;
     }
 
     public static Task of(
             Long id,
             String content,
             String worker,
+            boolean finished,
             LocalDateTime startDate,
-            LocalDateTime endDate
-//            Board board
-//            UserInfo userInfo
+            LocalDateTime endDate,
+            Board board,
+            UserInfo userInfo
     ) {
         return new Task(
                 id,
                 content,
                 worker,
+                finished,
                 startDate,
-                endDate
-//                board
-//                userInfo
+                endDate,
+                board,
+                userInfo
         );
     }
 
