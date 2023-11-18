@@ -53,6 +53,7 @@ public class BoardController {
             model.addAttribute("userId", userPrincipal.getUserId());
             model.addAttribute("username", userPrincipal.getUsername());
             model.addAttribute("notifications", notifications);
+            model.addAttribute("isAdmin",true);
 
             logger.info("getBoardsView - reading board list...");
 
