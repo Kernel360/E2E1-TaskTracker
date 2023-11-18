@@ -54,6 +54,10 @@ public class Board extends BaseEntity {
     protected Board() {
     }
 
+    public Board(Long id, String title, String content, UserInfo userInfo) {
+        super();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,8 +70,8 @@ public class Board extends BaseEntity {
         return Objects.hash(id);
     }
 
-    public static Board of(Long id, String title, String content, boolean isFinished, UserInfo userInfo) {
-        return new Board(id, title, content, isFinished, userInfo);
+    public static Board of(Long id, String title, String content, UserInfo userInfo) {
+        return new Board(id, title, content, userInfo);
     }
 
     private Board(Long id, String title, String content, boolean finished, UserInfo userInfo) {

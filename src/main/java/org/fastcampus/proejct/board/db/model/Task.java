@@ -25,8 +25,6 @@ public class Task extends BaseEntity {
     @Setter
     private String worker;
     @Setter
-    private boolean isFinished;
-    @Setter
     private LocalDateTime startDate;
     @Setter
     private LocalDateTime endDate;
@@ -48,7 +46,6 @@ public class Task extends BaseEntity {
             Long id,
             String content,
             String worker,
-            boolean isFinished,
             LocalDateTime startDate,
             LocalDateTime endDate
 //            Board board
@@ -57,7 +54,6 @@ public class Task extends BaseEntity {
         this.id = id;
         this.content = content;
         this.worker = worker;
-        this.isFinished = isFinished;
         this.startDate = startDate;
         this.endDate = endDate;
 //        this.board = board;
@@ -68,7 +64,6 @@ public class Task extends BaseEntity {
             Long id,
             String content,
             String worker,
-            boolean isFinished,
             LocalDateTime startDate,
             LocalDateTime endDate
 //            Board board
@@ -78,7 +73,6 @@ public class Task extends BaseEntity {
                 id,
                 content,
                 worker,
-                isFinished,
                 startDate,
                 endDate
 //                board
