@@ -1,0 +1,64 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="includedContent">
+
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-laugh-wink"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Task Tracker</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Addons
+  </div>
+
+  <!-- Nav Item - Tables -->
+  <li class="nav-item">
+    <a class="nav-link" href="/board">
+      <i class="fas fa-fw fa-table"></i>
+      <span>일정</span></a>
+  </li>
+
+  <!-- Nav Item - Charts -->
+  <li class="nav-item" th:if="${isAdmin}">
+    <a class="nav-link" href="admin/users">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>회원 관리</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Interface
+  </div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+       aria-expanded="true" aria-controls="collapsePages">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>필터링</span>
+    </a>
+    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">나의 일정</h6>
+        <a class="collapse-item" th:href="@{'/board?sorted=SORT_DEFAULT'}">내가 참여한 일정</a>
+        <a class="collapse-item" th:href="@{'/board?sorted=SORT_SELF'}">내가 작성한 일정</a>
+        <a class="collapse-item" th:href="@{'/board?sorted=SORT_FINISHED'}">내가 완료한 일정</a>
+        <a class="collapse-item" th:href="@{'/board?sorted=SORT_ALL'}">나의 모든 일정</a>
+        <div class="collapse-divider"></div>
+        <h6 class="collapse-header">모든 일정</h6>
+        <a class="collapse-item" th:href="@{'/board?sorted=BOARD_ALL'}">실행중 일정</a>
+        <a class="collapse-item" th:href="@{'/board?sorted=BOARD_ALL_FINISHED'}">완료된 일정</a>
+      </div>
+    </div>
+  </li>
+
+</th:block>
