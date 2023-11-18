@@ -56,6 +56,14 @@ public class Board extends BaseEntity {
         task.setBoard(this);
     }
 
+    public void addMember(UserInfo userInfo) {
+        members.add(userInfo);
+    }
+
+    public void removeMember(UserInfo userInfo) {
+        members.remove(userInfo);
+    }
+
     protected Board() {
     }
 
@@ -92,4 +100,6 @@ public class Board extends BaseEntity {
         this.finished = finished;
         this.userInfo = userInfo;
     }
+
+
 }

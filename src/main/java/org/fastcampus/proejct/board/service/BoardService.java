@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
-import org.fastcampus.proejct.board.converter.dto.TaskDto;
 import org.fastcampus.proejct.board.db.model.Board;
-import org.fastcampus.proejct.board.db.model.Task;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.board.db.repository.TaskRepository;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
@@ -71,7 +70,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void updateBoard(Long boardId, BoardDto dto) {
+    public BoardDto updateBoard(Long boardId, BoardDto dto) {
         Board board = boardRepository.getReferenceById(boardId);
         try {
             if (dto.userInfo().equals(dto.userInfo())) {
@@ -82,6 +81,7 @@ public class BoardService {
         } catch (EntityNotFoundException e) {
             log.error("게시글을 업데이트 실패. 게시글을 찾을 수 없습니다. -dto : {}", dto);
         }
+        return dto;
     }
 
     public void deleteBoard(Long id) {
@@ -98,7 +98,27 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow();
         board.setFinished(true);
         log.info("board service finishedBoard : {}", board);
-        boardRepository.saveAndFlush(board);
+        boardRepository.save(board);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserInfoDto> getBoardMember(Long boardId) {
+        List<UserInfo> members = boardRepository.findById(boardId).orElseThrow().getMembers();
+        return members.stream().map(UserInfoDto::from).toList();
+    }
+
+    public void putBoardMember(Long boardId, Long memberId) {
+        UserInfo userInfo = userInfoRepository.getReferenceById(memberId);
+        Board board = boardRepository.getReferenceById(boardId);
+        board.addMember(userInfo);
+        boardRepository.save(board);
+    }
+
+    public void deleteBoardMember(Long boardId, Long memberId) {
+        Board board = boardRepository.getReferenceById(boardId);
+        UserInfo member = userInfoRepository.getReferenceById(memberId);
+        board.removeMember(member);
+        boardRepository.save(board);
     }
 }
 

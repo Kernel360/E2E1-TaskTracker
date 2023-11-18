@@ -104,4 +104,42 @@ public class BoardRestController {
                 .message("정상 호출")
                 .build();
     }
+
+    @GetMapping("/{boardId}/member")
+    public Api<List<UserInfoDto>> getBoardMember(
+            @PathVariable Long boardId
+    ) {
+        List<UserInfoDto> members = boardService.getBoardMember(boardId);
+        return Api.<List<UserInfoDto>>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .data(members)
+                .build();
+    }
+
+    @PutMapping("/{boardId}/member")
+    public Api putBoardMember(
+            @PathVariable Long boardId,
+            @RequestBody Long memberId
+    ) {
+        boardService.putBoardMember(boardId, memberId);
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+    @DeleteMapping("/{boardId}/member")
+    public Api deleteBoardMember(
+            @PathVariable Long boardId,
+            @RequestBody Long memberId
+    ) {
+        boardService.deleteBoardMember(boardId, memberId);
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+
 }

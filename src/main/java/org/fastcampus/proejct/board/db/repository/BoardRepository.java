@@ -1,6 +1,7 @@
 package org.fastcampus.proejct.board.db.repository;
 
 import org.fastcampus.proejct.board.db.model.Board;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByFinishedTrue(); //BOARD_ALL_FINISHED
 
     List<Board> findAllByFinishedFalse(); //BOARD_ALL
+
+    void deleteBoardByIdAndMembersContaining(Long id, UserInfo userInfo);
 }
