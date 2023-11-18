@@ -49,6 +49,7 @@ spring:
     cache: false
   thymeleaf:
     cache: false
+    prefix=file: src/main/resources/templates/
   security:
     loginPage: /login-form
     oauth2:

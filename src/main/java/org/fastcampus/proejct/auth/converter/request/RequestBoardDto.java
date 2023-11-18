@@ -30,7 +30,6 @@ public record RequestBoardDto(
         return BoardDto.of(
                 title,
                 content,
-                false,
                 host,
                 tasks,
                 members

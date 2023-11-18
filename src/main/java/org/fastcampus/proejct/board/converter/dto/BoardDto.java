@@ -14,7 +14,6 @@ public record BoardDto(
         Long id,
         String title,
         String content,
-        boolean finished,
         UserInfoDto userInfo,
         List<TaskDto> tasks,
         List<UserInfoDto> members,
@@ -27,7 +26,6 @@ public record BoardDto(
             Long id,
             String title,
             String content,
-            boolean isFinished,
             UserInfoDto userInfo,
             List<TaskDto> tasks,
             List<UserInfoDto> members
@@ -36,7 +34,6 @@ public record BoardDto(
                 id,
                 title,
                 content,
-                isFinished,
                 userInfo,
                 tasks,
                 members,
@@ -50,7 +47,6 @@ public record BoardDto(
     public static BoardDto of(
             String title,
             String content,
-            boolean isFinished,
             UserInfoDto userInfo,
             List<TaskDto> tasks,
             List<UserInfoDto> members
@@ -59,7 +55,6 @@ public record BoardDto(
                 null,
                 title,
                 content,
-                isFinished,
                 userInfo,
                 tasks,
                 members,
@@ -74,7 +69,6 @@ public record BoardDto(
             Long id,
             String title,
             String content,
-            boolean isFinished,
             UserInfoDto userInfo,
             List<TaskDto> tasks,
             List<UserInfoDto> members,
@@ -83,7 +77,7 @@ public record BoardDto(
             String modifiedBy,
             LocalDateTime modifiedAt
     ) {
-        return new BoardDto(id, title, content, isFinished, userInfo, tasks, members, createdBy, createdAt, modifiedBy, modifiedAt);
+        return new BoardDto(id, title, content, userInfo, tasks, members, createdBy, createdAt, modifiedBy, modifiedAt);
     }
 
     public static BoardDto from(Board entity) {
@@ -91,7 +85,6 @@ public record BoardDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.isFinished(),
                 UserInfoDto.from(entity.getUserInfo()),
                 entity.getTasks().stream().map(TaskDto::from).toList(),
                 entity.getMembers().stream().map(UserInfoDto::from).toList(),
@@ -108,7 +101,6 @@ public record BoardDto(
                 id,
                 title,
                 content,
-                finished,
                 userInfo
         );
     }
