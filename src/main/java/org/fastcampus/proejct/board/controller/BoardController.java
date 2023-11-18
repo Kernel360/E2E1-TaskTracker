@@ -3,9 +3,9 @@ package org.fastcampus.proejct.board.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
-import org.fastcampus.proejct.auth.converter.request.RequestBoardDto;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
@@ -13,7 +13,6 @@ import org.fastcampus.proejct.notification.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +63,6 @@ public class BoardController {
         }
     }
 
-
     @GetMapping("/{id}")
     public String getBoardDetail(
             @PathVariable Long id,
@@ -74,7 +72,7 @@ public class BoardController {
         BoardDto board = boardService.getBoard(id);
         model.addAttribute("board", board);
         model.addAttribute("userId", userPrincipal.getUserId());
-        model.addAttribute("tasks", board.tasks());
+//        model.addAttribute("tasks", board.tasks());
         return "board/detail";
     }
 
@@ -89,9 +87,9 @@ public class BoardController {
     @PostMapping("/write")
     public String writeBoard(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            RequestBoardDto request
+            RequestBoard request
     ) {
-        boardService.writeBoard(request.toDto(userPrincipal.toDto()));
+        boardService.saveBoard(request.toDto(userPrincipal.toDto()));
         return "redirect:/board";
     }
 
@@ -114,7 +112,7 @@ public class BoardController {
     public String updateBoard(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            RequestBoardDto request
+            RequestBoard request
     ) {
         boardService.updateBoard(id, request.toDto(userPrincipal.toDto()));
         return "redirect:/board";
