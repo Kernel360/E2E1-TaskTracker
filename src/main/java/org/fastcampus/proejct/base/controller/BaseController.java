@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BaseController {
     @GetMapping("/")
     public String root() {
-        return RedirectType.REDIRECT_USER.getUrl();
-//        return Redirect.getInstance();
+        //return RedirectType.REDIRECT_USER.getUrl();
+        return Redirect.getInstance();
     }
 }
