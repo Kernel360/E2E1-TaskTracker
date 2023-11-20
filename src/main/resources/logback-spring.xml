@@ -17,7 +17,7 @@
     <!-- 파일(FILE) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--     log 기록할 파일 위치 설정 -->
-        <file>TT_Logs/taskTracker_logback.log</file>
+        <file>C:/TT_Logs/taskTracker_logback.log</file>
         <!--     log 기록 타입 인코딩 -->
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
