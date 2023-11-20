@@ -93,6 +93,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 
+    //m1 mac unable load solved
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
     //slf4j & logback
     implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation 'org.slf4j:slf4j-api:2.0.3'
