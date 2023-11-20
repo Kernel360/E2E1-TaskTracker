@@ -1,6 +1,9 @@
 package org.fastcampus.proejct.user.db.repository;
 
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.db.model.UserInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +18,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     int updateIsBanById(Boolean isBan, Long id);
     Optional<UserInfo> findUserInfoByEmail(String email);
 
+    Page<UserInfo> findAll(Pageable pageInfo);
 
 }

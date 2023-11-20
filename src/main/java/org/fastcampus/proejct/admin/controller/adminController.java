@@ -12,9 +12,14 @@ import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,13 +53,26 @@ public class adminController {
     }
 
     @GetMapping ("/users")
-    public String getUsers(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) throws IOException {
+    public String getUsers(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) throws IOException {
+        Pageable pageInfo = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortField));
+
         List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
         notificationService.connectNotification(userPrincipal.id());
 
+        Page<UserInfoDto> resultList = userInfoService.getUserAll(pageInfo);
+
         model.addAttribute("notifications", notifications);
         model.addAttribute("isAdmin",true);
-        model.addAttribute("resultList",userInfoService.getUserAll());
+        model.addAttribute("resultList",resultList);
+        model.addAttribute("pageInfo",pageInfo);
+
         return "/users";
     }
 }

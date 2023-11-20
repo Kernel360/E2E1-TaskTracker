@@ -33,13 +33,17 @@
             <div class="container-fluid">
                 <th:block th:each="user : ${userList}">
                     <div>
-
                         <p>Email: <span th:text="${user.email}"></span></p>
                         <p>Name: <span th:text="${user.name}"></span></p>
                         <!-- 다른 필드들도 유사한 방식으로 표시할 수 있습니다 -->
                         <hr> <!-- 각 사용자 정보를 구분하기 위한 수평선 -->
                     </div>
                 </th:block>
+                <form id="frm">
+                    <input type="hidden" name="current" >
+                    <input type="hidden" name="size" >
+
+                </form>
 
                 <div class="card">
                     <div class="card-header">
@@ -62,19 +66,70 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="member : ${resultList}">
-                                        <td th:text="${member.id}"></td>
-                                        <td th:text="${member.email}"></td>
-                                        <td th:text="${member.name}"></td>
-                                        <td th:text="${member.adminCheck ? 'Yes' : 'No'}"></td>
-                                        <td><button th:onclick="'javascript:fn_toggleBan('+ ${member.id} + ', '+ ${member.isBan()} +','+ this +') '" th:class="${member.adminCheck == true} ? 'btn btn-success' : 'btn btn-danger'" th:text="${member.adminCheck == true} ? 'ON' : 'OFF'"></button></td>
-                                        <td th:text="${member.createdAt}"></td>
-                                        <td th:text="${member.createdBy}"></td>
-                                        <td th:text="${member.modifiedAt}"></td>
-                                        <td th:text="${member.modifiedBy}"></td>
+                                    <tr th:each="page : ${resultList}">
+                                        <td th:text="${page.id}"></td>
+                                        <td th:text="${page.email}"></td>
+                                        <td th:text="${page.name()}"></td>
+                                        <td th:text="${page.adminCheck ? 'Yes' : 'No'}"></td>
+                                        <td><button th:onclick="'javascript:fn_toggleBan('+ ${page.id} + ', '+ ${page.isBan()} +','+ this +') '" th:class="${page.adminCheck == true} ? 'btn btn-success' : 'btn btn-danger'" th:text="${page.adminCheck == true} ? 'ON' : 'OFF'"></button></td>
+                                        <td th:text="${page.createdAt}"></td>
+                                        <td th:text="${page.createdBy}"></td>
+                                        <td th:text="${page.modifiedAt}"></td>
+                                        <td th:text="${page.modifiedBy}"></td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 페이징 처리를 위한 Bootstrap 4 pagination -->
+<!--                                <ul class="pagination justify-content-center" th:if="${resultList != null}">-->
+<!--                                    <li class="page-item" th:classappend="${resultList.first ? 'disabled' : ''}">-->
+<!--                                        <a class="page-link" th:if="${resultList.hasPrevious()}" th:href="@{'/admin/users/' + (resultList.number - 1)}" th:attr="${resultList.hasPrevious()} ? 'aria-disabled=true' : 'aria-disabled=false'" tabindex="-1">Previous</a>-->
+<!--                                    </li>-->
+<!--                                    &lt;!&ndash; 페이징 그룹 구성 &ndash;&gt;-->
+<!--                                    <th:block th:with="calculatedEndPage=${resultList.totalPages > resultList.number + 5 ? resultList.number + 5 : resultList.totalPages}">-->
+<!--                                        <th:block th:with="endPage=${calculatedEndPage != null ? calculatedEndPage : resultList.totalPages}">-->
+<!--                                            &lt;!&ndash; 이하 페이징 그룹 구성 &ndash;&gt;-->
+<!--                                            <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}" th:class="${page == resultList.number} ? 'active' : ''">-->
+<!--                                                <a class="page-link" th:href="@{'/admin/users/' + page}" th:text="${page + 1}"></a>-->
+<!--                                            </li>-->
+<!--                                        </th:block>-->
+<!--                                    </th:block>-->
+<!--                                    <li class="page-item">-->
+<!--                                        <a class="page-link" th:if="${resultList.hasNext()}" th:href="@{'/admin/users/' + ${resultList.getPageable().pageNumber + 1}.toString()}">Next</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+                                <div th:if="${!resultList.isEmpty()}">
+                                    <ul class="pagination"
+                                        th:with="
+                                                    pageNumber = ${resultList.pageable.pageNumber},
+                                                    pageSize = ${resultList.pageable.pageSize},
+                                                    totalPages = ${resultList.totalPages},
+                                                    startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+                                                    tempEndPage = ${startPage + pageSize - 1},
+                                                    endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+
+                                        <li th:classappend="${resultList.first} ? 'disabled'" class="page-item">
+                                            <a class="page-link" th:href="${resultList.first} ? '#' : @{(page=${pageNumber - 10})}">
+                                                <span aria-hidden="true">&lt;</span>
+                                            </a>
+                                        </li>
+
+                                        <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">
+                                            <a th:text="${page}" class="page-link" th:href="@{/admin/users(page=${page})}"></a>
+                                        </li>
+
+                                        <li th:classappend="${resultList.last} ? 'disabled'" class="page-item">
+                                            <a class="page-link" th:href="${resultList.last} ? '#' : @{(page=${pageNumber + 10})}" aria-label="Next">
+                                                <span aria-hidden="true">&gt;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,8 +160,7 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
