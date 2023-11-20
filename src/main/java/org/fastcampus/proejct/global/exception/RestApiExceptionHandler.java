@@ -1,8 +1,8 @@
 package org.fastcampus.proejct.global.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.base.converter.Api;
+import org.fastcampus.proejct.global.ErrorCode;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,11 @@ public class RestApiExceptionHandler {
         log.error("", e);
         var response = Api.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
-                .message("데이터가 존재하지 않습니다.")
+                .message(ErrorCode.BOARD_NOT_FOUND.getValue())
                 .error(ExceptionMapper.get(e))
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(response);
     }
 
@@ -34,10 +35,11 @@ public class RestApiExceptionHandler {
         log.error("", e);
         var response = Api.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
-                .message("사용자가 존재하지 않습니다.")
+                .message(ErrorCode.USER_NAME_NOT_FOUND.getValue())
                 .error(ExceptionMapper.get(e))
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST.value())
                 .body(response);
     }
 }
