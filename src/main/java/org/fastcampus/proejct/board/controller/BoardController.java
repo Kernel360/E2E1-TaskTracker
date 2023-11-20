@@ -8,6 +8,8 @@ import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.follow.converter.FollowDto;
+import org.fastcampus.proejct.follow.service.FollowService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ public class BoardController {
     private final BoardService boardService;
     private final TaskService taskService;
     private final NotificationService notificationService;
-
+    private final FollowService followService;
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     @GetMapping
@@ -36,7 +38,7 @@ public class BoardController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam String sorted,
             Model model
-    ){
+    ) {
 
         log.trace("trace message");
         log.debug("debug message");
@@ -48,18 +50,20 @@ public class BoardController {
             List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
             List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
             notificationService.connectNotification(userPrincipal.id());
+            List<FollowDto> follows = followService.getFollow(userPrincipal.id());
 
             model.addAttribute("boards", boards);
             model.addAttribute("userId", userPrincipal.getUserId());
             model.addAttribute("username", userPrincipal.getUsername());
             model.addAttribute("notifications", notifications);
-            model.addAttribute("isAdmin",true);
+            model.addAttribute("isAdmin", true);
+            model.addAttribute("follows", follows);
 
             logger.info("getBoardsView - reading board list...");
 
             return "tables";
-        }catch (IOException e){
-            logger.error("getBoardsView - fatal error IOException at getBoardsView",e);
+        } catch (IOException e) {
+            logger.error("getBoardsView - fatal error IOException at getBoardsView", e);
             return "tables";
         }
     }
