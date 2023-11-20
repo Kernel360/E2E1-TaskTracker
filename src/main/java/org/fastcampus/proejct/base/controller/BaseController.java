@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.base.converter.RedirectType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
+@RequestMapping("/")
 @Controller
 public class BaseController {
-    @GetMapping("/")
+    @GetMapping
     public String root() {
         //return RedirectType.REDIRECT_USER.getUrl();
         return Redirect.getInstance();
