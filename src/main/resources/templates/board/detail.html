@@ -50,12 +50,20 @@
                     <br/>
                     <h3 th:text="${board.content}">본문</h3>
                     <br/>
+                    <span>작성자 : </span>
                     <p th:text="${board.userInfo().name()}">작성자</p>
+                    <span>작성일 : </span>
                     <p th:date="${board.createdAt()}">작성일</p>
                 </div>
-                <div class="card-body" th:each="task : ${board.tasks}">
+                <div class="card-body" th:each="task : ${tasks}">
                     <input type="checkbox" th:checked="${task.finished() eq true}">
                     <th:block th:text="'할일 : '+ ${task.content() + '   ||   참여자 :'  + task.worker()}"/>
+                </div>
+
+                <h3>참여인원</h3>
+
+                <div th:each="member : ${members}" class="card-body">
+                    <span th:text="${member.name()}">멤버이름</span>
                 </div>
             </div>
             <a href="/board" class="btn btn-secondary">목록으로</a>
