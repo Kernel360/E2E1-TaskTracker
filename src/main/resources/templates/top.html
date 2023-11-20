@@ -111,6 +111,22 @@
           <h6 class="dropdown-header">
             친구 목록
           </h6>
+          <div th:each="follow : ${follows}" class="dropdown-item d-flex align-items-center">
+            <div class="mr-3">
+              <div class="icon-circle bg-primary">
+                <i class="fas fa-file-alt text-white"></i>
+              </div>
+            </div>
+            <div>
+              <div th:text="${follow.following}" class="small text-gray-500">팔로잉</div>
+            </div>
+          </div>
+          <div>
+            <h3>Received Follows Data logcheck</h3>
+            <ul>
+              <li th:each="follow : ${follows}" th:text="${follow.following}">Follow Item</li>
+            </ul>
+          </div>
           <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="font-weight-bold">
               <div class="text-truncate">손흥민</div>
@@ -118,15 +134,6 @@
             </div>
             <div class="ml-auto">
               <button class="btn btn-sm btn-danger">친구 삭제</button>
-            </div>
-          </a>
-          <a class="dropdown-item d-flex align-items-center" href="#">
-            <div class="font-weight-bold">
-              <div class="text-truncate">김민재</div>
-              <div class="small text-gray-500">채팅</div>
-            </div>
-            <div class="ml-auto">
-              <button class="btn btn-xs btn-danger">친구 삭제</button>
             </div>
           </a>
           <a class="dropdown-item d-flex align-items-center" href="#">
