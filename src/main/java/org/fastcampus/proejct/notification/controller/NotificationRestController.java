@@ -39,8 +39,11 @@ public class NotificationRestController {
             @RequestBody String text
     ) throws IOException {
         NotificationDto dto = notificationService.send(userPrincipal.toDto(), receiverId, text);
-        Api<NotificationDto> response = new Api<>(200, "정상 호출", dto);
-        return response;
+        return Api.<NotificationDto>builder()
+                .code(200)
+                .message("OK")
+                .data(dto)
+                .build();
     }
 
     @DeleteMapping("/deleteAll")
