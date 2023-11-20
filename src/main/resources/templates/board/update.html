@@ -53,15 +53,15 @@
         <h1>게시물 작성</h1>
     </header>
     <main>
-        <form action="/board/write" method="post" id="frm">
+        <form id="update" method="post">
             <input type="hidden" id="finishedInput" name="finished" value="false">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" class="form-control" id="title" name="title" value=""/>
+                <input type="text" class="form-control" id="title" name="title" th:value="${board.title}"/>
             </div>
             <div class="form-group">
                 <label for="content">내용</label>
-                <textarea class="form-control" id="content" name="content"
+                <textarea th:text="${board.content}" class="form-control" id="content" name="content"
                           rows="10"></textarea>
             </div>
             <div id="tasks"></div>
@@ -94,6 +94,33 @@
         &copy; 2023
     </footer>
 </div>
+
+<!-- AJAX 호출 -->
+<script>
+    var currentURL = window.location.href;
+    var id = currentURL.split("/").pop();
+    console.log("board id : " + id);
+    $('#update').on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "/board/write/" + id,
+            data: {
+                // 필요한 데이터를 여기에 추가
+                // key1: value1,
+                // key2: value2
+                // ...
+            },
+            success: function (response) {
+                // 성공 시 수행할 동작
+                console.log(response);
+            },
+            error: function (error) {
+                // 에러 발생 시 수행할 동작
+                console.error(error);
+            }
+        });
+    })
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -169,11 +196,10 @@
         formData.forEach(function (value, key) {
             jsonData[key] = value;
         });
-
         jsonData["tasks"] = taskList;
 
         $.ajax({
-            url: '/board/write',
+            url: '/board/write/' + id,
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(jsonData),
