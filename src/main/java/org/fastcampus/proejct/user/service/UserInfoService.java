@@ -2,12 +2,10 @@ package org.fastcampus.proejct.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -62,4 +60,9 @@ public class UserInfoService {
         return new PageImpl<>(resultList, sourcePage.getPageable(), sourcePage.getTotalElements());
     }
 
+    public Page<UserInfoDto> getUserAllSearch(Pageable pageInfo, Object keyword) {
+        Page<UserInfo> entity = userInfoRepository.findAllSearch(pageInfo, keyword);
+        Page<UserInfoDto> resultList = entity.map(UserInfoDto::from);
+        return resultList;
+    }
 }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -67,6 +68,32 @@ public class adminController {
         notificationService.connectNotification(userPrincipal.id());
 
         Page<UserInfoDto> resultList = userInfoService.getUserAll(pageInfo);
+
+        model.addAttribute("notifications", notifications);
+        model.addAttribute("isAdmin",true);
+        model.addAttribute("resultList",resultList);
+        model.addAttribute("pageInfo",pageInfo);
+
+        return "/users";
+    }
+
+    @GetMapping("/users/search")
+    public String getUsersSearch(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(defaultValue = "") String keyword
+    )throws Exception{
+
+        Pageable pageInfo = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortField));
+
+        List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
+        notificationService.connectNotification(userPrincipal.id());
+
+        Page<UserInfoDto> resultList = userInfoService.getUserAllSearch(pageInfo, keyword);
 
         model.addAttribute("notifications", notifications);
         model.addAttribute("isAdmin",true);
