@@ -65,8 +65,9 @@ public class BoardService {
     }
 
     public void saveBoard(BoardDto dto) {
-        UserInfo userInfo = userInfoRepository.findById(dto.id()).orElseThrow();
+        UserInfo userInfo = userInfoRepository.findById(dto.userInfo().id()).orElseThrow();
         Board board = dto.toEntity(userInfo);
+        log.info("save board : {}", board);
         boardRepository.save(board);
     }
 

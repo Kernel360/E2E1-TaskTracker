@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.converter.dto.TaskDto;
 import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
@@ -12,6 +13,7 @@ import org.fastcampus.proejct.follow.converter.FollowDto;
 import org.fastcampus.proejct.follow.service.FollowService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -75,9 +77,12 @@ public class BoardController {
             Model model
     ) {
         BoardDto board = boardService.getBoard(id);
+        List<TaskDto> tasks = taskService.getTasks(id);
+        List<UserInfoDto> members = boardService.getBoardMember(id);
         model.addAttribute("board", board);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("members", members);
         model.addAttribute("userId", userPrincipal.getUserId());
-//        model.addAttribute("tasks", board.tasks());
         return "board/detail";
     }
 
@@ -95,10 +100,10 @@ public class BoardController {
             RequestBoard request
     ) {
         boardService.saveBoard(request.toDto(userPrincipal.toDto()));
-        return "redirect:/board";
+        return "redirect:/board?sorted=SORT_DEFAULT";
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/write/{id}")
     public String updateBoardForm(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -113,13 +118,21 @@ public class BoardController {
         return "board/update";
     }
 
-    @PutMapping("/update/{id}")
+    @PostMapping("/write/{id}")
     public String updateBoard(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             RequestBoard request
     ) {
         boardService.updateBoard(id, request.toDto(userPrincipal.toDto()));
-        return "redirect:/board";
+        return "redirect:/board?sorted=SORT_DEFAULT";
+    }
+
+    @DeleteMapping("{id}/delete")
+    public String deleteBoard(
+            @PathVariable Long id
+    ) {
+        boardService.deleteBoard(id);
+        return "redirect:/board?sorted=SORT_DEFAULT";
     }
 }

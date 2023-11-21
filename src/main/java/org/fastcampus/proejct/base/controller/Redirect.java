@@ -12,17 +12,18 @@ import java.util.List;
 
 @Slf4j
 public class Redirect {
-    private static String redirectUrl = null;
+//    private static String redirectUrl = null;
 
     private Redirect() {
 
     }
 
     public static String getInstance() {
-        if (redirectUrl == null) {
-            redirectUrl = getRedirectUrl();
-        }
-        return redirectUrl;
+//        if (redirectUrl == null) {
+//            redirectUrl = getRedirectUrl();
+//        }
+//        return redirectUrl;
+        return getRedirectUrl();
     }
 
     private static String getRedirectUrl() {
