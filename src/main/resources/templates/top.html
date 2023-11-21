@@ -150,7 +150,7 @@
                             <div class="small text-gray-500">Jae Chun · 1d</div>
                         </div>
                     </a>
-                    <a class="dropdown-item text-center small text-gray-500" href="#">친구 추가</a>
+                    <a class="dropdown-item text-center small text-gray-500" data-toggle="modal" data-target="#AddFollowModal" >친구 추가</a>
                 </div>
             </li>
 
@@ -212,7 +212,42 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="AddFollowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addfollowLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addfollowLabel">친구 추가하기</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="검색어">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" onclick="search()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div id="searchResult"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="sendFriendRequest()" >친구 신청</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+    <script src="jquery.dataTables.min.js"></script>
     <script>
+
         // 클릭된 버튼의 데이터를 모달에 전달하는 함수
         function openDeleteModal(button) {
             var followingId = button.getAttribute('data-following-id');
@@ -242,6 +277,54 @@
                     console.error(error);
                 }
             });
+        }
+
+        async function search() {
+            const searchInput = document.getElementById("searchInput");
+            const searchResult = document.getElementById("searchResult");
+
+            const userId = searchInput.value;
+
+            try {
+                const response = await fetch(`/api/user/${userId}`);
+                const data = await response.json();
+
+                if (data.code === 200) {
+                    const userInfoDto = data.data;
+                    searchResult.innerHTML = `
+        <div>
+          <strong>아이디:</strong> ${userInfoDto.id}
+          <br>
+          <strong>닉네임:</strong> ${userInfoDto.name}
+        </div>
+      `;
+                    return userInfoDto;
+                } else {
+                    searchResult.innerHTML = "회원 정보가 없습니다.";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function sendFriendRequest() {
+            const userInfoDto = await search();
+            const receiverId = userInfoDto.id;
+
+            const response = await fetch(`/notification/send/${receiverId}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    type: "friend_request",
+                    senderId: localStorage.getItem("userId"),
+                }),
+            });
+
+            if (response.status === 200) {
+                alert("친구 신청을 보냈습니다.");
+                $('#AddFollowModal').modal('hide');
+            } else {
+                alert("친구 신청을 보내지 못했습니다.");
+            }
         }
     </script>
 </th:block>
