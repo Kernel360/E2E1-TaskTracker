@@ -2,15 +2,13 @@ package org.fastcampus.proejct.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.board.converter.dto.TaskDto;
-import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.base.converter.Api;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
-
 import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -129,12 +127,14 @@ public class BoardRestController {
                 .build();
     }
 
-    @DeleteMapping("/{boardId}/member")
+    @DeleteMapping("/{boardId}/member/{memberId}")
     public Api deleteBoardMember(
             @PathVariable Long boardId,
-            @RequestBody Long memberId
+            @PathVariable Long memberId
     ) {
         boardService.deleteBoardMember(boardId, memberId);
+        BoardDto b = boardService.getBoard(boardId);
+        log.info("deleteBoardMember : {}", b);
         return Api.builder()
                 .code(HttpStatus.OK.value())
                 .message("정상 호출")
