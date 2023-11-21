@@ -1,6 +1,5 @@
 package org.fastcampus.proejct.user.db.repository;
 
-import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Transactional
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
-    @Transactional
     @Modifying
-    @Query("update UserInfo u set u.isBan = ?1 where u.id = ?2")
-    int updateIsBanById(Boolean isBan, Long id);
+    @Query(value = "update UserInfo u set u.isBan = :isBan where u.id = :id")
+    int updateIsBanById(@Param("isBan") boolean isBan, @Param("id") Long id);
+    @Modifying
+    @Query(value = "update UserInfo u set u.adminCheck = :adminCheck where u.id = :id")
+    int updateIsAdminById(@Param("adminCheck") Boolean adminCheck, @Param("id") Long id);
     Optional<UserInfo> findUserInfoByEmail(String email);
 
     Page<UserInfo> findAll(Pageable pageInfo);

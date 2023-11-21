@@ -4,7 +4,9 @@
     <script>
         function fn_search(){
             const form = document.forms.searchForm;
-            form.action = window.location.pathname+'/search';
+            const fullPath = window.location.pathname;
+            const url = fullPath.split('/').filter(segment => segment.trim() !== '');
+            form.action = "/" + url[0] + "/" + url[1] +'/search';
             form.method = 'GET'
 
             console.log(form);
@@ -43,18 +45,18 @@
                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
                 </a>
-                <!-- Dropdown - Messages -->
-                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                     aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button"> <i class="fas fa-search fa-sm"></i> </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!--                &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
+<!--                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated&#45;&#45;grow-in"-->
+<!--                     aria-labelledby="searchDropdown">-->
+<!--                    <form class="form-inline mr-auto w-100 navbar-search">-->
+<!--                        <div class="input-group">-->
+<!--                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+<!--                            <div class="input-group-append">-->
+<!--                                <button class="btn btn-primary" type="button"> <i class="fas fa-search fa-sm"></i> </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
             </li>
 
             <!-- Nav Item - Alerts -->
@@ -224,7 +226,6 @@
         // 클릭된 버튼의 데이터를 모달에 전달하는 함수
         function openDeleteModal(button) {
             var followingId = button.getAttribute('data-following-id');
-            console.log(followingId);
 
             document.getElementById('followingIdInput').value = followingId; // followingId를 hidden input에 설정
         }
