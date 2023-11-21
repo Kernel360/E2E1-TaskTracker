@@ -71,7 +71,10 @@
                                         <td th:text="${page.email}"></td>
                                         <td th:text="${page.name()}"></td>
                                         <td th:text="${page.adminCheck ? 'Yes' : 'No'}"></td>
-                                        <td><button th:onclick="'javascript:fn_toggleBan('+ ${page.id} + ', '+ ${page.isBan()} +','+ this +') '" th:class="${page.adminCheck == true} ? 'btn btn-success' : 'btn btn-danger'" th:text="${page.adminCheck == true} ? 'ON' : 'OFF'"></button></td>
+                                        <td>
+                                            <button th:onclick="'javascript:fn_toggleBan('+ ${page.id} + ', '+ ${page.isBan()} +','+ this +') '"
+                                                    th:class="${page.adminCheck == true} ? 'btn btn-success' : 'btn btn-danger'"
+                                                    th:text="${page.adminCheck == true} ? 'ON' : 'OFF'"></button></td>
                                         <td th:text="${page.createdAt}"></td>
                                         <td th:text="${page.createdBy}"></td>
                                         <td th:text="${page.modifiedAt}"></td>
