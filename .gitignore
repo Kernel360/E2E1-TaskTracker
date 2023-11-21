@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Custom ###
+C:/TT_Logs/taskTracker_logback.log
+*.log

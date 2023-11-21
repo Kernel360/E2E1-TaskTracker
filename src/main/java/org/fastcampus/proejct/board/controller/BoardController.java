@@ -99,8 +99,8 @@ public class BoardController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             RequestBoard request
     ) {
-        boardService.saveBoard(request.toDto(userPrincipal.toDto()));
-        return "redirect:/board?sorted=SORT_DEFAULT";
+        Long boardId = boardService.saveBoard(request.toDto(userPrincipal.toDto()));
+        return "redirect:/board/" + boardId;
     }
 
     @GetMapping("/write/{id}")
@@ -125,7 +125,7 @@ public class BoardController {
             RequestBoard request
     ) {
         boardService.updateBoard(id, request.toDto(userPrincipal.toDto()));
-        return "redirect:/board?sorted=SORT_DEFAULT";
+        return "redirect:/board/" + id;
     }
 
     @DeleteMapping("{id}/delete")
