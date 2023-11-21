@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -19,5 +20,8 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     Optional<UserInfo> findUserInfoByEmail(String email);
 
     Page<UserInfo> findAll(Pageable pageInfo);
+
+    @Query(value = "SELECT e FROM UserInfo e WHERE e.name LIKE CONCAT('%', :keyword, '%') OR e.email LIKE CONCAT('%', :keyword, '%')")
+    Page<UserInfo> findAllSearch(Pageable pageInfo, @Param("keyword") Object keyword);
 
 }
