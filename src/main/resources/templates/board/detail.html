@@ -34,6 +34,148 @@
         });
     });
 </script>
+<body>
+<div class="container">
+    <header>
+        <h1>게시물 상세</h1>
+        <br/>
+    </header>
+    <main>
+        <form id="frm" name="frm">
+            <input type="hidden" th:value="${board.id}" id="board_id">
+            <div class="card">
+                <div class="card-header">
+                    <h2 th:text="${board.title}">제목</h2>
+                    <br/>
+                    <h3 th:text="${board.content}">본문</h3>
+                    <br/>
+                    <span>작성자 : </span>
+                    <p th:text="${board.userInfo().name()}">작성자</p>
+                    <span>작성일 : </span>
+                    <p th:date="${board.createdAt()}">작성일</p>
+                </div>
+
+                <h3>할일 목록</h3>
+                <div class="card-body" th:each="task : ${tasks}">
+                    <input type="checkbox" th:checked="${task.finished() eq true}">
+                    <th:block th:text="'할일 : '+ ${task.content() + '   ||   참여자 :'  + task.worker()}"/>
+                    <button class="btn btn-danger"
+                            th:if="${board.userInfo().id() eq userId}"
+                            th:onclick="'javascript:taskDelete('+${task.id}+')'">
+                        삭제
+                    </button>
+                </div>
+                <div id="form-group"></div>
+                <div id="tasks"></div>
+                <div class="button-container">
+                    <button type="button" class="btn btn-sm btn-success" id="add-task" th:value="${userId}">할일 추가
+                    </button>
+                </div>
+
+                <h3>참여인원</h3>
+                <div th:each="member : ${members}" class="card-body">
+                    <span id="member_id" th:text="${member.name()}">멤버이름</span>
+                    <button class="btn btn-danger"
+                            th:if="${board.userInfo().id() eq userId}"
+                            th:onclick="'javascript:memberDelete('+${board.id}+', '+${member.id}+')'">
+                        삭제
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label for="member-list">
+                        <select id="member-list">
+                            <option>멤버 선택</option>
+                            <option th:each="friend : ${friends}" th:value="${friend.id() + ',' + friend.name()}"
+                                    th:text="${friend.name()}">친구
+                                이름
+                            </option>
+                        </select>
+                    </label>
+                    <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>
+                    <div class="selected-members"></div>
+                </div>
+            </div>
+            <a href="/board?sorted=SORT_DEFAULT" class="btn btn-secondary">목록으로</a>
+            <button class="btn btn-primary" id="update" type="button" th:if="${board.userInfo().id() eq userId}">수정
+            </button>
+            <button class="btn btn-danger" id="delete" type="button" th:if="${board.userInfo().id() eq userId}">삭제
+            </button>
+        </form>
+    </main>
+    <footer>
+        &copy; 2023
+    </footer>
+</div>
+<script>
+    function memberAdd(memberId, element) {
+        var boardId = $('#board_id').val();
+        console.log('board id : ' + boardId);
+        console.log('member id : ' + memberId);
+        var data = {
+            member_id: memberId
+        }
+        // element.onclick = function() { memberDelete(boardId, memberId, this); };
+        var delComfirm = confirm("멤버를 추가 하시겠습니까?")
+        if (delComfirm) {
+            $.ajax({
+                url: '/api/board/' + boardId + '/member/' + memberId,
+                type: 'PUT',
+                contentType: 'application/json',
+                success: function (response) {
+                    alert("정상 추가 되었습니다.");
+                    location.replace("/board/" + boardId);
+                },
+                error: function (xhr, status, error) {
+                    alert("에러가 발생했습니다 관리자에게 문의하세요");
+                }
+            });
+        }
+    }
+
+    $('#add-member').on('click', function () {
+        const friends = $('#member-list option').map(function () {
+            return $(this).val();
+        }).get();
+        const selectedMembers = $('.selected-member');
+        const selectMember = $('#member-list option:selected').val().split(",");
+        const userId = selectMember[0];
+        const username = selectMember[1];
+        console.log("friends : " + friends);
+        console.log("selectMember : " + typeof selectMember);
+        console.log("userId : " + userId);
+        console.log("username : " + username);
+
+        // 기존 맴버유무 검사
+        var memberJoiner = false;
+        if (selectedMembers.length === 0) {
+            console.log("selectedMembers is empty");
+        } else {
+            selectedMembers.each(function () {
+                if (username == $(this).text().replace(/.$/, '')) {
+                    alert("이미 포함 된 맴버입니다.");
+                    memberJoiner = true;
+                    return false; // each() 루프를 종료하기 위해 false를 반환
+                }
+            });
+        }
+
+        if (!memberJoiner) {
+            const name = $('#member-list option:selected').text();
+            selectedMembers.add(name);
+            selectedMembers.each(function () {
+                console.log("selected member : " + $(this).text());
+            });
+            const selectedMembersContainer = $('.selected-members');
+            const selectedMemberDiv = $('<div class="selected-member"></div>').text(name);
+            const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function () {
+                selectedMemberDiv.remove();
+            });
+            selectedMemberDiv.append(removeButton);
+            selectedMembersContainer.append(selectedMemberDiv);
+            memberAdd(userId);
+        }
+    });
+</script>
 <script>
     function memberDelete(boardId, memberId, element) {
         console.log('board id : ' + boardId);
@@ -58,53 +200,82 @@
             });
         }
     }
+
+    function taskDelete(taskId, element) {
+        console.log('task id : ' + taskId);
+        // element.onclick = function() { memberDelete(boardId, memberId, this); };
+        var delComfirm = confirm("할일을 삭제 하시겠습니까?")
+        if (delComfirm) {
+            $.ajax({
+                url: '/api/task/' + taskId + '/delete',
+                type: 'DELETE',
+                contentType: 'application/json',
+                success: function (response) {
+                    alert("정상 삭제 되었습니다.");
+                    location.replace("/board/" + boardId);
+                },
+                error: function (xhr, status, error) {
+                    alert("에러가 발생했습니다 관리자에게 문의하세요");
+                }
+            });
+        }
+    }
 </script>
-<body>
-<div class="container">
-    <header>
-        <h1>게시물 상세</h1>
-        <br/>
-    </header>
-    <main>
-        <form id="frm" name="frm">
-            <input type="hidden" th:value="${board.id}" id="board_id">
-            <div class="card">
-                <div class="card-header">
-                    <h2 th:text="${board.title}">제목</h2>
-                    <br/>
-                    <h3 th:text="${board.content}">본문</h3>
-                    <br/>
-                    <span>작성자 : </span>
-                    <p th:text="${board.userInfo().name()}">작성자</p>
-                    <span>작성일 : </span>
-                    <p th:date="${board.createdAt()}">작성일</p>
-                </div>
-                <div class="card-body" th:each="task : ${tasks}">
-                    <input type="checkbox" th:checked="${task.finished() eq true}">
-                    <th:block th:text="'할일 : '+ ${task.content() + '   ||   참여자 :'  + task.worker()}"/>
-                </div>
+<script>
+    function taskCreate(content, worker) {
+        var boardId = $('#board_id').val();
+        var userId = $('#add-task').val();
+        const time = new Date().toISOString();
+        console.log('board id : ' + boardId);
+        console.log('user id : ' + userId);
+        console.log('content : ' + content);
+        console.log('worker : ' + worker);
+        const data = {
+            content: content,
+            worker: worker,
+            startDate: time,
+            endDate: time,
+        }
+        $.ajax({
+            url: '/api/task/' + userId + '/' + boardId + '/add',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                alert("정상 생성 되었습니다.");
+                location.replace("/board/" + boardId);
+            },
+            error: function (xhr, status, error) {
+                alert("에러가 발생했습니다 관리자에게 문의하세요");
+            }
+        });
+    }
 
-                <h3>참여인원</h3>
+    $('#add-task').on('click', function () {
+        const tasksContainer = $('#tasks');
+        const newTask = $(
+            '<div class="form-group">' +
+            '<div class="task-item">' +
+            '<input id="input-task" type="text" class="form-control" name="task">' +
+            '<input id="input-task-worker" type="text" class="form-control" name="worker">' +
+            '<button type="button" class="btn btn-sm btn-success create-task">생성</button>' +
+            '<button type="button" class="btn btn-sm btn-danger remove-task">삭제</button>' +
+            '</div>' +
+            '</div>');
+        tasksContainer.append(newTask);
 
-                <div th:each="member : ${members}" class="card-body">
-                    <span id="member_id" th:text="${member.name()}">멤버이름</span>
-                    <button class="btn btn-danger"
-                            th:if="${board.userInfo().id() eq userId}"
-                            th:onclick="'javascript:memberDelete('+${board.id}+', '+${member.id}+')'">
-                        삭제
-                    </button>
-                </div>
-            </div>
-            <a href="/board?sorted=SORT_DEFAULT" class="btn btn-secondary">목록으로</a>
-            <button class="btn btn-primary" id="update" type="button" th:if="${board.userInfo().id() eq userId}">수정
-            </button>
-            <button class="btn btn-danger" id="delete" type="button" th:if="${board.userInfo().id() eq userId}">삭제
-            </button>
-        </form>
-    </main>
-    <footer>
-        &copy; 2023
-    </footer>
-</div>
+        $('.create-task').on('click', function () {
+            const content = $('#input-task').val();
+            const worker = $('#input-task-worker').val();
+            console.log('content : ' + content);
+            console.log('worker : ' + worker);
+            taskCreate(content, worker);
+        });
+
+        $('.remove-task').on('click', function () {
+            $(this).parent().remove();
+        });
+    });
+</script>
 </body>
 </html>
