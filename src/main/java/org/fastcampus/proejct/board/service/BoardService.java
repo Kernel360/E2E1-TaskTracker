@@ -15,7 +15,9 @@ import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Transactional
@@ -64,11 +66,12 @@ public class BoardService {
         return BoardDto.from(board);
     }
 
-    public void saveBoard(BoardDto dto) {
+    public Long saveBoard(BoardDto dto) {
         UserInfo userInfo = userInfoRepository.findById(dto.userInfo().id()).orElseThrow();
         Board board = dto.toEntity(userInfo);
         log.info("save board : {}", board);
-        boardRepository.save(board);
+        Board post = boardRepository.saveAndFlush(board);
+        return post.getId();
     }
 
     public BoardDto updateBoard(Long boardId, BoardDto dto) {
@@ -117,8 +120,13 @@ public class BoardService {
 
     public void deleteBoardMember(Long boardId, Long memberId) {
         Board board = boardRepository.getReferenceById(boardId);
-        UserInfo member = userInfoRepository.getReferenceById(memberId);
-        board.removeMember(member);
+        List<UserInfo> postMembers = new ArrayList<>();
+        for (UserInfo member : board.getMembers()) {
+            if (member.getId().equals(memberId)) continue;
+            postMembers.add(member);
+        }
+        board.setMembers(postMembers);
+        log.info("deleteBoardMember post: {}", board);
         boardRepository.save(board);
     }
 }

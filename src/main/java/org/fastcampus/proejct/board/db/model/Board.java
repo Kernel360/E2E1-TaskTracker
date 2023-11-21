@@ -10,6 +10,7 @@ import org.fastcampus.proejct.user.db.model.UserInfo;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,12 +57,8 @@ public class Board extends BaseEntity {
         task.setBoard(this);
     }
 
-    public void addMember(UserInfo userInfo) {
-        members.add(userInfo);
-    }
-
-    public void removeMember(UserInfo userInfo) {
-        members.remove(userInfo);
+    public void addMember(UserInfo... userInfo) {
+        Collections.addAll(members, userInfo);
     }
 
     protected Board() {

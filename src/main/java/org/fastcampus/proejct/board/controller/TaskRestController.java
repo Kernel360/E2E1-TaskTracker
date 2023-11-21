@@ -33,7 +33,7 @@ public class TaskRestController {
     }
 
     //할일 조회
-    @GetMapping("/{boardId}")
+    @GetMapping("/{taskId}")
     public Api<TaskDto> getTask(
             @PathVariable Long taskId
     ) {
