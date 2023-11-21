@@ -1,13 +1,6 @@
 package org.fastcampus.proejct.admin.controller;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
-import org.fastcampus.proejct.board.controller.BoardController;
-import org.fastcampus.proejct.board.converter.SortType;
-import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
@@ -23,17 +16,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class adminController {
 
-    private UserInfoService userInfoService;
+    private final UserInfoService userInfoService;
     private final NotificationService notificationService;
 
     public adminController(UserInfoService userInfoService, BoardService boardService, TaskService taskService, NotificationService notificationService) {

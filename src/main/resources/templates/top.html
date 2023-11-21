@@ -253,9 +253,6 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
-    <script src="jquery.dataTables.min.js"></script>
     <script>
 
         // 클릭된 버튼의 데이터를 모달에 전달하는 함수
@@ -329,8 +326,8 @@
             });
 
             if (response.status === 200) {
-                alert("친구 신청을 보냈습니다.");
                 $('#AddFollowModal').modal('hide');
+                alert("친구 신청을 보냈습니다.");
             } else {
                 alert("친구 신청을 보내지 못했습니다.");
             }
