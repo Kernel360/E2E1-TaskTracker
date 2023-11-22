@@ -54,33 +54,33 @@
     </header>
     <main>
         <form id="update" method="post">
-            <input type="hidden" id="finishedInput" name="finished" value="false">
+            <input type="hidden" id="finishedInput" name="finished" value="false" required>
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" class="form-control" id="title" name="title" th:value="${board.title}"/>
+                <input maxlength="30" type="text" class="form-control" id="title" name="title" th:value="${board.title}"/>
             </div>
             <div class="form-group">
                 <label for="content">내용</label>
-                <textarea th:text="${board.content}" class="form-control" id="content" name="content"
-                          rows="10"></textarea>
+                <textarea maxlength="254" th:text="${board.content}" class="form-control" id="content" name="content"
+                          rows="10" required></textarea>
             </div>
-            <div id="tasks"></div>
-            <div class="button-container">
-                <button type="button" class="btn btn-sm btn-success" id="add-task">할일 추가</button>
-            </div>
+<!--            <div id="tasks"></div>-->
+<!--            <div class="button-container">-->
+<!--                <button type="button" class="btn btn-sm btn-success" id="add-task">할일 추가</button>-->
+<!--            </div>-->
             <!-- 맴버 목록 불러오는 model 하나 넣어주세요 -->
-            <div class="form-group">
-                <label for="member">멤버</label>
-                <input type="text" class="form-control" id="member-search" list="member-list">
-                <datalist id="member-list">
-                    <option value="멤버1">
-                    <option value="멤버2">
-                    <option value="멤버3">
-                    <option value="멤버4">
-                    <option value="멤버5">
-                </datalist>
-                <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>
-            </div>
+<!--            <div class="form-group">-->
+<!--                <label for="member">멤버</label>-->
+<!--                <input type="text" class="form-control" id="member-search" list="member-list">-->
+<!--                <datalist id="member-list">-->
+<!--                    <option value="멤버1">-->
+<!--                    <option value="멤버2">-->
+<!--                    <option value="멤버3">-->
+<!--                    <option value="멤버4">-->
+<!--                    <option value="멤버5">-->
+<!--                </datalist>-->
+<!--                <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>-->
+<!--            </div>-->
             <div class="selected-members"></div>
 
             <div style="margin-top: 10px;">

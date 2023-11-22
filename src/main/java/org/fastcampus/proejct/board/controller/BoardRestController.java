@@ -9,6 +9,7 @@ import org.fastcampus.proejct.board.converter.dto.BoardDto;
 import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.notification.service.NotificationService;
 import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class BoardRestController {
     private final UserInfoService userInfoService;
     private final BoardService boardService;
     private final TaskService taskService;
+    private final NotificationService notificationService;
 
     @GetMapping("/{userId}/list")
     public Api<List<BoardDto>> getBoards(
@@ -77,6 +79,14 @@ public class BoardRestController {
     ) {
         UserInfoDto user = userInfoService.getUserInfoId(userId).orElseThrow();
         boardService.updateBoard(boardId, request.toDto(user));
+        boardService.getBoardMember(boardId).forEach(member -> {
+            notificationService.send(
+                    user,
+                    "게시글이 수정되었습니다.",
+                    "board",
+                    member.id()
+            );
+        });
         return Api.builder()
                 .code(HttpStatus.OK.value())
                 .message("정상 호출")
@@ -121,7 +131,17 @@ public class BoardRestController {
             @PathVariable Long boardId,
             @PathVariable Long memberId
     ) {
+        BoardDto board = boardService.getBoard(boardId);
+        UserInfoDto user = userInfoService.getUserInfoId(memberId).orElseThrow();
         boardService.putBoardMember(boardId, memberId);
+        boardService.getBoardMember(boardId).forEach(member -> {
+            notificationService.send(
+                    user,
+                    board.title() + "에 초대되었습니다.",
+                    "board",
+                    member.id()
+            );
+        });
         return Api.builder()
                 .code(HttpStatus.OK.value())
                 .message("정상 호출")
