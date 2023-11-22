@@ -105,17 +105,12 @@ public class NotificationService {
         return notificationRepository.findByReceiverIdAndVisibleFalse(id).stream().map(NotificationDto::from).toList();
     }
 
-    public void getNotice() {
-        //notificationRepository.save();
-    }
-
-    public boolean deleteNotice() {
-
-        return true;
-    }
-
     public void deleteAllNotices(Long userId) {
         notificationRepository.visibleNotification(userId);
+    }
+
+    public NotificationDto getNotice(Long notificationId, Long userId) {
+        return NotificationDto.from(notificationRepository.findByIdAndReceiverId(notificationId, userId));
     }
 }
 
