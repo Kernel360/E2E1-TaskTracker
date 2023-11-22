@@ -38,7 +38,7 @@ public class NotificationRestController {
             @PathVariable Long receiverId,
             @RequestBody String text
     ) throws IOException {
-        NotificationDto dto = notificationService.send(userPrincipal.toDto(), receiverId, text);
+        NotificationDto dto = notificationService.send(userPrincipal.toDto(), text, "test", receiverId);
         return Api.<NotificationDto>builder()
                 .code(200)
                 .message("OK")
