@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,10 +47,25 @@ public class NotificationRestController {
                 .build();
     }
 
-    @DeleteMapping("/deleteAll")
+    @DeleteMapping("/{userId}deleteAll")
     public void deleteNotifications(
-            @AuthenticationPrincipal UserPrincipal userPrincipal
+            @PathVariable Long userId
     ) {
-        notificationService.deleteAllNotices(userPrincipal.id());
+        notificationService.deleteAllNotices(userId);
+    }
+
+    @GetMapping("/{userId}/{notificationId}")
+    public NotificationDto getNotification(
+            @PathVariable Long userId,
+            @PathVariable Long notificationId
+    ) {
+        return notificationService.getNotice(userId, notificationId);
+    }
+
+    @GetMapping("/{userId}/list")
+    public List<NotificationDto> getNotifications(
+            @PathVariable Long userId
+    ) {
+        return notificationService.getAllNotice(userId);
     }
 }
