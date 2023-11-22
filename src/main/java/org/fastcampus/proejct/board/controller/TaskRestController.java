@@ -9,7 +9,10 @@ import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,14 +49,16 @@ public class TaskRestController {
     }
 
     //할일 추가
-    @PostMapping("{userId}/{boardId}/add")
+    @PostMapping("/{userId}/{boardId}/add")
     public void addTask(
             @PathVariable Long userId,
             @PathVariable Long boardId,
             @RequestBody RequestTask request
     ) {
         var board = boardService.getBoard(boardId);
-        log.info("request: {}", request);
+        log.info("add task userId : {}", userId);
+        log.info("add task boardId : {}", boardId);
+        log.info("add task request : {}", request);
         var task = request.toDto(board);
         taskService.updateTask(userId, board, task);
     }
@@ -66,3 +71,4 @@ public class TaskRestController {
         taskService.deleteTask(taskId);
     }
 }
+

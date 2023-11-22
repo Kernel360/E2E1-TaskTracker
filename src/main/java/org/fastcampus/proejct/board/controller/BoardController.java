@@ -79,9 +79,11 @@ public class BoardController {
         BoardDto board = boardService.getBoard(id);
         List<TaskDto> tasks = taskService.getTasks(id);
         List<UserInfoDto> members = boardService.getBoardMember(id);
+        List<UserInfoDto> friends = followService.getFollowingUsers(userPrincipal.id());
         model.addAttribute("board", board);
         model.addAttribute("tasks", tasks);
         model.addAttribute("members", members);
+        model.addAttribute("friends", friends);
         model.addAttribute("userId", userPrincipal.getUserId());
         return "board/detail";
     }

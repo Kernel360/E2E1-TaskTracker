@@ -1,5 +1,6 @@
 package org.fastcampus.proejct.board.controller;
 
+import com.electronwill.nightconfig.core.conversion.Path;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.base.converter.Api;
@@ -115,10 +116,10 @@ public class BoardRestController {
                 .build();
     }
 
-    @PutMapping("/{boardId}/member")
+    @PutMapping("/{boardId}/member/{memberId}")
     public Api putBoardMember(
             @PathVariable Long boardId,
-            @RequestBody Long memberId
+            @PathVariable Long memberId
     ) {
         boardService.putBoardMember(boardId, memberId);
         return Api.builder()
