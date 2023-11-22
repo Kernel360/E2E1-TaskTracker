@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="header :: includedContent"></th:block>
+
+<body id="page-top">
+
+<style>
+    .btn-switch .icon-switch {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+</style>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- 왼쪽메뉴 Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <div th:replace="left :: includedContent"></div>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div th:replace="top :: includedContent"></div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <th:block th:each="user : ${userList}">
+                    <div>
+                        <p>Email: <span th:text="${user.email}"></span></p>
+                        <p>Name: <span th:text="${user.name}"></span></p>
+                        <!-- 다른 필드들도 유사한 방식으로 표시할 수 있습니다 -->
+                        <hr> <!-- 각 사용자 정보를 구분하기 위한 수평선 -->
+                    </div>
+                </th:block>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">회원정보 목록</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>아이디</th>
+                                    <th>이메일</th>
+                                    <th>이름</th>
+                                    <th>관리자 여부</th>
+                                    <th>이용 제제</th>`
+                                    <th>생성일시</th>
+                                    <th>생성자</th>
+                                    <th>수정일시</th>
+                                    <th>수정자</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="page : ${resultList}">
+                                        <td th:text="${page.id}"></td>
+                                        <td th:text="${page.email}"></td>
+                                        <td th:text="${page.name()}"></td>
+                                        <td>
+                                            <button th:onclick="'javascript:fn_toggleAdmin('+ ${page.id} + ', '+ ${page.adminCheck()} +','+ this +') '"
+                                                    th:class="${page.adminCheck == true} ? 'btn btn-success' : 'btn btn-danger'"
+                                                    th:text="${page.adminCheck == true} ? 'ON' : 'OFF'">
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button th:onclick="'javascript:fn_toggleBan('+ ${page.id} + ', '+ ${page.isBan()} +','+ this +') '"
+                                                    th:class="${page.isBan == true} ? 'btn btn-success' : 'btn btn-danger'"
+                                                    th:text="${page.isBan == true} ? 'ON' : 'OFF'">
+                                            </button>
+                                        </td>
+                                        <td th:text="${page.createdAt}"></td>
+                                        <td th:text="${page.createdBy}"></td>
+                                        <td th:text="${page.modifiedAt}"></td>
+                                        <td th:text="${page.modifiedBy}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 페이징 처리를 위한 Bootstrap 4 pagination -->
+<!--                                <ul class="pagination justify-content-center" th:if="${resultList != null}">-->
+<!--                                    <li class="page-item" th:classappend="${resultList.first ? 'disabled' : ''}">-->
+<!--                                        <a class="page-link" th:if="${resultList.hasPrevious()}" th:href="@{'/admin/users/' + (resultList.number - 1)}" th:attr="${resultList.hasPrevious()} ? 'aria-disabled=true' : 'aria-disabled=false'" tabindex="-1">Previous</a>-->
+<!--                                    </li>-->
+<!--                                    &lt;!&ndash; 페이징 그룹 구성 &ndash;&gt;-->
+<!--                                    <th:block th:with="calculatedEndPage=${resultList.totalPages > resultList.number + 5 ? resultList.number + 5 : resultList.totalPages}">-->
+<!--                                        <th:block th:with="endPage=${calculatedEndPage != null ? calculatedEndPage : resultList.totalPages}">-->
+<!--                                            &lt;!&ndash; 이하 페이징 그룹 구성 &ndash;&gt;-->
+<!--                                            <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}" th:class="${page == resultList.number} ? 'active' : ''">-->
+<!--                                                <a class="page-link" th:href="@{'/admin/users/' + page}" th:text="${page + 1}"></a>-->
+<!--                                            </li>-->
+<!--                                        </th:block>-->
+<!--                                    </th:block>-->
+<!--                                    <li class="page-item">-->
+<!--                                        <a class="page-link" th:if="${resultList.hasNext()}" th:href="@{'/admin/users/' + ${resultList.getPageable().pageNumber + 1}.toString()}">Next</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+                                <div th:if="${!resultList.isEmpty()}">
+                                    <ul class="pagination"
+                                        th:with="
+                                                    pageNumber = ${resultList.pageable.pageNumber},
+                                                    pageSize = ${resultList.pageable.pageSize},
+                                                    totalPages = ${resultList.totalPages},
+                                                    startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+                                                    tempEndPage = ${startPage + pageSize - 1},
+                                                    endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+
+                                        <li th:classappend="${resultList.first} ? 'disabled'" class="page-item">
+                                            <a class="page-link" th:href="${resultList.first} ? '#' : @{(page=${pageNumber - 10})}">
+                                                <span aria-hidden="true">&lt;</span>
+                                            </a>
+                                        </li>
+
+                                        <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">
+                                            <a th:text="${page}" class="page-link" th:href="@{/admin/users(page=${page})}"></a>
+                                        </li>
+
+                                        <li th:classappend="${resultList.last} ? 'disabled'" class="page-item">
+                                            <a class="page-link" th:href="${resultList.last} ? '#' : @{(page=${pageNumber + 10})}" aria-label="Next">
+                                                <span aria-hidden="true">&gt;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/login">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            var dashboardURL = 'http://13.124.80.75/public/dashboards/gTIHztSsz8UDJMFffjoxKdGgogf6wRf06L64soml?org_slug=default';
+            var iframe = $('<iframe>', {
+                src: dashboardURL,
+                frameborder: 0,
+                scrolling: 'no',
+                width: '100%',
+                height: '1080'
+            });
+            $('#redash').append(iframe);
+        });
+
+        function fn_toggleBan(paramId,paramBan, element){
+            let id = paramId;
+            let isBan = !paramBan; //현재 값의 반대로 가져옴.
+
+            if (!confirm("수정 하시겠습니까?")) { return; }
+
+            let data = {
+                id: id,
+                isBan: isBan
+            };
+            let updatedAttr = isBan ? 'btn-success' : 'btn-danger';
+            element.className = updatedAttr;
+            element.innerText = isBan ? 'ON' : 'OFF';
+            element.onclick = function() { fn_toggleBan(id, isBan, this); };
+            fetch('/admin/api/updateIsBan', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', }, // 요청의 Content-Type 설정
+                body: JSON.stringify(data) // 요청에 포함될 데이터
+            })
+                .then(response => {
+                    console.log('PUT 요청 성공:', response);
+                    let updatedBan = isBan ? 'btn-success' : 'btn-danger';
+                    element.className = updatedBan;
+                    element.value = isBan;
+                })
+                .catch(error => {
+                    console.error('PUT 요청 실패:', status, error);
+                });
+        }
+
+        function fn_toggleAdmin(paramId,paramAdmin, element){
+            let id = paramId;
+            let adminCheck = !paramAdmin; //현재 값의 반대로 가져옴.
+
+            if (!confirm("수정 하시겠습니까?")) { return; }
+
+            let data = {
+                id: id,
+                adminCheck: adminCheck
+            };
+            let updatedAttr = adminCheck ? 'btn-success' : 'btn-danger';
+            element.className = updatedAttr;
+            element.innerText = adminCheck ? 'ON' : 'OFF';
+            element.onclick = function() { fn_toggleAdmin(id, adminCheck, this); };
+            fetch('/admin/api/updateAdminCheck', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', }, // 요청의 Content-Type 설정
+                body: JSON.stringify(data) // 요청에 포함될 데이터
+            })
+                .then(response => {
+                    let updatedAdmin = adminCheck ? 'btn-success' : 'btn-danger';
+                    element.className = updatedAdmin;
+                    element.value = adminCheck;
+                })
+                .catch(error => {
+                    console.error('PUT 요청 실패:', status, error);
+                });
+        }
+    </script>
+</body>
+</html>

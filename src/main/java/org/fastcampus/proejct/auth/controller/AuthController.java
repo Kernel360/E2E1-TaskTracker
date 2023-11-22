@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AuthController {
     private final UserInfoService service;
-
-    @GetMapping("/admin")
-    public String getAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return "index";
-    }
+//
+//    @GetMapping("/admin")
+//    public String getAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+//        return "index";
+//    }
 
     @GetMapping("/login-form")
     public String loginForm() {

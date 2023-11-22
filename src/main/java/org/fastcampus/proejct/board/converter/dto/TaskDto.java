@@ -2,6 +2,8 @@ package org.fastcampus.proejct.board.converter.dto;
 
 import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.board.db.model.Task;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
+import org.fastcampus.proejct.user.db.model.UserInfo;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +14,11 @@ public record TaskDto(
         Long id,
         String content,
         String worker,
-        boolean isFinished,
+        boolean finished,
         LocalDateTime startDate,
         LocalDateTime endDate,
-//        BoardDto board,
-//        UserInfoDto userInfo,
+        Long boardId,
+        UserInfoDto userInfo,
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
@@ -26,11 +28,11 @@ public record TaskDto(
             Long id,
             String content,
             String worker,
-            boolean isFinished,
+            boolean finished,
             LocalDateTime startDate,
             LocalDateTime endDate,
-//            BoardDto board,
-//            UserInfoDto userInfo,
+            Long boardId,
+            UserInfoDto userInfo,
             LocalDateTime createdAt,
             String createdBy,
             LocalDateTime modifiedAt,
@@ -40,11 +42,11 @@ public record TaskDto(
                 id,
                 content,
                 worker,
-                isFinished,
+                finished,
                 startDate,
                 endDate,
-//                board,
-//                userInfo,
+                boardId,
+                userInfo,
                 createdAt,
                 createdBy,
                 modifiedAt,
@@ -60,8 +62,8 @@ public record TaskDto(
                 entity.isFinished(),
                 entity.getStartDate(),
                 entity.getEndDate(),
-//                BoardDto.from(entity.getBoard()),
-//                UserInfoDto.from(entity.getUserInfo()),
+                entity.getBoard().getId(),
+                UserInfoDto.from(entity.getUserInfo()),
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
@@ -69,16 +71,16 @@ public record TaskDto(
         );
     }
 
-    public Task toEntity() {
+    public Task toEntity(UserInfo userInfo, Board board) {
         return Task.of(
                 id,
                 content,
                 worker,
-                isFinished,
+                finished,
                 startDate,
-                endDate
-//                board
-//                userInfo
+                endDate,
+                board,
+                userInfo
         );
     }
 }

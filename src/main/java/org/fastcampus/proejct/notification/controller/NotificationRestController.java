@@ -3,9 +3,9 @@ package org.fastcampus.proejct.notification.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
-import org.fastcampus.proejct.base.converter.BaseResponse;
+import org.fastcampus.proejct.base.converter.Api;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
 import org.springframework.http.MediaType;
@@ -33,14 +33,17 @@ public class NotificationRestController {
     }
 
     @PostMapping("/send/{receiverId}")
-    public BaseResponse<NotificationDto> postSend(
+    public Api<NotificationDto> postSend(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable Long receiverId,
             @RequestBody String text
     ) throws IOException {
         NotificationDto dto = notificationService.send(userPrincipal.toDto(), receiverId, text);
-        BaseResponse<NotificationDto> response = new BaseResponse<>(200, "정상 호출", dto);
-        return response;
+        return Api.<NotificationDto>builder()
+                .code(200)
+                .message("OK")
+                .data(dto)
+                .build();
     }
 
     @DeleteMapping("/deleteAll")

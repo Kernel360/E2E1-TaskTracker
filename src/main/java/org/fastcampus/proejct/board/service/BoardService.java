@@ -1,28 +1,23 @@
 package org.fastcampus.proejct.board.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserInfoDto;
 import org.fastcampus.proejct.board.converter.SortType;
-import org.fastcampus.proejct.board.converter.dto.TaskDto;
-import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
-import org.fastcampus.proejct.board.db.model.Task;
+import org.fastcampus.proejct.board.db.model.Board;
 import org.fastcampus.proejct.board.db.repository.BoardRepository;
 import org.fastcampus.proejct.board.db.repository.TaskRepository;
-import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.db.model.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.fastcampus.proejct.user.db.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Slf4j
 @Transactional
@@ -65,31 +60,32 @@ public class BoardService {
         return BoardDto.from(boardRepository.findById(id).orElseThrow());
     }
 
-    public void writeBoard(Long id, BoardDto dto) {
+    public BoardDto saveBoard(Long id, BoardDto dto) {
         UserInfo userInfo = userInfoRepository.getReferenceById(id);
-        boardRepository.save(dto.toEntity(userInfo));
+        Board board = boardRepository.save(dto.toEntity(userInfo));
+        return BoardDto.from(board);
     }
 
-    public void writeBoard(BoardDto dto) {
-        UserInfo userInfo = userInfoRepository.getReferenceById(dto.userInfo().id());
+    public Long saveBoard(BoardDto dto) {
+        UserInfo userInfo = userInfoRepository.findById(dto.userInfo().id()).orElseThrow();
         Board board = dto.toEntity(userInfo);
-        boardRepository.save(board);
+        log.info("save board : {}", board);
+        Board post = boardRepository.saveAndFlush(board);
+        return post.getId();
     }
 
-    public void updateBoard(Long id, BoardDto dto) {
-        Board preBoard = boardRepository.getReferenceById(id);
-
-        if (dto.title() != null) preBoard.setTitle(dto.title());
-        if (dto.content() != null) preBoard.setContent(dto.content());
-
-        List<Task> tasks = dto.tasks().stream().map(TaskDto::toEntity).toList();
-        List<UserInfo> members = dto.members().stream().map(UserInfoDto::toEntity).toList();
-
-        preBoard.setTasks(tasks);
-        preBoard.setMembers(members);
-
-        boardRepository.flush();
-        boardRepository.save(preBoard);
+    public BoardDto updateBoard(Long boardId, BoardDto dto) {
+        Board board = boardRepository.getReferenceById(boardId);
+        try {
+            if (dto.userInfo().equals(dto.userInfo())) {
+                if (dto.title() != null) board.setTitle(dto.title());
+                if (dto.content() != null) board.setContent(dto.content());
+                boardRepository.flush();
+            }
+        } catch (EntityNotFoundException e) {
+            log.error("게시글을 업데이트 실패. 게시글을 찾을 수 없습니다. -dto : {}", dto);
+        }
+        return dto;
     }
 
     public void deleteBoard(Long id) {
@@ -101,4 +97,37 @@ public class BoardService {
                 .map(BoardDto::from)
                 .toList();
     }
+
+    public void finishedBoard(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        board.setFinished(true);
+        log.info("board service finishedBoard : {}", board);
+        boardRepository.save(board);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserInfoDto> getBoardMember(Long boardId) {
+        List<UserInfo> members = boardRepository.findById(boardId).orElseThrow().getMembers();
+        return members.stream().map(UserInfoDto::from).toList();
+    }
+
+    public void putBoardMember(Long boardId, Long memberId) {
+        UserInfo userInfo = userInfoRepository.getReferenceById(memberId);
+        Board board = boardRepository.getReferenceById(boardId);
+        board.addMember(userInfo);
+        boardRepository.save(board);
+    }
+
+    public void deleteBoardMember(Long boardId, Long memberId) {
+        Board board = boardRepository.getReferenceById(boardId);
+        List<UserInfo> postMembers = new ArrayList<>();
+        for (UserInfo member : board.getMembers()) {
+            if (member.getId().equals(memberId)) continue;
+            postMembers.add(member);
+        }
+        board.setMembers(postMembers);
+        log.info("deleteBoardMember post: {}", board);
+        boardRepository.save(board);
+    }
 }
+

@@ -1,71 +1,146 @@
 package org.fastcampus.proejct.board.controller;
 
+import com.electronwill.nightconfig.core.conversion.Path;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
-import org.fastcampus.proejct.base.converter.BaseResponse;
+import org.fastcampus.proejct.base.converter.Api;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
-
+import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
+import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.fastcampus.proejct.user.service.UserInfoService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api/board")
 @RestController
 public class BoardRestController {
     private final UserInfoService userInfoService;
     private final BoardService boardService;
+    private final TaskService taskService;
 
-    @GetMapping("/api/board/{id}")
-    public BaseResponse<BoardDto> updateBoardForm(
-            @PathVariable Long id,
-            Model model,
-            @AuthenticationPrincipal UserPrincipal userPrincipal
-    ) {
-        BoardDto board = boardService.getBoard(id);
-        model.addAttribute("board", board);
-        model.addAttribute("userId", userPrincipal.getUserId());
-        return new BaseResponse<>(200, "정상", board);
-    }
-
-    @GetMapping("/board/list")
-    public BaseResponse<List<BoardDto>> getBoards(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestParam String sorted,
-            Model model
+    @GetMapping("/{userId}/list")
+    public Api<List<BoardDto>> getBoards(
+            @PathVariable Long userId,
+            @RequestParam String sorted
     ) {
         // 게시글 목록을 조회합니다.
-        List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
-        BaseResponse<List<BoardDto>> response = new BaseResponse<>(200, "정상 호출", boards);
-        model.addAttribute("boards", boards);
-        return response;
+        var boards = boardService.getBoards(userId, SortType.valueOf(sorted));
+
+        // FIXME: 11/16/23 Builder 써도 되는데 안써도 됩니다. -> Builder가 익숙하시면 쓰시면 되요
+        return Api.<List<BoardDto>>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .data(boards)
+                .build();
     }
 
-    @PutMapping("/board/{id}/finished")
-    public boolean putBoardFinished(
-            @PathVariable Long id,
-            Model model
+    @GetMapping("/{boardId}")
+    public Api<BoardDto> getBoard(
+            @PathVariable Long boardId
     ) {
-        // TODO: 11/6/23 유저가 해당 게시물을 완료처리할 수 있는지 확인 프론트에서 보여주는 화면을 달리하는게 맞는듯 ㅇㅇ
-        return false;
+        BoardDto board = boardService.getBoard(boardId);
+        return Api.<BoardDto>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .data(board)
+                .build();
+    }
+
+    // FIXME: 11/16/23 안됨
+    @PostMapping("/{userId}/write")
+    public Api<BoardDto> postBoardCreate(
+            @PathVariable Long userId,
+            RequestBoard request
+    ) {
+        UserInfoDto user = userInfoService.getUserInfoId(userId).orElseThrow();
+        BoardDto board = boardService.saveBoard(userId, request.toDto(user));
+        return Api.<BoardDto>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .data(board)
+                .build();
+    }
+
+    // FIXME: 11/16/23 안됨
+    @PutMapping("/{userId}/updated/{boardId}")
+    public Api putBoardUpdate(
+            @PathVariable Long userId,
+            @PathVariable Long boardId,
+            @RequestBody RequestBoard request
+    ) {
+        UserInfoDto user = userInfoService.getUserInfoId(userId).orElseThrow();
+        boardService.updateBoard(boardId, request.toDto(user));
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+    // FIXME: 11/16/23 안됨
+    @PutMapping("/finished/{boardId}")
+    public Api putBoardFinished(
+            @PathVariable Long boardId
+    ) {
+        boardService.finishedBoard(boardId);
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+    @DeleteMapping("/{boardId}/delete")
+    public Api deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+        return Api.<Boolean>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+    @GetMapping("/{boardId}/member")
+    public Api<List<UserInfoDto>> getBoardMember(
+            @PathVariable Long boardId
+    ) {
+        List<UserInfoDto> members = boardService.getBoardMember(boardId);
+        return Api.<List<UserInfoDto>>builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .data(members)
+                .build();
+    }
+
+    @PutMapping("/{boardId}/member/{memberId}")
+    public Api putBoardMember(
+            @PathVariable Long boardId,
+            @PathVariable Long memberId
+    ) {
+        boardService.putBoardMember(boardId, memberId);
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
+    }
+
+    @DeleteMapping("/{boardId}/member/{memberId}")
+    public Api deleteBoardMember(
+            @PathVariable Long boardId,
+            @PathVariable Long memberId
+    ) {
+        boardService.deleteBoardMember(boardId, memberId);
+        BoardDto b = boardService.getBoard(boardId);
+        log.info("deleteBoardMember : {}", b);
+        return Api.builder()
+                .code(HttpStatus.OK.value())
+                .message("정상 호출")
+                .build();
     }
 
 
-    @PutMapping("/board/{id}/update")
-    public String postBoardUpdate(@PathVariable Long id, BoardDto board) {
-        boardService.updateBoard(id, board);
-        return "redirect:/board";
-    }
-
-    @DeleteMapping("/board/{id}/delete")
-    public String deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
-        return "redirect:/board";
-    }
 }

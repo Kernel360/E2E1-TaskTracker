@@ -3,17 +3,20 @@ package org.fastcampus.proejct.board.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
-import org.fastcampus.proejct.auth.converter.request.RequestBoardDto;
 import org.fastcampus.proejct.board.converter.SortType;
 import org.fastcampus.proejct.board.converter.dto.BoardDto;
+import org.fastcampus.proejct.board.converter.dto.TaskDto;
+import org.fastcampus.proejct.board.converter.request.RequestBoard;
 import org.fastcampus.proejct.board.service.BoardService;
 import org.fastcampus.proejct.board.service.TaskService;
+import org.fastcampus.proejct.follow.converter.FollowDto;
+import org.fastcampus.proejct.follow.service.FollowService;
 import org.fastcampus.proejct.notification.converter.dto.NotificationDto;
 import org.fastcampus.proejct.notification.service.NotificationService;
+import org.fastcampus.proejct.user.converter.UserInfoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +32,7 @@ public class BoardController {
     private final BoardService boardService;
     private final TaskService taskService;
     private final NotificationService notificationService;
-
+    private final FollowService followService;
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     @GetMapping
@@ -37,7 +40,7 @@ public class BoardController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam String sorted,
             Model model
-    ){
+    ) {
 
         log.trace("trace message");
         log.debug("debug message");
@@ -49,21 +52,23 @@ public class BoardController {
             List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
             List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
             notificationService.connectNotification(userPrincipal.id());
+            List<FollowDto> follows = followService.getFollow(userPrincipal.id());
 
             model.addAttribute("boards", boards);
             model.addAttribute("userId", userPrincipal.getUserId());
             model.addAttribute("username", userPrincipal.getUsername());
             model.addAttribute("notifications", notifications);
+            model.addAttribute("isAdmin", true);
+            model.addAttribute("follows", follows);
 
             logger.info("getBoardsView - reading board list...");
 
             return "tables";
-        }catch (IOException e){
-            logger.error("getBoardsView - fatal error IOException at getBoardsView",e);
+        } catch (IOException e) {
+            logger.error("getBoardsView - fatal error IOException at getBoardsView", e);
             return "tables";
         }
     }
-
 
     @GetMapping("/{id}")
     public String getBoardDetail(
@@ -72,9 +77,14 @@ public class BoardController {
             Model model
     ) {
         BoardDto board = boardService.getBoard(id);
+        List<TaskDto> tasks = taskService.getTasks(id);
+        List<UserInfoDto> members = boardService.getBoardMember(id);
+        List<UserInfoDto> friends = followService.getFollowingUsers(userPrincipal.id());
         model.addAttribute("board", board);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("members", members);
+        model.addAttribute("friends", friends);
         model.addAttribute("userId", userPrincipal.getUserId());
-        model.addAttribute("tasks", board.tasks());
         return "board/detail";
     }
 
@@ -89,13 +99,13 @@ public class BoardController {
     @PostMapping("/write")
     public String writeBoard(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            RequestBoardDto request
+            RequestBoard request
     ) {
-        boardService.writeBoard(request.toDto(userPrincipal.toDto()));
-        return "redirect:/board";
+        Long boardId = boardService.saveBoard(request.toDto(userPrincipal.toDto()));
+        return "redirect:/board/" + boardId;
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/write/{id}")
     public String updateBoardForm(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -110,13 +120,21 @@ public class BoardController {
         return "board/update";
     }
 
-    @PutMapping("/update/{id}")
+    @PostMapping("/write/{id}")
     public String updateBoard(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            RequestBoardDto request
+            RequestBoard request
     ) {
         boardService.updateBoard(id, request.toDto(userPrincipal.toDto()));
-        return "redirect:/board";
+        return "redirect:/board/" + id;
+    }
+
+    @DeleteMapping("{id}/delete")
+    public String deleteBoard(
+            @PathVariable Long id
+    ) {
+        boardService.deleteBoard(id);
+        return "redirect:/board?sorted=SORT_DEFAULT";
     }
 }

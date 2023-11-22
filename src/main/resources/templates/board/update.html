@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 작성</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .button-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-right: 5px;
+        }
+
+        .selected-members {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .selected-member {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .remove-member {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #add-member {
+            background-color: purple;
+            color: white;
+            border: none;
+            margin-right: 80px;
+            /* 여기서 간격 조정 */
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <h1>게시물 작성</h1>
+    </header>
+    <main>
+        <form id="update" method="post">
+            <input type="hidden" id="finishedInput" name="finished" value="false">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" name="title" th:value="${board.title}"/>
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea th:text="${board.content}" class="form-control" id="content" name="content"
+                          rows="10"></textarea>
+            </div>
+            <div id="tasks"></div>
+            <div class="button-container">
+                <button type="button" class="btn btn-sm btn-success" id="add-task">할일 추가</button>
+            </div>
+            <!-- 맴버 목록 불러오는 model 하나 넣어주세요 -->
+            <div class="form-group">
+                <label for="member">멤버</label>
+                <input type="text" class="form-control" id="member-search" list="member-list">
+                <datalist id="member-list">
+                    <option value="멤버1">
+                    <option value="멤버2">
+                    <option value="멤버3">
+                    <option value="멤버4">
+                    <option value="멤버5">
+                </datalist>
+                <button type="button" class="btn btn-sm btn-primary mt-2" id="add-member">멤버 추가</button>
+            </div>
+            <div class="selected-members"></div>
+
+            <div style="margin-top: 10px;">
+                <!-- 간격 추가 -->
+                <!--                <button type="button" class="btn btn-primary" id="submit">작성</button>-->
+                <button type="submit" class="btn btn-primary">작성</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+        &copy; 2023
+    </footer>
+</div>
+
+<!-- AJAX 호출 -->
+<script>
+    var currentURL = window.location.href;
+    var id = currentURL.split("/").pop();
+    console.log("board id : " + id);
+    $('#update').on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "/board/write/" + id,
+            data: {
+                // 필요한 데이터를 여기에 추가
+                // key1: value1,
+                // key2: value2
+                // ...
+            },
+            success: function (response) {
+                // 성공 시 수행할 동작
+                console.log(response);
+            },
+            error: function (error) {
+                // 에러 발생 시 수행할 동작
+                console.error(error);
+            }
+        });
+    })
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#add-task').on('click', function () {
+        const tasksContainer = $('#tasks');
+        const newTask = $('<div class="form-group"><div class="task-item"><label for="task">할일</label><input type="text" class="form-control" name="task"><button type="button" class="btn btn-sm btn-danger remove-task">삭제</button></div></div>');
+        tasksContainer.append(newTask);
+
+        $('.remove-task').on('click', function () {
+            $(this).parent().remove();
+        });
+    });
+
+    $('#add-member').on('click', function () {
+        const addMember = $('#member-search').val();
+        const selectedMembers = $('.selected-member');
+        var memberJoiner = false;
+
+        // 기존 맴버유무 검사
+        selectedMembers.each(function () {
+            if (addMember == $(this).text().replace(/.$/, '')) {
+                alert("이미 포함 된 맴버입니다.");
+                memberJoiner = true;
+                return false; // each() 루프를 종료하기 위해 false를 반환
+            }
+        });
+
+        if (memberJoiner) {
+            return false;
+        }
+        memberJoiner = 'newMember';
+
+        const memberList = ['멤버1', '멤버2', '멤버3', '멤버4', '멤버5'];
+        if ((memberJoiner == 'newMember') && memberList.includes(addMember)) {
+            const selectedMembersContainer = $('.selected-members');
+            const selectedMemberDiv = $('<div class="selected-member"></div>').text(addMember);
+            const removeButton = $('<span>x</span>').addClass('remove-member').on('click', function () {
+                selectedMemberDiv.remove();
+            });
+            selectedMemberDiv.append(removeButton);
+            selectedMembersContainer.append(selectedMemberDiv);
+        } else {
+            alert('기존에 없는 맴버입니다.');
+            return;
+        }
+    });
+
+    // 작성 버튼 시 false 로
+    const submitButton = document.getElementById('submit');
+    submitButton.addEventListener('click', function () {
+        // `finished` 값을 `false`로 설정
+        const finishedValue = false;
+
+        // `finished` 값을 숨겨진 입력 필드의 값으로 설정
+        const finishedInput = document.getElementById('finishedInput');
+        finishedInput.value = finishedValue;
+    });
+
+    //submit
+    $('#submit').click(function () {
+
+        var tasks = $('input[name="task"]');
+        var taskList = {};
+        var taskKey = '';
+
+        tasks.each(function (index, element) {
+            taskKey = index;
+            taskList[taskKey] = element.value;
+        });
+
+        var formData = new FormData($('#frm')[0]);
+        var jsonData = {};
+        formData.forEach(function (value, key) {
+            jsonData[key] = value;
+        });
+        jsonData["tasks"] = taskList;
+
+        $.ajax({
+            url: '/board/write/' + id,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(jsonData),
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+    });
+
+</script>
+</body>
+</html>

@@ -68,6 +68,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'org.flywaydb:flyway-core'
 
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -89,6 +92,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
+
+    //m1 mac unable load solved
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 
     //slf4j & logback
     implementation 'ch.qos.logback:logback-classic:1.4.11'

@@ -5,22 +5,25 @@ import org.fastcampus.proejct.base.converter.RedirectType;
 import org.fastcampus.proejct.base.converter.RoleType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
 @Slf4j
 public class Redirect {
-    private static String redirectUrl = null;
+//    private static String redirectUrl = null;
 
     private Redirect() {
 
     }
 
     public static String getInstance() {
-        if (redirectUrl == null) {
-            redirectUrl = getRedirectUrl();
-        }
-        return redirectUrl;
+//        if (redirectUrl == null) {
+//            redirectUrl = getRedirectUrl();
+//        }
+//        return redirectUrl;
+        return getRedirectUrl();
     }
 
     private static String getRedirectUrl() {
