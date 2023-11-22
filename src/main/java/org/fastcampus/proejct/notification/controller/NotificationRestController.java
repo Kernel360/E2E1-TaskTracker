@@ -47,7 +47,7 @@ public class NotificationRestController {
                 .build();
     }
 
-    @DeleteMapping("/{userId}deleteAll")
+    @DeleteMapping("/{userId}/deleteAll")
     public void deleteNotifications(
             @PathVariable Long userId
     ) {
