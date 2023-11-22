@@ -1,23 +1,40 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="includedContent">
+
+    <script>
+        function fn_search(){
+            const form = document.forms.searchForm;
+            const fullPath = window.location.pathname;
+            const url = fullPath.split('/').filter(segment => segment.trim() !== '');
+            form.action = "/" + url[0] + "/" + url[1] +'/search';
+            form.method = 'GET'
+
+            console.log(form);
+
+            form.submit(); // 변경된 action과 method로 form 제출
+
+            // form.addEventListener('submit', (event) => {
+            //     event.preventDefault(); // 기본 submit 동작 방지
+            //     form.submit(); // 변경된 action과 method로 form 제출
+            // });
+        }
+    </script>
+
     <!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
         <!-- Sidebar Toggle (Topbar) -->
-        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-        </button>
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i> </button>
 
         <!-- Topbar Search -->
-        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" name="searchForm">
             <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                       aria-label="Search" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                    </button>
-                </div>
+                <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append"> <button class="btn btn-primary" type="button" th:onclick="'javascript:fn_search()'"> <i class="fas fa-search fa-sm"></i> </button> </div>
             </div>
+            <input type="hidden" name="page" >
+            <input type="hidden" name="size" >
+            <input type="hidden" name="sortOrder" >
+            <input type="hidden" name="sortField" >
         </form>
 
         <!-- Topbar Navbar -->
@@ -25,26 +42,21 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
                 </a>
-                <!-- Dropdown - Messages -->
-                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                     aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small"
-                                   placeholder="Search for..." aria-label="Search"
-                                   aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!--                &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
+<!--                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated&#45;&#45;grow-in"-->
+<!--                     aria-labelledby="searchDropdown">-->
+<!--                    <form class="form-inline mr-auto w-100 navbar-search">-->
+<!--                        <div class="input-group">-->
+<!--                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+<!--                            <div class="input-group-append">-->
+<!--                                <button class="btn btn-primary" type="button"> <i class="fas fa-search fa-sm"></i> </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
             </li>
 
             <!-- Nav Item - Alerts -->
@@ -56,8 +68,7 @@
                     <span th:text="${notifications.size()}" class="badge badge-danger badge-counter"></span>
                 </a>
                 <!-- Dropdown - Alerts -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                     aria-labelledby="alertsDropdown">
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                     <h6 class="dropdown-header">
                         Alerts Center
                     </h6>
@@ -102,8 +113,7 @@
 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user-friends fa-fw"></i>
                 </a>
                 <!-- Dropdown - Messages -->
@@ -121,14 +131,20 @@
                         <div>
                             <div th:text="${follow.following}" class="small text-gray-500">팔로잉</div>
                         </div>
+                        <div class="ml-auto">
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"
+                                    th:attr="data-following-id=${follow.following}" onclick="openDeleteModal(this)">친구 삭제</button>
+                        </div>
                     </div>
+
+                    <!-- sample -->
                     <a class="dropdown-item d-flex align-items-center" href="#">
                         <div class="font-weight-bold">
                             <div class="text-truncate">손흥민</div>
                             <div class="small text-gray-500">채팅</div>
                         </div>
                         <div class="ml-auto">
-                            <button class="btn btn-sm btn-danger">친구 삭제</button>
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal">친구 삭제</button>
                         </div>
                     </a>
                     <a class="dropdown-item d-flex align-items-center" href="#">
@@ -144,7 +160,7 @@
                             <div class="small text-gray-500">Jae Chun · 1d</div>
                         </div>
                     </a>
-                    <a class="dropdown-item text-center small text-gray-500" href="#">친구 추가</a>
+                    <a class="dropdown-item text-center small text-gray-500" data-toggle="modal" data-target="#AddFollowModal" >친구 추가</a>
                 </div>
             </li>
 
@@ -185,4 +201,137 @@
 
     </nav>
     <!-- End of Topbar -->
+    <!-- follow delete Modal-->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="followDeleteModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="followDeleteModal">친구 삭제하기</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">정말 삭제하시겠어요?</div>
+                <input type="hidden" id="followingIdInput">
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button class="btn btn-primary" type="button" onclick="deleteFollow()">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="AddFollowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addfollowLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addfollowLabel">친구 추가하기</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="검색어">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" onclick="search()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div id="searchResult"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="sendFriendRequest()" >친구 신청</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // 클릭된 버튼의 데이터를 모달에 전달하는 함수
+        function openDeleteModal(button) {
+            var followingId = button.getAttribute('data-following-id');
+
+            document.getElementById('followingIdInput').value = followingId; // followingId를 hidden input에 설정
+        }
+
+        // follow 삭제를 위한 Ajax 요청을 보내는 함수
+        function deleteFollow() {
+            var followingId = document.getElementById('followingIdInput').value;
+
+            // Ajax 요청
+            $.ajax({
+                url: '/follow/' + userId + '/delete/' + followingId, // 삭제 요청을 처리할 컨트롤러 경로
+                type: 'DELETE',
+                success: function(response) {
+                    // 삭제 성공 시 모달 닫기 등 추가 동작 수행
+                    $('#DeleteModal').modal('hide');
+                    // 삭제 성공 알림창
+                    alert('삭제되었습니다.');
+                    // 추가 동작을 위한 코드 작성
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    // 삭제 실패 시 에러 처리
+                    console.error(error);
+                }
+            });
+        }
+
+        async function search() {
+            const searchInput = document.getElementById("searchInput");
+            const searchResult = document.getElementById("searchResult");
+
+            const userId = searchInput.value;
+
+            try {
+                const response = await fetch(`/api/user/${userId}`);
+                const data = await response.json();
+
+                if (data.code === 200) {
+                    const userInfoDto = data.data;
+                    searchResult.innerHTML = `
+        <div>
+          <strong>아이디:</strong> ${userInfoDto.id}
+          <br>
+          <strong>닉네임:</strong> ${userInfoDto.name}
+        </div>
+      `;
+                    return userInfoDto;
+                } else {
+                    searchResult.innerHTML = "회원 정보가 없습니다.";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function sendFriendRequest() {
+            const userInfoDto = await search();
+            const receiverId = userInfoDto.id;
+
+            const response = await fetch(`/notification/send/${receiverId}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    type: "friend_request",
+                    senderId: localStorage.getItem("userId"),
+                }),
+            });
+
+            if (response.status === 200) {
+                $('#AddFollowModal').modal('hide');
+                alert("친구 신청을 보냈습니다.");
+            } else {
+                alert("친구 신청을 보내지 못했습니다.");
+            }
+        }
+    </script>
 </th:block>
+
