@@ -122,44 +122,22 @@
                     <h6 class="dropdown-header">
                         친구 목록
                     </h6>
-                    <div th:each="follow : ${follows}" class="dropdown-item d-flex align-items-center">
+                    <div th:each="friend : ${friends}" class="dropdown-item d-flex align-items-center">
                         <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
+                            <div class="dropdown-list-image mr-3">
+                                <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                     alt="...">
+                                <div class="status-indicator"></div>
                             </div>
                         </div>
                         <div>
-                            <div th:text="${follow.following}" class="small text-gray-500">팔로잉</div>
+                            <div th:text="${friend.name()}" class="small text-gray-500">팔로잉</div>
                         </div>
                         <div class="ml-auto">
                             <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"
-                                    th:attr="data-following-id=${follow.following}" onclick="openDeleteModal(this)">친구 삭제</button>
+                                    th:attr="data-following-id=${friend.id()}" onclick="openDeleteModal(this)">친구 삭제</button>
                         </div>
                     </div>
-
-                    <!-- sample -->
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="font-weight-bold">
-                            <div class="text-truncate">손흥민</div>
-                            <div class="small text-gray-500">채팅</div>
-                        </div>
-                        <div class="ml-auto">
-                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal">친구 삭제</button>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                 alt="...">
-                            <div class="status-indicator"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate">I have the photos that you ordered last month, how
-                                would you like them sent to you?
-                            </div>
-                            <div class="small text-gray-500">Jae Chun · 1d</div>
-                        </div>
-                    </a>
                     <a class="dropdown-item text-center small text-gray-500" data-toggle="modal" data-target="#AddFollowModal" >친구 추가</a>
                 </div>
             </li>

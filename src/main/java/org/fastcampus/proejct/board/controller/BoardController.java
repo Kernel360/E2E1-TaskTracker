@@ -52,14 +52,14 @@ public class BoardController {
             List<BoardDto> boards = boardService.getBoards(userPrincipal.id(), SortType.valueOf(sorted));
             List<NotificationDto> notifications = notificationService.getAllNotice(userPrincipal.id());
             notificationService.connectNotification(userPrincipal.id());
-            List<FollowDto> follows = followService.getFollow(userPrincipal.id());
+            List<UserInfoDto> friends = followService.getFollowingUsers(userPrincipal.id());
 
             model.addAttribute("boards", boards);
             model.addAttribute("userId", userPrincipal.getUserId());
             model.addAttribute("username", userPrincipal.getUsername());
             model.addAttribute("notifications", notifications);
             model.addAttribute("isAdmin", true);
-            model.addAttribute("follows", follows);
+            model.addAttribute("friends", friends);
 
             logger.info("getBoardsView - reading board list...");
 
