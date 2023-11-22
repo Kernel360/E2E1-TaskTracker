@@ -54,11 +54,18 @@ public class NotificationService {
         return sseEmitter;
     }
 
-    public NotificationDto send(UserInfoDto sender, Long receiverId, String text) {
+    public NotificationDto send(
+            UserInfoDto sender,
+            String text,
+            String type,
+            Long receiverId
+    ) {
         // 유저 ID로 SseEmitter를 찾아 이벤트를 발생 시킨다.
         emitterRepository.get(receiverId).ifPresentOrElse(sseEmitter -> {
             try {
-                sseEmitter.send(SseEmitter.event().id(receiverId.toString()).name("alarm").data(text));
+                sseEmitter.send(SseEmitter.event().id(receiverId.toString())
+                        .name("alarm")
+                        .data(text));
             } catch (IOException e) {
                 // IOException이 발생하면 저장된 SseEmitter를 삭제하고 예외를 발생시킨다.
                 emitterRepository.delete(receiverId);
@@ -66,7 +73,7 @@ public class NotificationService {
             }
         }, () -> log.info("No emitter found"));
         Notification notification = new Notification().builder()
-                .type("TEST_TYPE")
+                .type(type)
                 .receiverId(receiverId)
                 .senderId(sender.id())
                 .text(text)
