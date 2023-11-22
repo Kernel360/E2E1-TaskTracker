@@ -61,5 +61,4 @@ jobs:
          aws deploy create-deployment --application-name task-tracker-code-deploy \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name task-tracker-code-group \
-          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=jar/package.zip \
-          && aws s3 cp --region ap-northeast-2 ./build-artifacts/package.zip s3://$S3_BUCKET_NAME/jar/
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=jar/package.zip
