@@ -35,11 +35,11 @@ public class SecurityConfig {
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
     ) throws Exception {
         return http
-//                .formLogin(login -> login
-//                        .loginPage("/login-form").permitAll()
-//                        .defaultSuccessUrl("/", true)
-//                        .failureForwardUrl("/login-form")
-//                )
+                .formLogin(login -> login
+                        .loginPage("/login-form").permitAll()
+                        .defaultSuccessUrl("/", true)
+                        .failureForwardUrl("/login-form")
+                )
                 .formLogin(withDefaults())
                 .logout(it -> it.logoutSuccessUrl("/"))
                 .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
