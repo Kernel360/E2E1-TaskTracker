@@ -78,7 +78,7 @@
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                      aria-labelledby="alertsDropdown">
                     <h6 class="dropdown-header">
-                        Alerts Center
+                        알림
                     </h6>
                     <div th:each="notify : ${notifications}" class="dropdown-item d-flex align-items-center">
                         <div class="mr-3">
@@ -89,6 +89,17 @@
                         <div>
                             <div th:text="${notify.getSenderId()}" class="small text-gray-500">수신자</div>
                             <div th:text="${notify.getText()}" class="font-weight-bold">알림 내용</div>
+
+<!--버튼 추가 -->
+                            <div th:if="${notify.getType() eq 'follow'}" class="ml-auto">
+                                <button type="button" class="btn btn-primary">수락</button>
+                                <button type="button" class="btn btn-secondary">거절</button>
+
+<!--                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"-->
+<!--                                        th:attr="data-following-id=${friend.id()}" onclick="openDeleteModal(this)">수락</button>-->
+<!--                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"-->
+<!--                                        th:attr="data-following-id=${friend.id()}" onclick="openDeleteModal(this)">거절</button>-->
+                            </div>
                         </div>
                     </div>
                     <!--                    <a class="dropdown-item d-flex align-items-center" href="#">-->
@@ -117,7 +128,7 @@
                             id="deleteAllNotification"
                             class="dropdown-item text-center small text-gray-500"
                             th:onclick="'javascript:deleteAllNotification(' + ${userId} + ')'">
-                        Delete All Alerts
+                        모든 알림 삭제
                     </div>
                 </div>
             </li>
@@ -331,9 +342,13 @@
 
             const response = await fetch(`/notification/send/${receiverId}`, {
                 method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
-                    type: "friend_request",
-                    senderId: localStorage.getItem("userId"),
+                    type: "follow",
+                    senderId: userId,
+                    message: "친구 요청",
                 }),
             });
 
