@@ -44,7 +44,7 @@ public class adminController {
 
         model.addAttribute("notifications", notifications);
         model.addAttribute("isAdmin",true);
-        return "/index";
+        return "index";
     }
 
     @GetMapping ("/users")
@@ -68,7 +68,7 @@ public class adminController {
         model.addAttribute("resultList",resultList);
         model.addAttribute("pageInfo",pageInfo);
 
-        return "/users";
+        return "users";
     }
 
     @GetMapping("/users/search")
@@ -94,6 +94,6 @@ public class adminController {
         model.addAttribute("resultList",resultList);
         model.addAttribute("pageInfo",pageInfo);
 
-        return "/users";
+        return "users";
     }
 }
