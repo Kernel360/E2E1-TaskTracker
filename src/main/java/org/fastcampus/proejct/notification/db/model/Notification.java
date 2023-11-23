@@ -45,13 +45,13 @@ public class Notification extends BaseEntity {
             long senderId,
             long receiverId,
             String text,
-            boolean isVisible
+            boolean visible
     ) {
         this.id = id;
         this.type = type;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.text = text;
-        this.visible = isVisible;
+        this.visible = visible;
     }
 }

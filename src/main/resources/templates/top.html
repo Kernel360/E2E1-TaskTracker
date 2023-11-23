@@ -2,11 +2,11 @@
 <th:block th:fragment="includedContent">
 
     <script>
-        function fn_search(){
+        function fn_search() {
             const form = document.forms.searchForm;
             const fullPath = window.location.pathname;
             const url = fullPath.split('/').filter(segment => segment.trim() !== '');
-            form.action = "/" + url[0] + "/" + url[1] +'/search';
+            form.action = "/" + url[0] + "/" + url[1] + '/search';
             form.method = 'GET'
 
             console.log(form);
@@ -23,18 +23,24 @@
     <!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
         <!-- Sidebar Toggle (Topbar) -->
-        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i> </button>
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i>
+        </button>
 
         <!-- Topbar Search -->
-        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" name="searchForm">
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+              name="searchForm">
             <div class="input-group">
-                <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                <div class="input-group-append"> <button class="btn btn-primary" type="button" th:onclick="'javascript:fn_search()'"> <i class="fas fa-search fa-sm"></i> </button> </div>
+                <input type="text" name="keyword" class="form-control bg-light border-0 small"
+                       placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" th:onclick="'javascript:fn_search()'"><i
+                            class="fas fa-search fa-sm"></i></button>
+                </div>
             </div>
-            <input type="hidden" name="page" >
-            <input type="hidden" name="size" >
-            <input type="hidden" name="sortOrder" >
-            <input type="hidden" name="sortField" >
+            <input type="hidden" name="page">
+            <input type="hidden" name="size">
+            <input type="hidden" name="sortOrder">
+            <input type="hidden" name="sortField">
         </form>
 
         <!-- Topbar Navbar -->
@@ -42,21 +48,22 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
                 </a>
-<!--                &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
-<!--                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated&#45;&#45;grow-in"-->
-<!--                     aria-labelledby="searchDropdown">-->
-<!--                    <form class="form-inline mr-auto w-100 navbar-search">-->
-<!--                        <div class="input-group">-->
-<!--                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
-<!--                            <div class="input-group-append">-->
-<!--                                <button class="btn btn-primary" type="button"> <i class="fas fa-search fa-sm"></i> </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
+                <!--                &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
+                <!--                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated&#45;&#45;grow-in"-->
+                <!--                     aria-labelledby="searchDropdown">-->
+                <!--                    <form class="form-inline mr-auto w-100 navbar-search">-->
+                <!--                        <div class="input-group">-->
+                <!--                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+                <!--                            <div class="input-group-append">-->
+                <!--                                <button class="btn btn-primary" type="button"> <i class="fas fa-search fa-sm"></i> </button>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </form>-->
+                <!--                </div>-->
             </li>
 
             <!-- Nav Item - Alerts -->
@@ -68,7 +75,8 @@
                     <span th:text="${notifications.size()}" class="badge badge-danger badge-counter"></span>
                 </a>
                 <!-- Dropdown - Alerts -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                     aria-labelledby="alertsDropdown">
                     <h6 class="dropdown-header">
                         Alerts Center
                     </h6>
@@ -83,29 +91,32 @@
                             <div th:text="${notify.getText()}" class="font-weight-bold">알림 내용</div>
                         </div>
                     </div>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-success">
-                                <i class="fas fa-donate text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 7, 2019</div>
-                            $290.29 has been deposited into your account!
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 2, 2019</div>
-                            Spending Alert: We've noticed unusually high spending for your account.
-                        </div>
-                    </a>
-                    <div class="dropdown-item text-center small text-gray-500">
+                    <!--                    <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                        <div class="mr-3">-->
+                    <!--                            <div class="icon-circle bg-success">-->
+                    <!--                                <i class="fas fa-donate text-white"></i>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <div class="small text-gray-500">December 7, 2019</div>-->
+                    <!--                            $290.29 has been deposited into your account!-->
+                    <!--                        </div>-->
+                    <!--                    </a>-->
+                    <!--                    <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                        <div class="mr-3">-->
+                    <!--                            <div class="icon-circle bg-warning">-->
+                    <!--                                <i class="fas fa-exclamation-triangle text-white"></i>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <div class="small text-gray-500">December 2, 2019</div>-->
+                    <!--                            Spending Alert: We've noticed unusually high spending for your account.-->
+                    <!--                        </div>-->
+                    <!--                    </a>-->
+                    <div
+                            id="deleteAllNotification"
+                            class="dropdown-item text-center small text-gray-500"
+                            th:onclick="'javascript:deleteAllNotification(' + ${userId} + ')'">
                         Delete All Alerts
                     </div>
                 </div>
@@ -113,7 +124,8 @@
 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user-friends fa-fw"></i>
                 </a>
                 <!-- Dropdown - Messages -->
@@ -122,44 +134,22 @@
                     <h6 class="dropdown-header">
                         친구 목록
                     </h6>
-                    <div th:each="follow : ${follows}" class="dropdown-item d-flex align-items-center">
+                    <div th:each="friend : ${friends}" class="dropdown-item d-flex align-items-center">
                         <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
+                            <div class="dropdown-list-image mr-3">
+                                <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                     alt="...">
+                                <div class="status-indicator"></div>
                             </div>
                         </div>
                         <div>
-                            <div th:text="${follow.following}" class="small text-gray-500">팔로잉</div>
+                            <div th:text="${friend.name()}" class="small text-gray-500">팔로잉</div>
                         </div>
                         <div class="ml-auto">
                             <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"
-                                    th:attr="data-following-id=${follow.following}" onclick="openDeleteModal(this)">친구 삭제</button>
+                                    th:attr="data-following-id=${friend.id()}" onclick="openDeleteModal(this)">친구 삭제</button>
                         </div>
                     </div>
-
-                    <!-- sample -->
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="font-weight-bold">
-                            <div class="text-truncate">손흥민</div>
-                            <div class="small text-gray-500">채팅</div>
-                        </div>
-                        <div class="ml-auto">
-                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal">친구 삭제</button>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                 alt="...">
-                            <div class="status-indicator"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate">I have the photos that you ordered last month, how
-                                would you like them sent to you?
-                            </div>
-                            <div class="small text-gray-500">Jae Chun · 1d</div>
-                        </div>
-                    </a>
                     <a class="dropdown-item text-center small text-gray-500" data-toggle="modal" data-target="#AddFollowModal" >친구 추가</a>
                 </div>
             </li>
@@ -223,7 +213,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="AddFollowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addfollowLabel" aria-hidden="true">
+    <div class="modal fade" id="AddFollowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="addfollowLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -247,12 +238,33 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" onclick="sendFriendRequest()" >친구 신청</button>
+                    <button type="button" class="btn btn-primary" onclick="sendFriendRequest()">친구 신청</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <script>
+        function deleteAllNotification(userId) {
+            console.log("delete user id : " + userId);
+            $.ajax({
+                url: '/notification/' + userId + '/deleteAll',
+                type: 'DELETE',
+                success: function (response) {
+                    // 삭제 성공 시 모달 닫기 등 추가 동작 수행
+                    console.log(this.url);
+                    $('#deleteAllNotification').modal('hide');
+                    // 삭제 성공 알림창
+                    alert('삭제되었습니다.');
+                    // 추가 동작을 위한 코드 작성
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // 삭제 실패 시 에러 처리
+                    console.error(error);
+                }
+            });
+        }
+    </script>
     <script>
 
         // 클릭된 버튼의 데이터를 모달에 전달하는 함수
@@ -270,7 +282,7 @@
             $.ajax({
                 url: '/follow/' + userId + '/delete/' + followingId, // 삭제 요청을 처리할 컨트롤러 경로
                 type: 'DELETE',
-                success: function(response) {
+                success: function (response) {
                     // 삭제 성공 시 모달 닫기 등 추가 동작 수행
                     $('#DeleteModal').modal('hide');
                     // 삭제 성공 알림창
@@ -278,7 +290,7 @@
                     // 추가 동작을 위한 코드 작성
                     console.log(response);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // 삭제 실패 시 에러 처리
                     console.error(error);
                 }
