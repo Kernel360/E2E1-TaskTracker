@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,15 +18,12 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.UUID;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -35,25 +31,37 @@ public class SecurityConfig {
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
     ) throws Exception {
         return http
-                .formLogin(login -> login
-                        .loginPage("/login-form").permitAll()
-                        .defaultSuccessUrl("/", true)
-                        .failureForwardUrl("/login-form")
-                )
-                .formLogin(withDefaults())
-                .logout(it -> it.logoutSuccessUrl("/"))
-                .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
+                .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(
+                                antMatcher("/"),
+                                antMatcher("/login.html"),
+                                antMatcher("/swagger-ui/**"),
+                                antMatcher("/swagger-resources/**")
+                        ).permitAll()
+                        .requestMatchers(antMatcher("/public/**")).permitAll()
                         .requestMatchers(antMatcher("/error")).permitAll()
                         .requestMatchers(antMatcher("/api/**")).permitAll()
-//                        .requestMatchers(antMatcher("/**")).permitAll()
                         .requestMatchers(antMatcher("/board/**")).hasRole("USER")
                         .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .csrf().disable()
+                .formLogin(it -> it
+                        .loginPage("/auth/form")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/auth/form?error")
+                        .permitAll()
+                )
+                .logout().permitAll().and()
+                .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
                 .build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
+        return (web) -> web.ignoring().requestMatchers(antMatcher("/resources/static/**"));
     }
 
     @Bean
