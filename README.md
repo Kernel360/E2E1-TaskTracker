@@ -3,12 +3,12 @@
 
 ##기술 스택
 - Front-end:
-    - Bootstrap
+    - Bootstrap4
     - ThymeLeaf
 - Back-end:
     - Java 17
-    - Spring Framework 3.x.x
-        - Spring Boot
+    - Spring Framework
+        - Spring Boot 3.0.12
         - Spring Data JPA
         - Spring Security
             - Kakao 로그인
