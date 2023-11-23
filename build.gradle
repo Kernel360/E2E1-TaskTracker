@@ -71,6 +71,10 @@ dependencies {
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    //jakarta.xml.bind
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api-parent:4.0.0'
+
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
