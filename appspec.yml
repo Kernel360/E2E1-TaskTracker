@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source:  /
-    destination: /home/ec2-user/action/  # 이 디렉토리 내에 배포가 진행된다
+  - source: /
+    destination: /home/ec2-user/action/
     overwrite: yes
 
 permissions:
@@ -13,10 +13,11 @@ permissions:
     group: ec2-user
 
 hooks:
-  #BeforeInstall:
-   # - location: scripts/deploy.sh
-   #   timeout: 60
-   #   runas: ec2-user
+  BeforeInstall:
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ec2-user
+      command: chmod +x /home/ec2-user/action/scripts/deploy.sh
 
   ApplicationStart:
     - location: /home/ec2-user/action/scripts/deploy.sh
