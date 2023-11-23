@@ -14,7 +14,8 @@ permissions:
 
 hooks:
   BeforeInstall:
-    - timeout: 60
+    - location: /home/ec2-user/action/scripts/deploy.sh
+      timeout: 60
       runas: ec2-user
       command: chmod +x /home/ec2-user/action/scripts/deploy.sh
 
