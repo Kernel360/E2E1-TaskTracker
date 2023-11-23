@@ -20,6 +20,6 @@ hooks:
       command: chmod +x /home/ec2-user/action/scripts/deploy.sh
 
   ApplicationStart:
-    - location: /home/ec2-user/action/scripts/deploy.sh
+    - location: /scripts/deploy.sh
       timeout: 60
       runas: ec2-user
