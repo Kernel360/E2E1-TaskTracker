@@ -48,6 +48,15 @@ public class NotificationRestController {
                 .build();
     }
 
+    @DeleteMapping("/{senderId}/delete/{receiverId}")
+    public void followdeleteNotify(
+            @PathVariable Long senderId,
+            @PathVariable Long receiverId
+    ) {
+        notificationService.deleteFollowNotices(senderId, receiverId);
+    }
+
+
     @DeleteMapping("/{userId}/deleteAll")
     public void deleteNotifications(
             @PathVariable Long userId
