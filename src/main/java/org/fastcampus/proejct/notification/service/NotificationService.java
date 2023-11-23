@@ -109,6 +109,10 @@ public class NotificationService {
         notificationRepository.visibleNotification(userId);
     }
 
+    public void deleteFollowNotices(Long senderId, Long receiverId) {
+        notificationRepository.deleteFollowNotify(senderId, receiverId);
+    }
+
     public NotificationDto getNotice(Long notificationId, Long userId) {
         return NotificationDto.from(notificationRepository.findByIdAndReceiverId(notificationId, userId));
     }
