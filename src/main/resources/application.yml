@@ -51,7 +51,6 @@ spring:
     cache: false
     prefix=file: src/main/resources/templates/
   security:
-    loginPage: /login-form
     oauth2:
       client:
         registration:
