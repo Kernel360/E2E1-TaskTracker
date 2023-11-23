@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
-@RequestMapping("/")
 @Controller
 public class BaseController {
-    @GetMapping
+    @GetMapping("/")
     public String root() {
         //return RedirectType.REDIRECT_USER.getUrl();
+        log.info("get root");
         return Redirect.getInstance();
     }
 }
