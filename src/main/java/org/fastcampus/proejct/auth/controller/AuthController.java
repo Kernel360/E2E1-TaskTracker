@@ -3,13 +3,11 @@ package org.fastcampus.proejct.auth.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fastcampus.proejct.auth.converter.dto.UserPrincipal;
+import org.fastcampus.proejct.auth.converter.request.RequestUser;
 import org.fastcampus.proejct.user.service.UserInfoService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,14 +28,12 @@ public class AuthController {
         return "register";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signup/submit")
     public String signup(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String email
+            @RequestBody RequestUser request
     ) {
-        log.info("post signup");
-        service.saveUser(username, password, email);
+        log.info("post signup : {}, {}, {}", request.username(), request.password(), request.nickname());
+        service.saveUser(request.username(), request.password(), request.nickname());
         return "redirect:/";
     }
 }

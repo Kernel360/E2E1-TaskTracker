@@ -36,9 +36,10 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(
                                 antMatcher("/"),
-                                antMatcher("/login.html"),
+                                antMatcher("/auth/**"),
                                 antMatcher("/swagger-ui/**"),
-                                antMatcher("/swagger-resources/**")
+                                antMatcher("/swagger-resources/**"),
+                                antMatcher("/vendor/**")
                         ).permitAll()
                         .requestMatchers(antMatcher("/public/**")).permitAll()
                         .requestMatchers(antMatcher("/error")).permitAll()
@@ -55,13 +56,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout().permitAll().and()
-                .oauth2Login(auth -> auth.userInfoEndpoint(it -> it.userService(oAuth2UserService)))
+                .oauth2Login(auth -> auth
+                        .userInfoEndpoint(it -> it.userService(oAuth2UserService))
+                )
                 .build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-        return (web) -> web.ignoring().requestMatchers(antMatcher("/resources/static/**"));
     }
 
     @Bean
