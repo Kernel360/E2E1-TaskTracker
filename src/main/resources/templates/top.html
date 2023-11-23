@@ -92,8 +92,11 @@
 
 <!--버튼 추가 -->
                             <div th:if="${notify.getType() eq 'follow'}" class="ml-auto">
-                                <button type="button" class="btn btn-primary">수락</button>
-                                <button type="button" class="btn btn-secondary">거절</button>
+
+                                <button type="button" class="btn btn-primary" th:data-id="${notify.getSenderId()}" onclick="acceptNotification(this)">수락</button>
+                                <button type="button" class="btn btn-secondary" th:data-id="${notify.getSenderId()}" onclick="rejectNotification(this)">거절</button>
+<!--                                <button type="button" class="btn btn-primary">수락</button>-->
+<!--                                <button type="button" class="btn btn-secondary">거절</button>-->
 
 <!--                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeleteModal"-->
 <!--                                        th:attr="data-following-id=${friend.id()}" onclick="openDeleteModal(this)">수락</button>-->
@@ -254,6 +257,77 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        function acceptNotification(button) {
+            var notificationId = button.getAttribute('data-id');
+            // 여기서 알림 수락 처리를 위한 동작 수행
+            // notificationId를 이용하여 필요한 작업 수행
+            console.log("add follower id : " + userId);
+            console.log("add following id : " + notificationId);
+            $.ajax({
+                url: '/follow/' + userId + '/send/' + notificationId,
+                type: 'POST',
+                success: function (response) {
+                    // 삭제 성공 시 모달 닫기 등 추가 동작 수행
+                    console.log(this.url);
+
+                    //성공 시 알림도 삭제
+                    $.ajax({
+                        url: '/notification/' + notificationId + '/delete/' + userId,
+                        type: 'DELETE',
+                        success: function (deletealarmresponse) {
+                            // 삭제 성공 시 모달 닫기 등 추가 동작 수행
+                            console.log(this.url);
+                            $('#rejectNotification').modal('hide');
+                            // 추가 동작을 위한 코드 작성
+                            console.log(deletealarmresponse);
+                        },
+                        error: function (xhr, status, error) {
+                            // 삭제 실패 시 에러 처리
+                            console.error(deletealarmerror);
+                        }
+                    });
+
+                    $('#acceptNotification').modal('hide');
+                    // 삭제 성공 알림창
+                    alert('추가되었습니다.');
+                    // 추가 동작을 위한 코드 작성
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // 삭제 실패 시 에러 처리
+                    console.error(error);
+                }
+            });
+        }
+
+        function rejectNotification(button) {
+            var notificationId = button.getAttribute('data-id');
+            // 여기서 알림 거절 처리를 위한 동작 수행
+            // notificationId를 이용하여 필요한 작업 수행
+            console.log("sender id : " + notificationId);
+            console.log("receiver id : " + userId);
+            $.ajax({
+                url: '/notification/' + notificationId + '/delete/' + userId,
+                type: 'DELETE',
+                success: function (response) {
+                    // 삭제 성공 시 모달 닫기 등 추가 동작 수행
+                    console.log(this.url);
+                    $('#rejectNotification').modal('hide');
+                    // 삭제 성공 알림창
+                    alert('거절되었습니다.');
+                    // 추가 동작을 위한 코드 작성
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // 삭제 실패 시 에러 처리
+                    console.error(error);
+                }
+            });
+
+        }
+    </script>
     <script>
         function deleteAllNotification(userId) {
             console.log("delete user id : " + userId);
