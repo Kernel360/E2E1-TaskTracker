@@ -25,6 +25,7 @@
 
 ---
 ## ERD
+![TT-ERD](https://github.com/Kernel360/E2E1-TaskTracker/assets/59231743/73f78524-ce7e-40fe-81e4-12451a9dc0b4)
 
 
 ---
